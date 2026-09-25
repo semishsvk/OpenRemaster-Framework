@@ -1,0 +1,10 @@
+{
+  "schema_version": "1",
+  "observed_at": "2026-09-25",
+  "project_id": "opencadaver",
+  "repository": "semishsvk/OpenCadaver",
+  "ref": "main",
+  "revision": "49f6b7c517f11cadbe464495a343a5399c079067",
+  "mode": "read-only",
+  "role": "discovery-corpus"
+}
