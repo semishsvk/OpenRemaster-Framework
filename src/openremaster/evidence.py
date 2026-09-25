@@ -56,6 +56,12 @@ class EvidenceGraph:
     def get(self, node_id: str) -> EvidenceNode:
         return self._nodes[node_id]
 
+    def validate_references(self) -> None:
+        for node_id, node in self._nodes.items():
+            for dependency in node.dependencies:
+                if dependency.evidence_id not in self._nodes:
+                    raise ValueError(f"missing evidence dependency: {node_id} -> {dependency.evidence_id}")
+
     def invalidated_by(self, changed_ids: set[str]) -> set[str]:
         invalid = set(changed_ids)
         changed = True
@@ -77,6 +83,7 @@ class EvidenceGraph:
                 "status": node.status,
                 "dependencies": [asdict(d) for d in node.dependencies],
             })
+        self.validate_references()
         return json.dumps({"schema_version": "1", "nodes": records}, sort_keys=True, separators=(",", ":"))
 
     @classmethod
@@ -94,4 +101,5 @@ class EvidenceGraph:
             if node.key.stable_id() != record["id"]:
                 raise ValueError("evidence id mismatch")
             graph.add(node)
+        graph.validate_references()
         return graph
