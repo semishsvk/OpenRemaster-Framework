@@ -1,0 +1,10 @@
+{
+  "schema_version": "1",
+  "observed_at": "2026-09-25",
+  "project_id": "openazrael",
+  "repository": "semishsvk/OpenAzrael",
+  "ref": "main",
+  "revision": "8e8103c5822faf1ea78d0845cbd107ce48deeca9",
+  "mode": "read-only",
+  "role": "stability-corpus"
+}
