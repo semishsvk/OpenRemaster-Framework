@@ -1,7 +1,7 @@
 import pytest
 from openremaster.adapters.openazrael import OpenAzraelAdapter
 from openremaster.adapters.opencadaver import OpenCadaverAdapter
-from openremaster.evidence import EvidenceGraph, EvidenceKey, EvidenceNode
+from openremaster.evidence import EvidenceDependency, EvidenceGraph, EvidenceKey, EvidenceNode
 from openremaster.manifest import ProjectManifest
 
 def key(check: str) -> EvidenceKey:
@@ -20,8 +20,8 @@ def test_evidence_id_deterministic():
 def test_transitive_invalidation():
     graph = EvidenceGraph()
     a = graph.add(EvidenceNode(key("a"), "pass"))
-    b = graph.add(EvidenceNode(key("b"), "pass", (a,)))
-    c = graph.add(EvidenceNode(key("c"), "pass", (b,)))
+    b = graph.add(EvidenceNode(key("b"), "pass", (EvidenceDependency(a),)))
+    c = graph.add(EvidenceNode(key("c"), "pass", (EvidenceDependency(b),)))
     assert graph.invalidated_by({a}) == {a, b, c}
 
 def test_read_only_adapters():
