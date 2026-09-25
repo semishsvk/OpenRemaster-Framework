@@ -1,0 +1,36 @@
+{
+  "schema_version": "1",
+  "mode": "shadow",
+  "project_id": "openazrael",
+  "source_commit": "356dddf71163b99539badb571cce500f99835acc",
+  "source_message": "fix: stop player falling through legacy room floors",
+  "observed_changed_paths": [
+    "OPENAZRAEL_CONTEXT.md",
+    "README.md",
+    "data/project_context.json",
+    "data/tests/kg001_candidate_diagnostics_contract_v116.json",
+    "docs/ARTIFACT_INDEX.md",
+    "docs/LAST_SESSION.md",
+    "docs/PROJECT_STATE.md",
+    "docs/ROADMAP.md",
+    "docs/TEST_MATRIX.md",
+    "scripts/candidate_diagnostics_v116.gd",
+    "scripts/kg001_room_trigger_runner_v110.gd",
+    "scripts/room_manager.gd",
+    "tools/validate_candidate_diagnostics_v116.py",
+    "tools/validate_kg001_room_trigger_v110.py",
+    "tools/validate_project_context.py"
+  ],
+  "expected_primary_domains": [
+    "geometry"
+  ],
+  "expected_invalidated_domains": [
+    "geometry",
+    "movement",
+    "transitions",
+    "puzzles",
+    "save-load",
+    "e2e"
+  ],
+  "note": "Historical shadow fixture. Advisory only; does not alter or suppress OpenAzrael validation."
+}
