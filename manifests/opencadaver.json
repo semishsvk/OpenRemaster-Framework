@@ -1,0 +1,7 @@
+{
+  "schema_version": "1",
+  "project_id": "opencadaver",
+  "project_name": "OpenCadaver",
+  "adapter": "opencadaver",
+  "metadata": {"role": "discovery-corpus", "access": "read-only"}
+}
