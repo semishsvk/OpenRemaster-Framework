@@ -28,7 +28,10 @@ def _git(*args: str) -> str:
 
 
 def main() -> int:
-    expected = "c67cabacdc5df06cf144c5801c0fb0b1a39c23fd"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--expected-sha", required=True)
+    args = parser.parse_args()
+    expected = args.expected_sha
     head = _git("rev-parse", "HEAD")
     if head != expected:
         print(f"ACCEPTANCE: FAIL (expected HEAD {expected}, got {head})")
