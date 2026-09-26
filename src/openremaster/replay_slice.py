@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from .replay import ReplayContract
 
 @dataclass(frozen=True)
@@ -38,16 +38,7 @@ def slice_replay(
         for frame in replay.frames
         if start_tick <= frame.tick <= end_tick
     )
-    sliced = ReplayContract(
-        replay.schema_version,
-        replay.project_id,
-        replay.source_revision,
-        replay.runtime_id,
-        replay.runtime_version,
-        replay.fixed_tick_hz,
-        replay.seed,
-        frames,
-    )
+    sliced = replace(replay, frames=frames)
     result = ReplaySlice(replay.digest(), start_tick, end_tick, initial_state_digest, sliced)
     result.validate()
     return result

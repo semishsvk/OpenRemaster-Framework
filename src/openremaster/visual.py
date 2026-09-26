@@ -27,6 +27,7 @@ class VisualCaptureContract:
     camera: CameraPose
     render: RenderConfig
     state_digest: str
+    state_id: str = ""
 
     def validate(self) -> None:
         if self.schema_version != "1":

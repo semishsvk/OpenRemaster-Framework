@@ -27,6 +27,8 @@ class ReplayContract:
     fixed_tick_hz: int
     seed: int
     frames: tuple[InputFrame, ...]
+    room_id: str = ""
+    state_id: str = ""
 
     def validate(self) -> None:
         if self.schema_version != "1":
