@@ -19,12 +19,9 @@ class EvidenceRecord:
     def validate(self) -> None:
         lifecycle = LifecycleEvidence(self.identity, self.stage, self.evidence_id, self.reason)
         lifecycle.validate()
+        self.freshness.validate()
         if self.freshness.evidence_id != self.evidence_id:
             raise ValueError("freshness evidence identity mismatch")
-        if self.freshness.freshness is Freshness.CURRENT and self.freshness.stale_roots:
-            raise ValueError("current evidence cannot have stale roots")
-        if self.freshness.freshness is Freshness.STALE and not self.freshness.stale_roots:
-            raise ValueError("stale evidence requires stale roots")
 
 
 @dataclass(frozen=True)
