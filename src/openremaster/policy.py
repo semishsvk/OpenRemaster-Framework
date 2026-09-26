@@ -18,6 +18,10 @@ def choose_validation_policy(impact: DomainImpactPlan) -> ValidationPolicy:
     if not impact.invalidated:
         return ValidationPolicy(False, False, "no impacted domains")
     integration = impact.invalidated.intersection(INTEGRATION_DOMAINS)
+    # E2E is a downstream aggregate for isolated audio/localization too.
+    # An explicit E2E change still warrants VERIFY.
+    if Domain.E2E not in impact.changed:
+        integration = integration - {Domain.E2E}
     if integration:
         names = ",".join(sorted(d.value for d in integration))
         return ValidationPolicy(True, True, f"integration impact: {names}")
