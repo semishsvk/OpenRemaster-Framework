@@ -56,6 +56,10 @@ class EvidenceGraph:
     def get(self, node_id: str) -> EvidenceNode:
         return self._nodes[node_id]
 
+    def ids(self) -> tuple[str, ...]:
+        """Stable evidence ids for deterministic projections and reports."""
+        return tuple(sorted(self._nodes))
+
     def validate_references(self) -> None:
         for node_id, node in self._nodes.items():
             for dependency in node.dependencies:
