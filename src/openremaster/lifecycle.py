@@ -49,6 +49,7 @@ class LifecycleEvidence:
 
     def require_usable(self, freshness: EvidenceFreshness) -> None:
         self.validate()
+        freshness.validate()
         if freshness.evidence_id != self.evidence_id:
             raise ValueError("freshness evidence identity mismatch")
         if freshness.freshness is Freshness.STALE:
