@@ -16,6 +16,16 @@ class EvidenceFreshness:
     freshness: Freshness
     stale_roots: tuple[str, ...] = ()
 
+    def validate(self) -> None:
+        if not self.evidence_id.strip():
+            raise ValueError("evidence_id is required")
+        if self.stale_roots != tuple(sorted(set(self.stale_roots))):
+            raise ValueError("stale roots must be unique and sorted")
+        if self.freshness is Freshness.CURRENT and self.stale_roots:
+            raise ValueError("current evidence cannot have stale roots")
+        if self.freshness is Freshness.STALE and not self.stale_roots:
+            raise ValueError("stale evidence requires stale roots")
+
 
 class ProvenanceFreshness:
     """Deterministic, non-mutating freshness projection over an EvidenceGraph."""
@@ -45,7 +55,7 @@ class ProvenanceFreshness:
                     roots_by_node[node_id] = propagated
                     changed = True
 
-        return tuple(
+        result = tuple(
             EvidenceFreshness(
                 node_id,
                 Freshness.STALE if roots_by_node[node_id] else Freshness.CURRENT,
@@ -53,3 +63,6 @@ class ProvenanceFreshness:
             )
             for node_id in self._graph.ids()
         )
+        for item in result:
+            item.validate()
+        return result
