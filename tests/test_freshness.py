@@ -63,3 +63,14 @@ def test_dangling_graph_is_rejected_before_freshness_evaluation():
     g.add(EvidenceNode(key("child"), "pass", (EvidenceDependency("missing"),)))
     with pytest.raises(ValueError, match="missing evidence dependency"):
         ProvenanceFreshness(g)
+
+
+def test_freshness_value_rejects_inconsistent_state_at_boundary():
+    from openremaster.freshness import EvidenceFreshness
+
+    with pytest.raises(ValueError, match="current evidence"):
+        EvidenceFreshness("e", Freshness.CURRENT, ("root",)).validate()
+    with pytest.raises(ValueError, match="requires stale roots"):
+        EvidenceFreshness("e", Freshness.STALE).validate()
+    with pytest.raises(ValueError, match="unique and sorted"):
+        EvidenceFreshness("e", Freshness.STALE, ("b", "a", "a")).validate()
