@@ -1,0 +1,19 @@
+..................................................F..................... [ 91%]
+.......                                                                  [100%]
+================================== FAILURES ===================================
+_____________________ test_audio_does_not_require_verify ______________________
+
+    def test_audio_does_not_require_verify():
+        policy = choose_validation_policy(analyze_domains({Domain.AUDIO}))
+        assert policy.fast_required
+>       assert not policy.verify_recommended
+E       AssertionError: assert not True
+E        +  where True = ValidationPolicy(fast_required=True, verify_recommended=True, reason='integration impact: e2e').verify_recommended
+
+tests\test_policy.py:8: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_policy.py::test_audio_does_not_require_verify - AssertionEr...
+1 failed, 78 passed in 0.23s
+OpenRemaster Framework Phase 1 acceptance
+command: C:\Users\msemj\Documents\Codex\2026-09-26\pokra-uj-na-projekte-openremaster-framework\work\venv\Scripts\python.exe -m pytest -q
+ACCEPTANCE: FAIL

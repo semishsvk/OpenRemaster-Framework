@@ -1,0 +1,1399 @@
+{
+  "evidence": {
+    "acceptance_runner": {
+      "additional_pytest_options": "-ra --junitxml=<external per-run result path>",
+      "command": "python scripts/phase1_acceptance.py",
+      "delegated_command": "python -m pytest -q",
+      "git_blob_sha": "a6c8a2da69df5aa766faa7d7848bbf9ff65d4090",
+      "path": "scripts/phase1_acceptance.py",
+      "scope": "complete suite, no selection/filter",
+      "sha256": "b2f79446b4ecb01b93908c2f1be3c4f7c6b8b35a9524a73d6ed060b12705dd36"
+    },
+    "branch": "framework/phase1-bootstrap",
+    "environment": {
+      "packages": {
+        "Pygments": "2.21.0",
+        "colorama": "0.4.6",
+        "iniconfig": "2.3.0",
+        "openremaster-framework": "0.1.0.dev0",
+        "packaging": "26.3",
+        "pluggy": "1.6.0",
+        "pytest": "9.1.1"
+      },
+      "platform": "Windows-10-10.0.26300-SP0",
+      "pytest_version": "9.1.1",
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "variables": {
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONHASHSEED": "0"
+      }
+    },
+    "errors": 0,
+    "failed": 0,
+    "first_run": {
+      "collected": 131,
+      "errors": 0,
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 131,
+      "result": "PASS",
+      "run": 1,
+      "skipped": 0,
+      "test_outcomes": [
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_preserves_exact_range_and_decoder_provenance",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_rejects_out_of_bounds_ranges[-1-1]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_rejects_out_of_bounds_ranges[0--1]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_rejects_out_of_bounds_ranges[31-2]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[check_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[input_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[project_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[source_revision]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[tool_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[tool_version]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_coverage_requires_each_room_state_and_evidence_kind",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_consistent_fixture",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_missing_referenced_objects_is_not_verified",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[project_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[room_id-]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[room_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[source_revision-old]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[state_id-]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[-replay_bundle_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[-visual_baseline_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[8810ad581e59f2bc3928b261707a71308f7e139eb04820366dc4d5c18d980225-replay_bundle_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[8810ad581e59f2bc3928b261707a71308f7e139eb04820366dc4d5c18d980225-visual_baseline_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[project_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[scene_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[source_revision-old]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[state_id-]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_world_state_digest_must_match_replay_checkpoint",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_evidence_serialization_rejects_dangling_dependency_and_schema_drift",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_manifest_rejects_missing_project_identity",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_nonpass_cache_never_satisfies_pass_request[fail]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_nonpass_cache_never_satisfies_pass_request[unknown]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[fixed_tick_hz-30]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[room_id-room]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[runtime_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[runtime_version-2]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[seed-8]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_slice_requires_explicit_world_checkpoint_and_preserves_context",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[manifest_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[project_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[repository]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[revision]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[camera-value4]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[camera_id-detail]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[render-value5]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[source_revision-old]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[state_digest-other-world]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_decoded_record_binds_range_decoder_and_output",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_decoder_contract_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_range_audit_detects_overlap_and_uncovered_bytes",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_range_is_bound_to_source_and_bounds",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_full_lineage_is_queryable",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_graph_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_missing_endpoint_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_source_change_propagates_to_runtime_entity",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_transformed_asset_change_does_not_invalidate_source",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_baseline::test_baseline_is_sha_bound",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_bundle::test_artifact_digest_is_required",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_bundle::test_bundle_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_bundle::test_trace_must_match_replay",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_exact_pass_is_reused",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_failed_evidence_is_not_reused_as_pass",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_input_change_forces_rerun",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_revision_change_forces_rerun",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_tool_version_change_forces_rerun",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_change_classifier::test_classifies_known_project_paths",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_change_classifier::test_combines_multiple_changed_paths",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_evidence_id_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_manifest_rejects_bad_schema",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_manifest_validation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_read_only_adapters",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_transitive_invalidation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_domain_impact::test_audio_change_is_narrow",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_domain_impact::test_geometry_change_reaches_runtime_chain",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_domain_impact::test_localization_change_does_not_invalidate_geometry",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_integrity::test_forward_reference_is_valid_after_graph_is_complete",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_integrity::test_missing_dependency_is_rejected_by_graph_validation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_persistence::test_dependency_type_validation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_persistence::test_round_trip_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_persistence::test_tampered_id_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure::test_failure_id_is_sha_bound_and_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure_reproducer::test_no_prior_checkpoint_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure_reproducer::test_uses_nearest_prior_checkpoint",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure_reproducer::test_wrong_trace_binding_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_github_adapter::test_github_adapter_observes_without_mutation_api",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_complete_coverage",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_inventory_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_multistate_room_counts_each_state",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_unsorted_rooms_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden_links::test_bad_digest_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden_links::test_room_state_can_link_all_evidence_classes",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_impact::test_shadow_impact_is_transitive_and_advisory",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_invariants::test_matching_components_are_valid",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_invariants::test_revision_drift_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_invariants::test_unknown_room_state_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_openazrael_shadow_fixture::test_historical_floor_fix_shadow_plan",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_phase1_e2e::test_change_to_plan_to_cache_to_asset_impact",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_audio_does_not_require_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_direct_e2e_change_recommends_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_geometry_recommends_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_localization_keeps_e2e_invalidation_without_recommending_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_provenance_report::test_provenance_binds_reuse_to_sha_and_digest",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_provenance_report::test_report_is_deterministic_json",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reference_graph::test_missing_endpoint_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reference_graph::test_reference_graph_queries_both_directions",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay::test_rejects_duplicate_ticks",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay::test_replay_binds_source_revision",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay::test_replay_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay_slice::test_invalid_bounds_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay_slice::test_slice_rebases_ticks_and_preserves_identity_context",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reproducer::test_different_source_revision_breaks_reproduction",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reproducer::test_exact_bundle_is_reproducible",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reuse::test_missing_digest_never_reuses",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reuse::test_mixed_reuse_and_rerun_plan",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_store::test_store_detects_tampered_identity",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_store::test_store_round_trip_and_digest",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_testplan::test_audio_fast_plan_is_minimal",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_testplan::test_geometry_fast_plan_covers_transitive_impact",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_testplan::test_verify_adds_runtime_and_e2e",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_trace::test_event_divergence_is_detected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_trace::test_identical_traces_are_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_trace::test_state_divergence_is_detected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_baseline_requires_exact_contract_binding",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_contract_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_different_contracts_are_not_compared",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_exact_visual_match",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_original_and_neutral_lighting_are_distinct_contracts",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_same_contract_different_image_is_regression_candidate",
+          "outcome": "PASS"
+        }
+      ],
+      "tested_sha": "53c91d7f0fcf862a7b76eae5aa4e109dac7ce42f",
+      "working_tree_after": "clean",
+      "working_tree_before": "clean",
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "github_actions_required": false,
+    "hardening_fixes": [
+      {
+        "classification": "framework defect",
+        "sha": "0518a16f4b36fbe77122c3d0fce08bb9dad829d5",
+        "summary": "Do not recommend VERIFY solely for transitively invalidated aggregate E2E; explicit E2E and integration-sensitive impact still recommend VERIFY.",
+        "validation": "12 targeted tests and full 81-test suite passed after correction."
+      },
+      {
+        "classification": "framework invariant defect and missing regression coverage",
+        "sha": "53c91d7f0fcf862a7b76eae5aa4e109dac7ce42f",
+        "summary": "Bind replay room/state and visual state into identities, preserve slicing context, reject cross-component missing/mismatched evidence and world-state digests. Add 50 acceptance cases covering required identity and fail-closed boundaries.",
+        "validation": "58 targeted tests passed; complete suite passed before commit synchronization and twice on final authoritative SHA."
+      }
+    ],
+    "initial_run": {
+      "collected": 79,
+      "errors": 0,
+      "exit_code": 1,
+      "failed": 1,
+      "failure": "tests/test_policy.py::test_audio_does_not_require_verify",
+      "passed": 78,
+      "skipped": 0,
+      "tested_sha": "8d339e384e95e0d1b207081f70f5d8918a499b57"
+    },
+    "invariant_audit": {
+      "Asset provenance": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_asset_provenance.py",
+          "tests/test_phase1_e2e.py"
+        ],
+        "verified": [
+          "source-decoded-transformed-runtime-entity lineage",
+          "downstream impact",
+          "missing endpoints rejected",
+          "deterministic graph identity"
+        ]
+      },
+      "Cache/reuse": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_cache.py",
+          "tests/test_reuse.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "exact project/source/input/tool/version/check identity required for PASS reuse",
+          "FAIL and UNKNOWN do not satisfy PASS requests"
+        ]
+      },
+      "Cross-component invariants": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_invariants.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "project",
+          "source revision",
+          "room/state",
+          "exact evidence digest links",
+          "missing referenced replay/visual objects fail closed",
+          "visual state digest present in replay checkpoints",
+          "revision drift fail closed"
+        ]
+      },
+      "Evidence": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_core.py",
+          "tests/test_evidence_persistence.py",
+          "tests/test_evidence_integrity.py",
+          "tests/test_store.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "six-field deterministic EvidenceKey",
+          "serialization round-trip",
+          "identity tamper rejection",
+          "dependency kind validation",
+          "transitive invalidation",
+          "dangling dependencies rejected on serialize/deserialize"
+        ]
+      },
+      "Failure reproducer": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_reproducer.py",
+          "tests/test_failure.py",
+          "tests/test_failure_reproducer.py",
+          "tests/test_replay_slice.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "replay bundle binding",
+          "nearest prior checkpoint",
+          "minimal conservative checkpoint-to-failure window",
+          "tick rebasing",
+          "missing checkpoint rejected",
+          "mismatched trace rejected",
+          "explicit initial world-state digest required"
+        ]
+      },
+      "Game Archaeology SDK": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_archaeology.py",
+          "tests/test_reference_graph.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "BinarySource identity",
+          "ByteRange bounds/source match",
+          "exact offset/length/digest provenance",
+          "DecoderContract identity",
+          "DecodedRecord",
+          "ReferenceGraph endpoints and bidirectional queries",
+          "RangeAudit overlap/covered/uncovered bytes",
+          "no game-specific decoder implementation in generic SDK"
+        ]
+      },
+      "Golden Master": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_golden.py",
+          "tests/test_golden_links.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "coverage per room/state/evidence-kind",
+          "Ziggurat states counted separately",
+          "link digest validation"
+        ]
+      },
+      "Impact analyzer": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_change_classifier.py",
+          "tests/test_domain_impact.py",
+          "tests/test_impact.py",
+          "tests/test_policy.py",
+          "tests/test_testplan.py",
+          "tests/test_openazrael_shadow_fixture.py",
+          "tests/test_phase1_e2e.py"
+        ],
+        "verified": [
+          "path classification",
+          "domain propagation",
+          "FAST planning",
+          "VERIFY recommendation",
+          "shadow/advisory semantics"
+        ]
+      },
+      "Manifest / snapshots": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_core.py",
+          "tests/test_baseline.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "manifest schema and required project identity",
+          "source baseline binding",
+          "snapshot digest deterministic and sensitive to project/repository/revision/manifest identity"
+        ]
+      },
+      "Replay": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_replay.py",
+          "tests/test_trace.py",
+          "tests/test_bundle.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "deterministic replay contract",
+          "source revision",
+          "runtime ID/version",
+          "seed",
+          "fixed ticks",
+          "trace binding",
+          "event/state comparisons"
+        ]
+      },
+      "Sidecar isolation": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_core.py::test_read_only_adapters",
+          "tests/test_github_adapter.py",
+          "tests/test_impact.py"
+        ],
+        "verified": [
+          "static review of public API under src/openremaster",
+          "GitHub adapter exposes snapshot through resolve_revision only",
+          "no automatic game commit/push/merge/branch/source-write/release-gate/destructive-migration API",
+          "JsonEvidenceStore writes only explicit caller-selected local evidence root",
+          "Change Impact Analyzer and planning remain advisory",
+          "OpenAzrael/OpenCadaver Build Orchestrator and project gates remain authoritative",
+          "no game repository accessed or changed and no game build/development process executed"
+        ]
+      },
+      "Visual regression": {
+        "result": "PASS",
+        "tests": [
+          "tests/test_visual.py",
+          "tests/test_acceptance_invariants.py"
+        ],
+        "verified": [
+          "deterministic capture contract",
+          "camera identity/pose",
+          "render configuration",
+          "separate original-1996 and neutral contracts",
+          "source revision",
+          "state digest",
+          "artifact digest and exact contract binding"
+        ]
+      }
+    },
+    "overall_result": "PASS",
+    "passed": 131,
+    "pr_merged": false,
+    "repository": "semishsvk/OpenRemaster-Framework",
+    "schema_version": "1",
+    "second_run": {
+      "collected": 131,
+      "errors": 0,
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 131,
+      "result": "PASS",
+      "run": 2,
+      "skipped": 0,
+      "test_outcomes": [
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_preserves_exact_range_and_decoder_provenance",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_rejects_out_of_bounds_ranges[-1-1]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_rejects_out_of_bounds_ranges[0--1]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_archaeology_rejects_out_of_bounds_ranges[31-2]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[check_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[input_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[project_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[source_revision]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[tool_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cache_requires_every_identity_field[tool_version]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_coverage_requires_each_room_state_and_evidence_kind",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_consistent_fixture",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_missing_referenced_objects_is_not_verified",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[project_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[room_id-]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[room_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[source_revision-old]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[state_id-]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_replay_drift_fails_even_with_updated_digest[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[-replay_bundle_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[-visual_baseline_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[8810ad581e59f2bc3928b261707a71308f7e139eb04820366dc4d5c18d980225-replay_bundle_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_requires_exact_link_digest[8810ad581e59f2bc3928b261707a71308f7e139eb04820366dc4d5c18d980225-visual_baseline_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[project_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[scene_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[source_revision-old]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[state_id-]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_visual_drift_fails_even_with_updated_digest[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_cross_component_world_state_digest_must_match_replay_checkpoint",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_evidence_serialization_rejects_dangling_dependency_and_schema_drift",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_manifest_rejects_missing_project_identity",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_nonpass_cache_never_satisfies_pass_request[fail]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_nonpass_cache_never_satisfies_pass_request[unknown]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[fixed_tick_hz-30]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[room_id-room]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[runtime_id-other]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[runtime_version-2]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[seed-8]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_replay_identity_context[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_slice_requires_explicit_world_checkpoint_and_preserves_context",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[manifest_digest]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[project_id]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[repository]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_source_snapshot_binds_each_identity_field[revision]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[camera-value4]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[camera_id-detail]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[render-value5]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[source_revision-old]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[state_digest-other-world]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_acceptance_invariants::test_visual_identity_context[state_id-b]",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_decoded_record_binds_range_decoder_and_output",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_decoder_contract_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_range_audit_detects_overlap_and_uncovered_bytes",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_archaeology::test_range_is_bound_to_source_and_bounds",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_full_lineage_is_queryable",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_graph_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_missing_endpoint_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_source_change_propagates_to_runtime_entity",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_asset_provenance::test_transformed_asset_change_does_not_invalidate_source",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_baseline::test_baseline_is_sha_bound",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_bundle::test_artifact_digest_is_required",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_bundle::test_bundle_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_bundle::test_trace_must_match_replay",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_exact_pass_is_reused",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_failed_evidence_is_not_reused_as_pass",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_input_change_forces_rerun",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_revision_change_forces_rerun",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_cache::test_tool_version_change_forces_rerun",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_change_classifier::test_classifies_known_project_paths",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_change_classifier::test_combines_multiple_changed_paths",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_evidence_id_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_manifest_rejects_bad_schema",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_manifest_validation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_read_only_adapters",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_core::test_transitive_invalidation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_domain_impact::test_audio_change_is_narrow",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_domain_impact::test_geometry_change_reaches_runtime_chain",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_domain_impact::test_localization_change_does_not_invalidate_geometry",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_integrity::test_forward_reference_is_valid_after_graph_is_complete",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_integrity::test_missing_dependency_is_rejected_by_graph_validation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_persistence::test_dependency_type_validation",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_persistence::test_round_trip_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_evidence_persistence::test_tampered_id_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure::test_failure_id_is_sha_bound_and_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure_reproducer::test_no_prior_checkpoint_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure_reproducer::test_uses_nearest_prior_checkpoint",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_failure_reproducer::test_wrong_trace_binding_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_github_adapter::test_github_adapter_observes_without_mutation_api",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_complete_coverage",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_inventory_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_multistate_room_counts_each_state",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden::test_unsorted_rooms_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden_links::test_bad_digest_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_golden_links::test_room_state_can_link_all_evidence_classes",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_impact::test_shadow_impact_is_transitive_and_advisory",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_invariants::test_matching_components_are_valid",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_invariants::test_revision_drift_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_invariants::test_unknown_room_state_is_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_openazrael_shadow_fixture::test_historical_floor_fix_shadow_plan",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_phase1_e2e::test_change_to_plan_to_cache_to_asset_impact",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_audio_does_not_require_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_direct_e2e_change_recommends_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_geometry_recommends_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_policy::test_localization_keeps_e2e_invalidation_without_recommending_verify",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_provenance_report::test_provenance_binds_reuse_to_sha_and_digest",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_provenance_report::test_report_is_deterministic_json",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reference_graph::test_missing_endpoint_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reference_graph::test_reference_graph_queries_both_directions",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay::test_rejects_duplicate_ticks",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay::test_replay_binds_source_revision",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay::test_replay_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay_slice::test_invalid_bounds_rejected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_replay_slice::test_slice_rebases_ticks_and_preserves_identity_context",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reproducer::test_different_source_revision_breaks_reproduction",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reproducer::test_exact_bundle_is_reproducible",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reuse::test_missing_digest_never_reuses",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_reuse::test_mixed_reuse_and_rerun_plan",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_store::test_store_detects_tampered_identity",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_store::test_store_round_trip_and_digest",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_testplan::test_audio_fast_plan_is_minimal",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_testplan::test_geometry_fast_plan_covers_transitive_impact",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_testplan::test_verify_adds_runtime_and_e2e",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_trace::test_event_divergence_is_detected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_trace::test_identical_traces_are_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_trace::test_state_divergence_is_detected",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_baseline_requires_exact_contract_binding",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_contract_digest_is_deterministic",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_different_contracts_are_not_compared",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_exact_visual_match",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_original_and_neutral_lighting_are_distinct_contracts",
+          "outcome": "PASS"
+        },
+        {
+          "id": "tests.test_visual::test_same_contract_different_image_is_regression_candidate",
+          "outcome": "PASS"
+        }
+      ],
+      "tested_sha": "53c91d7f0fcf862a7b76eae5aa4e109dac7ce42f",
+      "working_tree_after": "clean",
+      "working_tree_before": "clean",
+      "xfailed": 0,
+      "xpassed": 0
+    },
+    "skipped": 0,
+    "test_count": 131,
+    "tested_source_sha": "53c91d7f0fcf862a7b76eae5aa4e109dac7ce42f",
+    "tested_tree_sha": "e7dceaa1e735020f75aa02d771a8fe7ad8c92d9d",
+    "verdict": "PHASE 1 ACCEPTED — FROZEN BASELINE",
+    "working_tree": "clean before, between and after both full runs",
+    "xfailed": 0,
+    "xpassed": 0
+  },
+  "evidence_digest": "sha256:440189e5b275e81febbb471ea5e570b2df59ffdf2a2a56c614389098ddd339e7",
+  "identity_algorithm": "SHA-256 of UTF-8 json.dumps(evidence, sort_keys=True, separators=(comma,colon), ensure_ascii=False); metadata excluded",
+  "metadata": {
+    "note": "Timestamps, durations, host-specific log paths and raw-output hashes are observations, excluded from deterministic evidence identity.",
+    "raw_artifacts": [
+      {
+        "path": "evidence/acceptance/phase1-53c91d7f0fcf-run1.log",
+        "sha256": "42dce355cf65941f40ce4b633308cdc28b490394ffc9334adfe672a66caca8e3"
+      },
+      {
+        "path": "evidence/acceptance/phase1-53c91d7f0fcf-run1.xml",
+        "sha256": "bca682c50a07a9300895c7e1d02d85fe3df90d6fd2a642ef47874433042d7fe3"
+      },
+      {
+        "path": "evidence/acceptance/phase1-53c91d7f0fcf-run2.log",
+        "sha256": "42dce355cf65941f40ce4b633308cdc28b490394ffc9334adfe672a66caca8e3"
+      },
+      {
+        "path": "evidence/acceptance/phase1-53c91d7f0fcf-run2.xml",
+        "sha256": "190e74ceb60c5a733cd556149b0f2c53e94b460d8d42b236102a66acc2ec212b"
+      },
+      {
+        "path": "evidence/acceptance/phase1-53c91d7f0fcf-baseline.log",
+        "sha256": "9474d922bf7c31331adec4afe106a8c5c2cb8e00421724b90b499c1e8180a2da"
+      },
+      {
+        "path": "evidence/acceptance/phase1-53c91d7f0fcf-baseline.xml",
+        "sha256": "3d161f2307fa54b4a752b28a806a74e04d215d04ce4562909775c4bbed9c2d07"
+      }
+    ],
+    "report_commit_policy": "This report and raw outputs are a separate evidence-only descendant of tested_source_sha; report commit is not claimed to have tested itself.",
+    "runs": [
+      {
+        "junit_seconds": 0.183,
+        "process_wall_seconds": 0.5112774,
+        "pytest_reported_seconds": 0.2,
+        "run": 1,
+        "started_utc": "2026-09-26T15:26:40.0264024Z"
+      },
+      {
+        "junit_seconds": 0.177,
+        "process_wall_seconds": 0.511293,
+        "pytest_reported_seconds": 0.2,
+        "run": 2,
+        "started_utc": "2026-09-26T15:26:40.6424164Z"
+      }
+    ],
+    "source_acquisition": "Authenticated GitHub connector; all 95 initial blobs, tree and commit objects verified against Git hashes; exact authoritative hardening commits restored and trees verified locally."
+  },
+  "schema_version": "1"
+}
