@@ -169,3 +169,67 @@ def planning_projection(
             task, project, completed, checkpoints.get(task["project"]), evidence
         ))
     return tuple(out)
+
+
+class PreflightOccurrenceStore:
+    """Immutable content-addressed storage for local preflight occurrences."""
+    def __init__(self, root):
+        from pathlib import Path
+        self.root = Path(root)
+
+    def _path(self, occurrence_id: str):
+        return self.root / occurrence_id[:2] / f"{occurrence_id}.json"
+
+    def put(self, occurrence: PreflightOccurrence) -> str:
+        canonical = json.dumps(
+            occurrence.payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ) + "\n"
+        encoded = canonical.encode("utf-8")
+        expected = sha256(canonical[:-1].encode("utf-8")).hexdigest()
+        if expected != occurrence.occurrence_id:
+            raise ValueError("preflight occurrence identity mismatch")
+        path = self._path(occurrence.occurrence_id)
+        if path.exists():
+            if path.read_bytes() != encoded:
+                raise ValueError("immutable preflight occurrence collision")
+            return occurrence.occurrence_id
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(encoded)
+        return occurrence.occurrence_id
+
+    def get(self, occurrence_id: str) -> PreflightOccurrence:
+        path = self._path(occurrence_id)
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        occurrence = ingest_preflight(payload)
+        if occurrence.occurrence_id != occurrence_id:
+            raise ValueError("stored preflight occurrence identity mismatch")
+        return occurrence
+
+def planning_report(
+    tasks: Iterable[dict],
+    projects: Iterable[dict],
+    preflights: dict[str, PreflightOccurrence],
+    checkpoints: dict[str, ProjectCheckpoint],
+    evidence: EvidenceGraph | None = None,
+    completed_tasks: set[str] | None = None,
+) -> dict:
+    task_list = list(tasks)
+    results = planning_projection(
+        task_list, projects, preflights, checkpoints, evidence, completed_tasks
+    )
+    counts = {state: 0 for state in sorted(ELIGIBILITY)}
+    records = []
+    for task, result in zip(task_list, results):
+        counts[result.state] += 1
+        records.append({
+            "task_id": result.task_id,
+            "project": task["project"],
+            "state": result.state,
+            "reasons": list(result.reasons),
+            "action": task.get("action", ""),
+        })
+    return {
+        "schema_version": "1.0",
+        "counts": counts,
+        "tasks": records,
+    }
