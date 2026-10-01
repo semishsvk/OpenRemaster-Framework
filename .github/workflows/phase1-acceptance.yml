@@ -1,9 +1,21 @@
-name: Phase 1 Acceptance
+name: Framework Acceptance Canary
 on:
   push:
-    branches: [framework/phase1-bootstrap]
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "scripts/**"
+      - "pyproject.toml"
+      - ".github/workflows/phase1-acceptance.yml"
   pull_request:
+    branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: framework-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   acceptance:
     runs-on: ubuntu-latest
