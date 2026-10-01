@@ -75,3 +75,44 @@ def validate_task_dag(tasks: Iterable[dict]) -> None:
         visited.add(task_id)
     for task_id in sorted(records):
         visit(task_id)
+
+
+ELIGIBILITY = {"READY", "READY_FOR_WORK", "BLOCKED_LOCAL", "BLOCKED_EVIDENCE", "BLOCKED_DEPENDENCY"}
+
+@dataclass(frozen=True)
+class TaskEligibility:
+    task_id: str
+    state: str
+    reasons: tuple[str, ...] = ()
+
+def evaluate_task_eligibility(
+    task: dict,
+    project: dict,
+    completed_tasks: set[str],
+    checkpoint: ProjectCheckpoint | None = None,
+    evidence: EvidenceGraph | None = None,
+) -> TaskEligibility:
+    reasons: list[str] = []
+    missing_deps = sorted(set(task.get("depends_on", ())) - completed_tasks)
+    if missing_deps:
+        return TaskEligibility(task["id"], "BLOCKED_DEPENDENCY", tuple(missing_deps))
+
+    if project.get("local_state") == "UNKNOWN":
+        return TaskEligibility(task["id"], "BLOCKED_LOCAL", ("local_state_unknown",))
+
+    if checkpoint is None:
+        return TaskEligibility(task["id"], "BLOCKED_EVIDENCE", ("checkpoint_missing",))
+
+    try:
+        checkpoint.validate(evidence)
+    except ValueError as exc:
+        return TaskEligibility(task["id"], "BLOCKED_EVIDENCE", (str(exc),))
+
+    if checkpoint.validation_state in {"UNKNOWN", "BLOCKED", "FALSIFIED"}:
+        return TaskEligibility(task["id"], "BLOCKED_EVIDENCE", (checkpoint.validation_state.lower(),))
+
+    # Candidate checkpoints may be handed to Work for bounded implementation;
+    # only independently attested VERIFIED checkpoints are directly executable.
+    if checkpoint.validation_state == "CANDIDATE":
+        return TaskEligibility(task["id"], "READY_FOR_WORK")
+    return TaskEligibility(task["id"], "READY")
