@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "checkpoint_id": "PORTFOLIO_CURRENT_2026-10-01",
+  "policy": {
+    "github_role": "sync_and_review_checkpoint",
+    "original_corpora_in_git": false,
+    "unknown_is_not_verified": true,
+    "local_state_required_before_sync": true,
+    "single_writer_mutations": true
+  },
+  "projects": [
+    {"id":"openremaster-framework","repo":"semishsvk/OpenRemaster-Framework","remote_state":"ACTIVE_PHASE2","remote_checkpoint":"e55f113d994b52e0ea416a5e4ded265d309eeffc","local_state":"UNKNOWN","next_gate":"PORTFOLIO_CONSOLIDATION"},
+    {"id":"openazrael","repo":"semishsvk/OpenAzrael","remote_state":"CHECKPOINT_EXISTS","remote_checkpoint":"8e8103c5822faf1ea78d0845cbd107ce48deeca9","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF_AND_FIDELITY_RECONCILIATION"},
+    {"id":"opencadaver","repo":"semishsvk/OpenCadaver","remote_state":"CHECKPOINT_EXISTS","remote_checkpoint":"5e3995402d1a0c672488cf74730ac9c0fb6da29d","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
+    {"id":"openroth","repo":"semishsvk/OpenROTH","remote_state":"BOOTSTRAP","remote_checkpoint":"b42c5e2104c128a7033512ab0231fef861523803","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
+    {"id":"openstonekeep","repo":"semishsvk/OpenStonekeep","remote_state":"BOOTSTRAP","remote_checkpoint":"32f9df124b5c4e65e1f9326ffe5eced485c9ace1","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
+    {"id":"openzork","repo":"semishsvk/OpenZork","remote_state":"BOOTSTRAP","remote_checkpoint":"c3f761038c0b5ecc4b37a2c49a167339774e58b0","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
+    {"id":"openmdk1","repo":"semishsvk/OpenMDK1","remote_state":"REMOTE_EMPTY","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"openmdk2","repo":"semishsvk/OpenMDK2","remote_state":"REMOTE_EMPTY","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"openremaster-orchestrator","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"openanvil","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"opencybermage","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"opencomanche","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"openbattlespire","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
+    {"id":"opennormality","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"}
+  ]
+}
