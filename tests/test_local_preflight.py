@@ -16,7 +16,7 @@ def test_collect_is_read_only_and_detects_untracked(tmp_path):
     after=g(repo,"rev-parse","HEAD").stdout.strip()
     assert before==after
     assert payload["git"]["head"]==before
-    assert payload["changes"]["untracked"]==["new.txt"]
+    assert payload["changes"]["untracked"]==["new.txt"]\n    assert payload["safe_to_plan_sync"] is False
 
 def test_collect_hashes_explicit_file_inputs(tmp_path):
     repo=tmp_path/"repo"; repo.mkdir(); g(repo,"init")
