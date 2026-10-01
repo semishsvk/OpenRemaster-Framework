@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "registry_id": "PORTFOLIO_TASKS_2026-10-01",
+  "policy": {
+    "execution_requires_checkpoint": true,
+    "unknown_blocks_destructive_actions": true
+  },
+  "tasks": [
+    {
+      "id": "CONS-001",
+      "project": "openremaster-framework",
+      "state": "ACTIVE",
+      "action": "Validate portfolio schemas and integrate checkpoint occurrences with Evidence/Artifact contracts",
+      "depends_on": []
+    },
+    {
+      "id": "CONS-002",
+      "project": "openremaster-orchestrator",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover real local Orchestrator state and create repository checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-003",
+      "project": "openmdk1",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Capture MDK1 local RE/render code and reconcile with empty remote",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-004",
+      "project": "openmdk2",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Capture MDK2 local state and reconcile with empty remote",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-005",
+      "project": "openazrael",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Diff local fidelity-closure work against remote branches without broad merge",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-006",
+      "project": "opencadaver",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Diff local RE state against remote checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-007",
+      "project": "openanvil",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover local RE state and establish first remote checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-008",
+      "project": "opencybermage",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover local RE state and establish first remote checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-009",
+      "project": "opencomanche",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover local research state and establish first remote checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-010",
+      "project": "openbattlespire",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover local research state while preserving corpus-gap blocker",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-011",
+      "project": "opennormality",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover True3D cross-validation state and establish first remote checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    }
+  ]
+}
