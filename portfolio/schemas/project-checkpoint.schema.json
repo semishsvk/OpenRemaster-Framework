@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "openremaster://portfolio/project-checkpoint/v1",
+  "title": "OpenRemaster Project Checkpoint",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "checkpoint_id",
+    "content",
+    "provenance",
+    "validation",
+    "tasks",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "repo",
+        "branch",
+        "head"
+      ],
+      "properties": {
+        "repo": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "branch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "head": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tree_identity": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "local_snapshot",
+        "corpus_refs"
+      ],
+      "properties": {
+        "local_snapshot": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "corpus_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "state",
+        "attestations"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "UNKNOWN",
+            "CANDIDATE",
+            "VERIFIED",
+            "FALSIFIED",
+            "BLOCKED"
+          ]
+        },
+        "attestations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_action": {
+      "type": "string"
+    }
+  }
+}
