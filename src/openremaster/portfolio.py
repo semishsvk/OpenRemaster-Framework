@@ -116,3 +116,56 @@ def evaluate_task_eligibility(
     if checkpoint.validation_state == "CANDIDATE":
         return TaskEligibility(task["id"], "READY_FOR_WORK")
     return TaskEligibility(task["id"], "READY")
+
+
+@dataclass(frozen=True)
+class PreflightOccurrence:
+    occurrence_id: str
+    project_id: str
+    payload: dict
+
+def ingest_preflight(payload: dict, expected_project_id: str | None = None) -> PreflightOccurrence:
+    required = {"schema_version","project_id","captured_at","git","worktrees","changes","inputs","safe_to_plan_sync"}
+    missing = sorted(required - set(payload))
+    if missing:
+        raise ValueError("missing preflight fields: " + ",".join(missing))
+    if payload["schema_version"] != "1.0":
+        raise ValueError("unsupported preflight schema")
+    if expected_project_id is not None and payload["project_id"] != expected_project_id:
+        raise ValueError("preflight project mismatch")
+    git = payload["git"]
+    for field in ("repo_path","branch","head","upstream","remotes"):
+        if field not in git:
+            raise ValueError(f"missing preflight git field: {field}")
+    changes = payload["changes"]
+    for field in ("staged","unstaged","untracked"):
+        if field not in changes:
+            raise ValueError(f"missing preflight changes field: {field}")
+    if payload["safe_to_plan_sync"] and (
+        not git["head"] or changes["staged"] or changes["unstaged"] or changes["untracked"]
+    ):
+        raise ValueError("unsafe preflight claims safe_to_plan_sync")
+    canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    oid = sha256(canonical.encode("utf-8")).hexdigest()
+    return PreflightOccurrence(oid, payload["project_id"], payload)
+
+def planning_projection(
+    tasks: Iterable[dict],
+    projects: Iterable[dict],
+    preflights: dict[str, PreflightOccurrence],
+    checkpoints: dict[str, ProjectCheckpoint],
+    evidence: EvidenceGraph | None = None,
+    completed_tasks: set[str] | None = None,
+) -> tuple[TaskEligibility, ...]:
+    completed = completed_tasks or set()
+    project_map = {p["id"]: dict(p) for p in projects}
+    out: list[TaskEligibility] = []
+    for task in tasks:
+        project = project_map[task["project"]]
+        occurrence = preflights.get(task["project"])
+        if occurrence is not None:
+            project["local_state"] = "CAPTURED"
+        out.append(evaluate_task_eligibility(
+            task, project, completed, checkpoints.get(task["project"]), evidence
+        ))
+    return tuple(out)
