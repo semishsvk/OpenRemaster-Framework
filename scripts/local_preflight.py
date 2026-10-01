@@ -46,7 +46,7 @@ def collect(project_id: str, repo: Path, inputs: list[tuple[str,str]]) -> dict:
       "worktrees":worktrees,
       "changes":{"staged":staged,"unstaged":unstaged,"untracked":untracked},
       "inputs":input_records,
-      "safe_to_plan_sync": bool(head) and not staged and not unstaged
+      "safe_to_plan_sync": bool(head) and not staged and not unstaged and not untracked
     }
 
 def main() -> int:
