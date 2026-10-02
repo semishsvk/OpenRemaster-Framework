@@ -1,0 +1,3 @@
+OpenRemaster GitHub write-path audit
+2026-10-02
+Purpose: verify authenticated branch/file/commit creation without modifying production history.
