@@ -9,7 +9,8 @@
     "local_state_required_before_sync": true,
     "single_writer_mutations": true,
     "canonical_default_branch": "main",
-    "safety_snapshot_prefix": "safety/20261003/"
+    "safety_snapshot_prefix": "safety/20261003/",
+    "remote_checkpoint_semantics": "last reconciled project/code checkpoint; portfolio-metadata-only commits may follow"
   },
   "projects": [
     {
@@ -17,7 +18,7 @@
       "repo": "semishsvk/OpenRemaster-Framework",
       "remote_state": "ACTIVE_PHASE2",
       "remote_branch": "main",
-      "remote_checkpoint": "91c794b8b431a38d73dfb87be6e6f08da1f3f4c6",
+      "remote_checkpoint": "8465f7f4677e032c8ed73c64fee78987e12cacd5",
       "aligned_branches": [
         "framework/vnext-evidence-driven-reconstruction",
         "framework/phase2-evidence-contract"
