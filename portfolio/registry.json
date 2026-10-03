@@ -1,27 +1,166 @@
 {
-  "schema_version": "1.0",
-  "checkpoint_id": "PORTFOLIO_CURRENT_2026-10-01",
+  "schema_version": "1.1",
+  "checkpoint_id": "PORTFOLIO_CURRENT_2026-10-03",
+  "reconciled_at_utc": "2026-10-03T16:40:00Z",
   "policy": {
     "github_role": "sync_and_review_checkpoint",
     "original_corpora_in_git": false,
     "unknown_is_not_verified": true,
     "local_state_required_before_sync": true,
-    "single_writer_mutations": true
+    "single_writer_mutations": true,
+    "canonical_default_branch": "main",
+    "safety_snapshot_prefix": "safety/20261003/"
   },
   "projects": [
-    {"id":"openremaster-framework","repo":"semishsvk/OpenRemaster-Framework","remote_state":"ACTIVE_PHASE2","remote_checkpoint":"e55f113d994b52e0ea416a5e4ded265d309eeffc","local_state":"UNKNOWN","next_gate":"PORTFOLIO_CONSOLIDATION"},
-    {"id":"openazrael","repo":"semishsvk/OpenAzrael","remote_state":"CHECKPOINT_EXISTS","remote_checkpoint":"8e8103c5822faf1ea78d0845cbd107ce48deeca9","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF_AND_FIDELITY_RECONCILIATION"},
-    {"id":"opencadaver","repo":"semishsvk/OpenCadaver","remote_state":"CHECKPOINT_EXISTS","remote_checkpoint":"5e3995402d1a0c672488cf74730ac9c0fb6da29d","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
-    {"id":"openroth","repo":"semishsvk/OpenROTH","remote_state":"BOOTSTRAP","remote_checkpoint":"b42c5e2104c128a7033512ab0231fef861523803","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
-    {"id":"openstonekeep","repo":"semishsvk/OpenStonekeep","remote_state":"BOOTSTRAP","remote_checkpoint":"32f9df124b5c4e65e1f9326ffe5eced485c9ace1","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
-    {"id":"openzork","repo":"semishsvk/OpenZork","remote_state":"BOOTSTRAP","remote_checkpoint":"c3f761038c0b5ecc4b37a2c49a167339774e58b0","local_state":"UNKNOWN","next_gate":"LOCAL_DIFF"},
-    {"id":"openmdk1","repo":"semishsvk/OpenMDK1","remote_state":"REMOTE_EMPTY","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"openmdk2","repo":"semishsvk/OpenMDK2","remote_state":"REMOTE_EMPTY","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"openremaster-orchestrator","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"openanvil","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"opencybermage","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"opencomanche","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"openbattlespire","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"},
-    {"id":"opennormality","repo":null,"remote_state":"REMOTE_MISSING","remote_checkpoint":null,"local_state":"UNKNOWN","next_gate":"LOCAL_STATE_REQUIRED"}
+    {
+      "id": "openremaster-framework",
+      "repo": "semishsvk/OpenRemaster-Framework",
+      "remote_state": "ACTIVE_PHASE2",
+      "remote_branch": "main",
+      "remote_checkpoint": "91c794b8b431a38d73dfb87be6e6f08da1f3f4c6",
+      "aligned_branches": [
+        "framework/vnext-evidence-driven-reconstruction",
+        "framework/phase2-evidence-contract"
+      ],
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "PORTFOLIO_CONSOLIDATION"
+    },
+    {
+      "id": "openazrael",
+      "repo": "semishsvk/OpenAzrael",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "integration/kg001-candidate3-pppv-v2",
+      "remote_checkpoint": "79f7e72df79cca1dd3187ead08b7464bd68bd0ae",
+      "stable_main_checkpoint": "79bb4ee0352b5663cc0ca6b7d856c992d8105c77",
+      "safety_snapshot": "safety/20261003/integration-kg001-candidate3-pppv-v2",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF_AND_FIDELITY_RECONCILIATION"
+    },
+    {
+      "id": "opencadaver",
+      "repo": "semishsvk/OpenCadaver",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "main",
+      "remote_checkpoint": "5e3995402d1a0c672488cf74730ac9c0fb6da29d",
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openroth",
+      "repo": "semishsvk/OpenROTH",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "work/roth-k007-study1-vertical-slice",
+      "remote_checkpoint": "20d8ee3de7ff5e24ec593057f0be4714b488a755",
+      "stable_main_checkpoint": "5399719ef1b7c9540ab0f83af8890c98d287eac9",
+      "safety_snapshot": "safety/20261003/work-roth-k007-study1-vertical-slice",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openstonekeep",
+      "repo": "semishsvk/OpenStonekeep",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "research/stone-k291-cell-structure",
+      "remote_checkpoint": "3fa0bea650b53d23ba8c552d85cb126c6c6d08c0",
+      "stable_main_checkpoint": "85648c75aa6dc2a447c89837cb95a8bdfe9af888",
+      "safety_snapshot": "safety/20261003/research-stone-k291-cell-structure",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openzork",
+      "repo": "semishsvk/OpenZork",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "main",
+      "remote_checkpoint": "c3f761038c0b5ecc4b37a2c49a167339774e58b0",
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openmdk1",
+      "repo": "semishsvk/OpenMDK1",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "main",
+      "remote_checkpoint": "e8cd9aa03f566d59dc3a5fb81fd4a12f9888fc73",
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openmdk2",
+      "repo": "semishsvk/OpenMDK2",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "main",
+      "remote_checkpoint": "f40064a25d0f60fd8513d1cb1fee241965cdff4e",
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openanvil",
+      "repo": "semishsvk/OpenAnvil",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "re/anv-k002-bootstrap",
+      "remote_checkpoint": "2d343716e7b8e999e9a549cc0cd7229e8124906c",
+      "stable_main_checkpoint": "2d343716e7b8e999e9a549cc0cd7229e8124906c",
+      "safety_snapshot": "safety/20261003/re-anv-k002-bootstrap",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "opencybermage",
+      "repo": "semishsvk/OpenCybermage",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "main",
+      "remote_checkpoint": "d6d82e48bf4f8771d536bb9693502d929025a423",
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "opennormality",
+      "repo": "semishsvk/OpenNormality",
+      "remote_state": "CHECKPOINT_EXISTS",
+      "remote_branch": "main",
+      "remote_checkpoint": "b12fc2d3764bdc71677665cb83e37aab6a510274",
+      "safety_snapshot": "safety/20261003/main",
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_DIFF"
+    },
+    {
+      "id": "openremaster-orchestrator",
+      "repo": null,
+      "remote_state": "REMOTE_MISSING",
+      "remote_checkpoint": null,
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_STATE_REQUIRED"
+    },
+    {
+      "id": "openunderworld",
+      "repo": null,
+      "remote_state": "REMOTE_MISSING",
+      "remote_checkpoint": null,
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_STATE_REQUIRED"
+    },
+    {
+      "id": "openbattlespire",
+      "repo": null,
+      "remote_state": "REMOTE_MISSING",
+      "remote_checkpoint": null,
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_STATE_REQUIRED"
+    },
+    {
+      "id": "opencomanche",
+      "repo": null,
+      "remote_state": "REMOTE_MISSING",
+      "remote_checkpoint": null,
+      "local_state": "UNKNOWN",
+      "next_gate": "LOCAL_STATE_REQUIRED"
+    }
   ]
 }
