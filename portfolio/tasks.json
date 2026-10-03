@@ -1,23 +1,24 @@
 {
-  "schema_version": "1.0",
-  "registry_id": "PORTFOLIO_TASKS_2026-10-01",
+  "schema_version": "1.1",
+  "registry_id": "PORTFOLIO_TASKS_2026-10-03",
   "policy": {
     "execution_requires_checkpoint": true,
-    "unknown_blocks_destructive_actions": true
+    "unknown_blocks_destructive_actions": true,
+    "canonical_remote_registry": "portfolio/registry.json"
   },
   "tasks": [
     {
       "id": "CONS-001",
       "project": "openremaster-framework",
-      "state": "ACTIVE",
-      "action": "Validate portfolio schemas and integrate checkpoint occurrences with Evidence/Artifact contracts",
+      "state": "COMPLETE",
+      "action": "Reconcile GitHub repository registry, canonical branches, safety snapshots, and framework portfolio metadata",
       "depends_on": []
     },
     {
       "id": "CONS-002",
       "project": "openremaster-orchestrator",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover real local Orchestrator state and create repository checkpoint",
+      "action": "Recover real HomePC Orchestrator state and reconcile it with the framework repository before production commissioning",
       "depends_on": [
         "CONS-001"
       ]
@@ -26,7 +27,7 @@
       "id": "CONS-003",
       "project": "openmdk1",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Capture MDK1 local RE/render code and reconcile with empty remote",
+      "action": "Reconcile local MDK1 RE/render code with the initialized canonical remote before implementation resumes",
       "depends_on": [
         "CONS-001"
       ]
@@ -35,7 +36,7 @@
       "id": "CONS-004",
       "project": "openmdk2",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Capture MDK2 local state and reconcile with empty remote",
+      "action": "Reconcile local MDK2 state with the initialized isolated canonical remote",
       "depends_on": [
         "CONS-001"
       ]
@@ -44,7 +45,7 @@
       "id": "CONS-005",
       "project": "openazrael",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Diff local fidelity-closure work against remote branches without broad merge",
+      "action": "Diff local fidelity-closure state against integration/kg001-candidate3-pppv-v2 without broad branch merging; preserve main as stable",
       "depends_on": [
         "CONS-001"
       ]
@@ -53,7 +54,7 @@
       "id": "CONS-006",
       "project": "opencadaver",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Diff local RE state against remote checkpoint",
+      "action": "Diff local renderer/runtime work against the canonical remote checkpoint before Room 0 fidelity work continues",
       "depends_on": [
         "CONS-001"
       ]
@@ -62,7 +63,7 @@
       "id": "CONS-007",
       "project": "openanvil",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local RE state and establish first remote checkpoint",
+      "action": "Reconcile local ANV work with the existing remote checkpoint before K003 implementation continues",
       "depends_on": [
         "CONS-001"
       ]
@@ -71,7 +72,7 @@
       "id": "CONS-008",
       "project": "opencybermage",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local RE state and establish first remote checkpoint",
+      "action": "Reconcile local CyberMage RE state with the existing remote checkpoint before further decoder/runtime work",
       "depends_on": [
         "CONS-001"
       ]
@@ -80,7 +81,7 @@
       "id": "CONS-009",
       "project": "opencomanche",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local research state and establish first remote checkpoint",
+      "action": "Recover local project state and establish its first canonical remote repository/checkpoint",
       "depends_on": [
         "CONS-001"
       ]
@@ -89,7 +90,7 @@
       "id": "CONS-010",
       "project": "openbattlespire",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local research state while preserving corpus-gap blocker",
+      "action": "Recover local Battlespire RE state and establish a canonical remote checkpoint from the verified complete corpus baseline",
       "depends_on": [
         "CONS-001"
       ]
@@ -98,7 +99,43 @@
       "id": "CONS-011",
       "project": "opennormality",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover True3D cross-validation state and establish first remote checkpoint",
+      "action": "Reconcile local True3D cross-validation state with the existing OpenNormality remote checkpoint",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-012",
+      "project": "openunderworld",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Recover local OpenUnderworld state and establish a canonical remote repository/checkpoint while preserving UW1/UW2 separation",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-013",
+      "project": "openroth",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Reconcile local K007 state against work/roth-k007-study1-vertical-slice; preserve main as stable and continue deterministic STUDY1 validation only after diff",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-014",
+      "project": "openstonekeep",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Reconcile local K292 research state against research/stone-k291-cell-structure before further semantic/portal work",
+      "depends_on": [
+        "CONS-001"
+      ]
+    },
+    {
+      "id": "CONS-015",
+      "project": "openzork",
+      "state": "BLOCKED_LOCAL_PREFLIGHT",
+      "action": "Reconcile local OpenZork RE state with the current canonical remote checkpoint before expanding world/decoder work",
       "depends_on": [
         "CONS-001"
       ]
