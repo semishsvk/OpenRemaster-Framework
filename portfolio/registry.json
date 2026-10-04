@@ -1,16 +1,17 @@
 {
-  "schema_version": "1.1",
-  "checkpoint_id": "PORTFOLIO_CURRENT_2026-10-03",
-  "reconciled_at_utc": "2026-10-03T16:40:00Z",
+  "schema_version": "1.2",
+  "checkpoint_id": "PORTFOLIO_CURRENT_2026-10-04",
+  "reconciled_at_utc": "2026-10-04T07:30:00Z",
   "policy": {
     "github_role": "sync_and_review_checkpoint",
     "original_corpora_in_git": false,
     "unknown_is_not_verified": true,
-    "local_state_required_before_sync": true,
+    "local_state_required_before_destructive_sync": true,
     "single_writer_mutations": true,
     "canonical_default_branch": "main",
-    "safety_snapshot_prefix": "safety/20261003/",
-    "remote_checkpoint_semantics": "last reconciled project/code checkpoint; portfolio-metadata-only commits may follow"
+    "safety_snapshot_prefix": "safety/20261004/",
+    "remote_checkpoint_semantics": "last reconciled project/code checkpoint; portfolio-metadata-only commits may follow",
+    "persistent_store_semantics": "source/corpus/checkpoint presence is recorded without exposing private provider IDs or treating persistence as fidelity verification"
   },
   "projects": [
     {
@@ -18,108 +19,141 @@
       "repo": "semishsvk/OpenRemaster-Framework",
       "remote_state": "ACTIVE_PHASE2",
       "remote_branch": "main",
-      "remote_checkpoint": "8465f7f4677e032c8ed73c64fee78987e12cacd5",
+      "remote_checkpoint": "6d8888d3c71b58d22d01fd49992f198af431f0f2",
       "aligned_branches": [
         "framework/vnext-evidence-driven-reconstruction",
         "framework/phase2-evidence-contract"
       ],
-      "safety_snapshot": "safety/20261003/main",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "GIT_CANONICAL",
       "local_state": "UNKNOWN",
-      "next_gate": "PORTFOLIO_CONSOLIDATION"
+      "next_gate": "PORTFOLIO_CONSOLIDATION",
+      "project_next_gate": "ORCHESTRATOR_CONTROL_PLANE_AND_REHYDRATION_INTEGRATION"
     },
     {
       "id": "openazrael",
       "repo": "semishsvk/OpenAzrael",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "integration/kg001-candidate3-pppv-v2",
-      "remote_checkpoint": "79f7e72df79cca1dd3187ead08b7464bd68bd0ae",
+      "remote_checkpoint": "55207b3b666a91970c7c5008892e00ae91ce9447",
       "stable_main_checkpoint": "79bb4ee0352b5663cc0ca6b7d856c992d8105c77",
-      "safety_snapshot": "safety/20261003/integration-kg001-candidate3-pppv-v2",
+      "safety_snapshot": "safety/20261004/integration-kg001-candidate3-pppv-v2",
+      "persistent_state": "GIT_ACTIVE_WORK",
+      "coordination": {
+        "single_writer_status": "ACTIVE",
+        "lease_id": "c5-exact-head-build-20261001",
+        "mutation_policy": "DO_NOT_MUTATE_FROM_PORTFOLIO_RECONCILIATION"
+      },
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF_AND_FIDELITY_RECONCILIATION"
+      "next_gate": "LOCAL_DIFF_AND_FIDELITY_RECONCILIATION",
+      "project_next_gate": "CANDIDATE5_EXACT_HEAD_VALIDATION_AND_FIDELITY_GATES"
     },
     {
       "id": "opencadaver",
       "repo": "semishsvk/OpenCadaver",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "5e3995402d1a0c672488cf74730ac9c0fb6da29d",
-      "safety_snapshot": "safety/20261003/main",
+      "remote_checkpoint": "40493c8e73beda00f01397e65edb20e477213996",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "GIT_PLUS_DRIVE_SOURCE_SAFE_CHECKPOINTS",
+      "persistent_checkpoint": "OC-K179-RAW-DOS-ORACLE-CAPTURE-050",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "RAW_NATIVE_320X200_ORIGINAL_RUNTIME_CAPTURE_AND_DIFF"
     },
     {
       "id": "openroth",
       "repo": "semishsvk/OpenROTH",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "work/roth-k007-study1-vertical-slice",
-      "remote_checkpoint": "20d8ee3de7ff5e24ec593057f0be4714b488a755",
+      "remote_checkpoint": "9dcc92e42c1e5d903a58db250d9febbc82321d38",
       "stable_main_checkpoint": "5399719ef1b7c9540ab0f83af8890c98d287eac9",
-      "safety_snapshot": "safety/20261003/work-roth-k007-study1-vertical-slice",
+      "safety_snapshot": "safety/20261004/work-roth-k007-study1-vertical-slice",
+      "persistent_state": "GIT_ACTIVE_WORK_PLUS_READ_ONLY_SOURCE",
+      "branch_policy": "ACTIVE_WORK_SPLIT_PRESERVED_UNTIL_VERIFY",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "ROTH-K007_STUDY1_DETERMINISTIC_REPLAY_AND_ORIGINAL_RUNTIME_DIFF"
     },
     {
       "id": "openstonekeep",
       "repo": "semishsvk/OpenStonekeep",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "research/stone-k291-cell-structure",
-      "remote_checkpoint": "3fa0bea650b53d23ba8c552d85cb126c6c6d08c0",
+      "remote_checkpoint": "02dc72c7945e4e8e821c2dbaee8831526d2646b8",
       "stable_main_checkpoint": "85648c75aa6dc2a447c89837cb95a8bdfe9af888",
-      "safety_snapshot": "safety/20261003/research-stone-k291-cell-structure",
+      "safety_snapshot": "safety/20261004/research-stone-k291-cell-structure",
+      "persistent_state": "GIT_ACTIVE_RESEARCH_PLUS_READ_ONLY_SOURCE",
+      "branch_policy": "ACTIVE_RESEARCH_SPLIT_PRESERVED_UNTIL_VERIFY",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "CONTINUE_BLOCKER_DRIVEN_K292_SEMANTIC_RESEARCH"
     },
     {
       "id": "openzork",
       "repo": "semishsvk/OpenZork",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "c3f761038c0b5ecc4b37a2c49a167339774e58b0",
-      "safety_snapshot": "safety/20261003/main",
+      "remote_checkpoint": "f7cd1ca874cc989e09d2e709b3932d60e0a70673",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "READ_ONLY_SOURCE_IDENTIFIED_AND_GIT_STATUS_RECONCILED",
+      "source_scope": "ZORK_NEMESIS_PRIMARY__GRAND_INQUISITOR_REFERENCE_ONLY",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "DETERMINISTIC_CORPUS_INVENTORY_AND_FORMAT_MAPPING"
     },
     {
       "id": "openmdk1",
       "repo": "semishsvk/OpenMDK1",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "e8cd9aa03f566d59dc3a5fb81fd4a12f9888fc73",
-      "safety_snapshot": "safety/20261003/main",
+      "remote_checkpoint": "aca0881633548da65d82f9bf399cc9fac7ee37ac",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "GIT_PLUS_DRIVE_SOURCE_SAFE_CHECKPOINT",
+      "persistent_checkpoint": "BF08ef_WINDING_GATE_STRUCTURAL",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "OPENMDK1-001_FIRST_AUTHENTIC_SCENE_RUNTIME_COMPARISON"
     },
     {
       "id": "openmdk2",
       "repo": "semishsvk/OpenMDK2",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "f40064a25d0f60fd8513d1cb1fee241965cdff4e",
-      "safety_snapshot": "safety/20261003/main",
+      "remote_checkpoint": "89fff918c3d3394e75346b1667abdd8fb1581a49",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "READ_ONLY_SOURCE_IDENTIFIED__NO_IMPLEMENTATION_CHECKPOINT",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "DETERMINISTIC_SOURCE_INVENTORY_AND_FIRST_NARROW_EXPERIMENT"
     },
     {
       "id": "openanvil",
       "repo": "semishsvk/OpenAnvil",
       "remote_state": "CHECKPOINT_EXISTS",
-      "remote_branch": "re/anv-k002-bootstrap",
-      "remote_checkpoint": "2d343716e7b8e999e9a549cc0cd7229e8124906c",
-      "stable_main_checkpoint": "2d343716e7b8e999e9a549cc0cd7229e8124906c",
-      "safety_snapshot": "safety/20261003/re-anv-k002-bootstrap",
+      "remote_branch": "main",
+      "remote_checkpoint": "f621fdf008b7994c7e9953e74b3055f5223b7dd7",
+      "aligned_branches": [
+        "re/anv-k002-bootstrap"
+      ],
+      "stable_main_checkpoint": "f621fdf008b7994c7e9953e74b3055f5223b7dd7",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "GIT_CANONICAL_PLUS_READ_ONLY_SOURCE",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "ANV-K003_FIRST_AUTHENTIC_PLAYABLE_DUNGEON_SLICE"
     },
     {
       "id": "opencybermage",
       "repo": "semishsvk/OpenCybermage",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "d6d82e48bf4f8771d536bb9693502d929025a423",
-      "safety_snapshot": "safety/20261003/main",
+      "remote_checkpoint": "da88d8940a378ac2a902c1ad44dfde8ab893d57d",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "GIT_CYB-K002_PLUS_READ_ONLY_SOURCE_AND_DRIVE_CHECKPOINTS",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "DETERMINISTIC_HI_LO_CAPTURE_AND_ORIGINAL_RUNTIME_VISUAL_DIFF"
     },
     {
       "id": "opennormality",
@@ -127,41 +161,52 @@
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
       "remote_checkpoint": "b12fc2d3764bdc71677665cb83e37aab6a510274",
-      "safety_snapshot": "safety/20261003/main",
+      "safety_snapshot": "safety/20261004/main",
+      "persistent_state": "GIT_RESEARCH_PLUS_READ_ONLY_SOURCE",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_DIFF"
+      "next_gate": "LOCAL_DIFF",
+      "project_next_gate": "TRUE3D_CROSS_VALIDATION_ONLY"
     },
     {
       "id": "openremaster-orchestrator",
       "repo": null,
       "remote_state": "REMOTE_MISSING",
       "remote_checkpoint": null,
+      "persistent_state": "NO_CANONICAL_REMOTE_OR_PERSISTENT_CHECKPOINT_DISCOVERED",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_STATE_REQUIRED"
+      "next_gate": "LOCAL_STATE_REQUIRED",
+      "project_next_gate": "HOMEPC_PREFLIGHT_AND_CANONICAL_REPOSITORY_CHECKPOINT"
     },
     {
       "id": "openunderworld",
       "repo": null,
       "remote_state": "REMOTE_MISSING",
       "remote_checkpoint": null,
+      "persistent_state": "READ_ONLY_SOURCE_IDENTIFIED__UW1_UW2_SEPARATE",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_STATE_REQUIRED"
+      "next_gate": "LOCAL_STATE_REQUIRED",
+      "project_next_gate": "CREATE_CANONICAL_REMOTE_THEN_INGEST_SOURCE_SAFE_WORLDIR_CHECKPOINT"
     },
     {
       "id": "openbattlespire",
       "repo": null,
       "remote_state": "REMOTE_MISSING",
       "remote_checkpoint": null,
+      "persistent_state": "DRIVE_SOURCE_PLUS_SOURCE_SAFE_CHECKPOINTS",
+      "persistent_checkpoint": "V18.S21_CANONICAL_OPENING_BRANCH_ALIGNMENT",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_STATE_REQUIRED"
+      "next_gate": "LOCAL_STATE_REQUIRED",
+      "project_next_gate": "CREATE_CANONICAL_REMOTE_AND_PERSIST_V18.S21_WITHOUT_OVERPROMOTING_VISUAL_FIDELITY"
     },
     {
       "id": "opencomanche",
       "repo": null,
       "remote_state": "REMOTE_MISSING",
       "remote_checkpoint": null,
+      "persistent_state": "READ_ONLY_SOURCE_IDENTIFIED",
       "local_state": "UNKNOWN",
-      "next_gate": "LOCAL_STATE_REQUIRED"
+      "next_gate": "LOCAL_STATE_REQUIRED",
+      "project_next_gate": "CREATE_CANONICAL_REMOTE_AND_FIRST_SOURCE_SAFE_INVENTORY_CHECKPOINT"
     }
   ]
 }
