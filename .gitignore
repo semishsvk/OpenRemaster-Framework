@@ -1,0 +1,28 @@
+# Python/runtime caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Build/package output
+build/
+dist/
+*.egg-info/
+
+# Local framework workspaces and generated caches
+.cache/
+cache/
+work/
+workspace/
+artifacts/
+*.tmp
+*.log
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
