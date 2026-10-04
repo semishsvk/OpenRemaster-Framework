@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "checkpoint_id": "PORTFOLIO_CURRENT_2026-10-04",
-  "reconciled_at_utc": "2026-10-04T07:30:00Z",
+  "reconciled_at_utc": "2026-10-04T07:45:00Z",
   "policy": {
     "github_role": "sync_and_review_checkpoint",
     "original_corpora_in_git": false,
@@ -53,7 +53,7 @@
       "repo": "semishsvk/OpenCadaver",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "40493c8e73beda00f01397e65edb20e477213996",
+      "remote_checkpoint": "b4a16863e7d5fcdce0f582ceba15e52d58ee19e5",
       "safety_snapshot": "safety/20261004/main",
       "persistent_state": "GIT_PLUS_DRIVE_SOURCE_SAFE_CHECKPOINTS",
       "persistent_checkpoint": "OC-K179-RAW-DOS-ORACLE-CAPTURE-050",
@@ -94,7 +94,7 @@
       "repo": "semishsvk/OpenZork",
       "remote_state": "CHECKPOINT_EXISTS",
       "remote_branch": "main",
-      "remote_checkpoint": "f7cd1ca874cc989e09d2e709b3932d60e0a70673",
+      "remote_checkpoint": "3312937dae0a97c98bcf1babe3766a62d0379e4b",
       "safety_snapshot": "safety/20261004/main",
       "persistent_state": "READ_ONLY_SOURCE_IDENTIFIED_AND_GIT_STATUS_RECONCILED",
       "source_scope": "ZORK_NEMESIS_PRIMARY__GRAND_INQUISITOR_REFERENCE_ONLY",
