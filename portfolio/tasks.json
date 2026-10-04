@@ -1,24 +1,25 @@
 {
-  "schema_version": "1.1",
-  "registry_id": "PORTFOLIO_TASKS_2026-10-03",
+  "schema_version": "1.2",
+  "registry_id": "PORTFOLIO_TASKS_2026-10-04",
   "policy": {
     "execution_requires_checkpoint": true,
     "unknown_blocks_destructive_actions": true,
-    "canonical_remote_registry": "portfolio/registry.json"
+    "canonical_remote_registry": "portfolio/registry.json",
+    "intentional_active_branch_divergence_is_not_a_merge_error": true
   },
   "tasks": [
     {
       "id": "CONS-001",
       "project": "openremaster-framework",
       "state": "COMPLETE",
-      "action": "Reconcile GitHub repository registry, canonical branches, safety snapshots, and framework portfolio metadata",
+      "action": "Keep portfolio registry/task graph reconciled with current Git and persistent checkpoint state; align framework phase branches after metadata commits",
       "depends_on": []
     },
     {
       "id": "CONS-002",
       "project": "openremaster-orchestrator",
       "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover real HomePC Orchestrator state and reconcile it with the framework repository before production commissioning",
+      "action": "Capture the real HomePC Orchestrator worktree and dependencies, then establish a canonical remote/persistent checkpoint before commissioning",
       "depends_on": [
         "CONS-001"
       ]
@@ -26,8 +27,8 @@
     {
       "id": "CONS-003",
       "project": "openmdk1",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local MDK1 RE/render code with the initialized canonical remote before implementation resumes",
+      "state": "PARTIAL_REMOTE_RECONCILED",
+      "action": "BF08 winding evidence is durable and mirrored to Git; reconcile any newer HomePC renderer code, then continue OpenMDK1-001 original-runtime fidelity validation",
       "depends_on": [
         "CONS-001"
       ]
@@ -35,8 +36,8 @@
     {
       "id": "CONS-004",
       "project": "openmdk2",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local MDK2 state with the initialized isolated canonical remote",
+      "state": "SOURCE_BASELINE_RECONCILED",
+      "action": "Source corpus is persistent and repository contract is current; next create deterministic inventory/hashes and one narrow MDK2-specific experiment",
       "depends_on": [
         "CONS-001"
       ]
@@ -44,8 +45,8 @@
     {
       "id": "CONS-005",
       "project": "openazrael",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Diff local fidelity-closure state against integration/kg001-candidate3-pppv-v2 without broad branch merging; preserve main as stable",
+      "state": "BLOCKED_ACTIVE_WRITER_LEASE",
+      "action": "Do not mutate or broad-merge while lease c5-exact-head-build-20261001 is active; after lease release perform DIFF/IMPACT and fidelity reconciliation on the authoritative integration branch",
       "depends_on": [
         "CONS-001"
       ]
@@ -53,8 +54,8 @@
     {
       "id": "CONS-006",
       "project": "opencadaver",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Diff local renderer/runtime work against the canonical remote checkpoint before Room 0 fidelity work continues",
+      "state": "READY_FOR_ORACLE",
+      "action": "K176-K179 contracts and rehydration code are persisted; acquire native 320x200 original DOS oracle captures at S00/S30/S35/S60 and run exact/stochastic-aware diff before VERIFIED",
       "depends_on": [
         "CONS-001"
       ]
@@ -62,8 +63,8 @@
     {
       "id": "CONS-007",
       "project": "openanvil",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local ANV work with the existing remote checkpoint before K003 implementation continues",
+      "state": "REMOTE_ALIGNED",
+      "action": "Main and re/anv-k002-bootstrap are aligned; reconcile any HomePC-only changes and continue blocker-driven ANV-K003 first authentic playable dungeon slice",
       "depends_on": [
         "CONS-001"
       ]
@@ -71,8 +72,8 @@
     {
       "id": "CONS-008",
       "project": "opencybermage",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local CyberMage RE state with the existing remote checkpoint before further decoder/runtime work",
+      "state": "REMOTE_EVIDENCE_RECONCILED",
+      "action": "CYB-K002 structural evidence and rehydration contract are current; obtain deterministic HI/LO original-runtime visual comparison before visual fidelity promotion",
       "depends_on": [
         "CONS-001"
       ]
@@ -80,8 +81,8 @@
     {
       "id": "CONS-009",
       "project": "opencomanche",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local project state and establish its first canonical remote repository/checkpoint",
+      "state": "BLOCKED_REMOTE_REPOSITORY",
+      "action": "Read-only source is persistent; create a canonical GitHub repository, then commit only source-safe inventory/manifests and project contract",
       "depends_on": [
         "CONS-001"
       ]
@@ -89,8 +90,8 @@
     {
       "id": "CONS-010",
       "project": "openbattlespire",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local Battlespire RE state and establish a canonical remote checkpoint from the verified complete corpus baseline",
+      "state": "BLOCKED_REMOTE_REPOSITORY",
+      "action": "Drive checkpoint V18.S21 is persistent; create a canonical GitHub repository and mirror source-safe V18.S21 evidence without promoting unverified visual identities",
       "depends_on": [
         "CONS-001"
       ]
@@ -98,8 +99,8 @@
     {
       "id": "CONS-011",
       "project": "opennormality",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local True3D cross-validation state with the existing OpenNormality remote checkpoint",
+      "state": "REMOTE_RESEARCH_BASELINE",
+      "action": "Keep Normality as True3D cross-validation lab; reconcile HomePC-only deltas before new experiments and promote only independently validated contracts",
       "depends_on": [
         "CONS-001"
       ]
@@ -107,8 +108,8 @@
     {
       "id": "CONS-012",
       "project": "openunderworld",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Recover local OpenUnderworld state and establish a canonical remote repository/checkpoint while preserving UW1/UW2 separation",
+      "state": "BLOCKED_REMOTE_REPOSITORY",
+      "action": "UW1 and UW2 source corpora are persistent and separated; create canonical remote, then ingest source-safe WorldIR/decoder checkpoint while preserving game-specific profiles",
       "depends_on": [
         "CONS-001"
       ]
@@ -116,8 +117,8 @@
     {
       "id": "CONS-013",
       "project": "openroth",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local K007 state against work/roth-k007-study1-vertical-slice; preserve main as stable and continue deterministic STUDY1 validation only after diff",
+      "state": "INTENTIONAL_ACTIVE_BRANCH_DIVERGENCE",
+      "action": "Preserve work/roth-k007-study1-vertical-slice versus stable main until deterministic STUDY1 replay and original-runtime fidelity gate pass; no broad merge",
       "depends_on": [
         "CONS-001"
       ]
@@ -125,8 +126,8 @@
     {
       "id": "CONS-014",
       "project": "openstonekeep",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local K292 research state against research/stone-k291-cell-structure before further semantic/portal work",
+      "state": "INTENTIONAL_ACTIVE_BRANCH_DIVERGENCE",
+      "action": "Preserve research/stone-k291-cell-structure versus stable main; continue only blocker-driven K292 semantics and promote after tests/evidence gates",
       "depends_on": [
         "CONS-001"
       ]
@@ -134,8 +135,8 @@
     {
       "id": "CONS-015",
       "project": "openzork",
-      "state": "BLOCKED_LOCAL_PREFLIGHT",
-      "action": "Reconcile local OpenZork RE state with the current canonical remote checkpoint before expanding world/decoder work",
+      "state": "SOURCE_BLOCKER_CLOSED",
+      "action": "Corpus is identified and repository status is corrected; proceed with deterministic inventory/format mapping, keeping Grand Inquisitor reference-only",
       "depends_on": [
         "CONS-001"
       ]
