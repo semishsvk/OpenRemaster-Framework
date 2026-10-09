@@ -1,1 +1,1 @@
-* -text -filter
+* -text -eol -filter -ident -working-tree-encoding
