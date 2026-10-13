@@ -106,3 +106,28 @@ def test_synthetic_complete_inventory_passes():
             "source": "m001",
         })
     assert vault.validate_manifest(manifest, files) == (522, 379)
+
+
+@pytest.mark.parametrize("modification", ["tampered", "missing"])
+def test_pinned_archival_metadata_fails_closed(monkeypatch, tmp_path, modification):
+    saved = {}
+    for path in sorted(vault.METADATA):
+        saved[path] = ("immutable-" + path).encode("utf-8")
+        (tmp_path / path).write_bytes(saved[path])
+
+    def fake_git(repo, *args):
+        assert args[0] == "show"
+        return saved[args[-1].split(":", 1)[1]]
+
+    monkeypatch.setattr(vault, "git", fake_git)
+    vault.assert_pinned_metadata(tmp_path)
+
+    target = tmp_path / "CODE_VAULT_MANIFEST.json"
+    if modification == "tampered":
+        target.write_bytes(b"modified")
+        with pytest.raises(vault.VaultIntegrityError, match="modified pinned archival metadata"):
+            vault.assert_pinned_metadata(tmp_path)
+    else:
+        target.unlink()
+        with pytest.raises(OSError):
+            vault.assert_pinned_metadata(tmp_path)

@@ -115,7 +115,17 @@ def validate_manifest(
     return len(inventory), recovered
 
 
+def assert_pinned_metadata(repo: Path) -> None:
+    """The checked-out archive manifest and README must match the frozen commit."""
+    for path in sorted(METADATA):
+        pinned = git(repo, "show", f"{VAULT_SNAPSHOT}:{path}")
+        current = (repo / path).read_bytes()
+        if current != pinned:
+            raise VaultIntegrityError(f"modified pinned archival metadata: {path}")
+
+
 def verify_repository(repo: Path) -> tuple[int, int]:
+    assert_pinned_metadata(repo)
     manifest = json.loads((repo / "CODE_VAULT_MANIFEST.json").read_text(encoding="utf-8"))
     parent_line = git(repo, "rev-list", "--parents", "-n", "1", VAULT_SNAPSHOT).decode().strip().split()
     expected_parents = [VAULT_SNAPSHOT,
@@ -128,6 +138,8 @@ def verify_repository(repo: Path) -> tuple[int, int]:
     recovered_sha = git(repo, "rev-parse", "HEAD:recovered").decode().strip()
     if recovered_sha != manifest["immutable_sources"]["recovery_code_snapshot"]["recovered_subtree_sha"]:
         raise VaultIntegrityError("quarantined recovered source tree has changed")
+    if git(repo, "status", "--porcelain=v1", "--untracked-files=all", "--", "recovered/").strip():
+        raise VaultIntegrityError("recovered working tree has uncommitted or untracked changes")
     return counts
 
 
