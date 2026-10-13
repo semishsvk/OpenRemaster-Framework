@@ -1,0 +1,32 @@
+name: ORCH M004 Witness Protocol Laboratory
+on:
+  pull_request:
+    branches: [m003/sqlite-cas-lab-20261013]
+    paths:
+      - 'src/openremaster/m004_witness_lab.py'
+      - 'tests/test_m004_witness_lab.py'
+      - 'docs/contracts/orch-m004-witness-emulator-v0.md'
+      - '.github/workflows/m004-witness-lab.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orf-m004-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  witness-lab-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5
+      - name: Two-store witness emulator tests only
+        run: PYTHONPATH=src python -m pytest -q tests/test_m004_witness_lab.py
