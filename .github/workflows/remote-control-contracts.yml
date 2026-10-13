@@ -29,6 +29,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: python -m pip install pytest==8.3.5 jsonschema==4.23.0
+      - run: python -m pip install pytest==8.3.5 jsonschema==4.23.0 rfc3339-validator==0.1.4
       - name: Synthetic contracts only
         run: python -m pytest -q tests/test_remote_control_contracts.py
