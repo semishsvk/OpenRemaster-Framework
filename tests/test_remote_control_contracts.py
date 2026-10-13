@@ -19,7 +19,10 @@ def document(name):
 def validator(name):
     schema = json.loads((ROOT / "contracts/remote-control/v1" / (name + ".schema.json")).read_text())
     Draft202012Validator.check_schema(schema)
-    return Draft202012Validator(schema, format_checker=FormatChecker())
+    checker = FormatChecker()
+    if "date-time" not in checker.checkers:
+        raise RuntimeError("RFC 3339 date-time checker unavailable; install rfc3339-validator==0.1.4")
+    return Draft202012Validator(schema, format_checker=checker)
 
 
 def bundle():
@@ -117,3 +120,12 @@ def test_canonical_identity():
     assert canonical_digest(request) != canonical_digest(changed)
     with pytest.raises(ValueError):
         canonical_digest({"value": float("nan")})
+
+
+def test_missing_date_time_checker_fails_closed(monkeypatch):
+    class MissingDateTimeChecker:
+        checkers = {}
+
+    monkeypatch.setitem(globals(), "FormatChecker", MissingDateTimeChecker)
+    with pytest.raises(RuntimeError, match="rfc3339-validator"):
+        validator("request")
