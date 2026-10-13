@@ -1,0 +1,30 @@
+name: Code Vault Static Integrity
+on:
+  pull_request:
+    branches: [consolidation/framework-orchestrator-code-vault-20261013]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vault-static-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-vault:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install pytest==8.3.5
+      - name: Verify immutable snapshot and recovered source quarantine
+        run: python scripts/validate_code_vault.py
+      - name: Test vault verifier and Phase 2 runner controls
+        run: python -m pytest -q tests/test_code_vault_integrity.py tests/test_phase2_acceptance_runner.py
