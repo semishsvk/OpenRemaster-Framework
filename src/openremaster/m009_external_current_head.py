@@ -73,6 +73,8 @@ class SyntheticCheckpoint:
     revocation_generation: int
     consumed: set = field(default_factory=set)
     trust_content_sha256: str | None = None
+    revoked_key_ids: frozenset = field(default_factory=frozenset)
+    pinned_key_material: dict = field(default_factory=dict)
     _lock: object = field(default_factory=Lock, repr=False)
 
 
@@ -170,6 +172,21 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
             raise HeadRejected("receipt outlives or predates candidate")
         h = m008_bundle["independently_pinned_highwater"]
         with checkpoint._lock:
+            if (type(checkpoint.revoked_key_ids) is not frozenset or
+                type(checkpoint.pinned_key_material) is not dict):
+                raise HeadRejected("malformed checkpoint key lifecycle")
+            for key_id in checkpoint.revoked_key_ids:
+                _name(key_id, "checkpoint revoked key id")
+            for key_id, public_key in checkpoint.pinned_key_material.items():
+                _name(key_id, "checkpoint key id")
+                if type(public_key) is not bytes or len(public_key) != 32:
+                    raise HeadRejected("malformed checkpoint key material")
+            if not checkpoint.revoked_key_ids <= trust.revoked_key_ids:
+                raise HeadRejected("revocation tombstone removal")
+            for key_id, public_key in trust.keys.items():
+                if (key_id in checkpoint.pinned_key_material and
+                    checkpoint.pinned_key_material[key_id] != public_key):
+                    raise HeadRejected("key identifier rebound to different material")
             if checkpoint.trust_content_sha256 is not None:
                 _sha(checkpoint.trust_content_sha256, HEX64, "checkpoint trust digest")
                 if (trust.generation == checkpoint.revocation_generation and
@@ -205,6 +222,8 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
             checkpoint.head = receipt["attestation_sha256"]
             checkpoint.revocation_generation = trust.generation
             checkpoint.trust_content_sha256 = trust_digest
+            checkpoint.revoked_key_ids = trust.revoked_key_ids
+            checkpoint.pinned_key_material = {**checkpoint.pinned_key_material, **trust.keys}
     except (ObservationRejected, InvalidSignature, ValueError, TypeError, KeyError, binascii.Error) as exc:
         if isinstance(exc, HeadRejected):
             raise

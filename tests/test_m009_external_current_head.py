@@ -52,7 +52,8 @@ def resign(signer, r):
 
 def state(cp):
     return (cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation,
-            set(cp.consumed), cp.trust_content_sha256)
+            set(cp.consumed), cp.trust_content_sha256,
+            cp.revoked_key_ids, dict(cp.pinned_key_material))
 
 
 @pytest.mark.parametrize("outcome", [None, True, "UNKNOWN", "TIMEOUT", "COMMIT_REJECTED", "READ_CACHED_HEAD"])
@@ -109,6 +110,102 @@ def test_caller_mutation_after_signature_check_cannot_change_committed_head(monk
     assert verify_current_head(**args)["dispatch_authorized"] is False
     assert args["checkpoint"].head == signed_head
     assert args["checkpoint"].head != args["receipt"]["attestation_sha256"]
+
+def rotated_history():
+    original_signer, args, m008_signer = fixture(include_m008_signer=True)
+    verify_current_head(**args)
+    rotated_signer = Ed25519PrivateKey.generate()
+    public = rotated_signer.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+    nxt = successor(original_signer, args, m008_signer,
+                    challenge="HistoryRotationChallenge_0123456789")
+    nxt["trust"] = replace(args["trust"], keys={"rotated-key": public},
+        revoked_key_ids=frozenset({"head-test-key"}), generation=3)
+    nxt["receipt"].update(key_id="rotated-key", revocation_generation=3)
+    resign(rotated_signer, nxt["receipt"])
+    verify_current_head(**nxt)
+    return original_signer, rotated_signer, nxt, m008_signer
+
+
+@pytest.mark.parametrize("change", ["resurrect-old-key", "drop-tombstone"])
+def test_higher_generation_cannot_undo_revocation(change):
+    original_signer, rotated_signer, args, m008_signer = rotated_history()
+    nxt = successor(rotated_signer, args, m008_signer,
+                    challenge="RevocationRollbackChallenge_0123456789")
+    nxt["trust"] = replace(args["trust"], generation=4, revoked_key_ids=frozenset())
+    nxt["receipt"]["revocation_generation"] = 4
+    signing_key = rotated_signer
+    if change == "resurrect-old-key":
+        public = original_signer.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+        nxt["trust"] = replace(nxt["trust"], keys={"head-test-key": public})
+        nxt["receipt"]["key_id"] = "head-test-key"
+        signing_key = original_signer
+    resign(signing_key, nxt["receipt"])
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="tombstone removal"):
+        verify_current_head(**nxt)
+    assert state(args["checkpoint"]) == before
+
+
+def test_new_generation_requires_new_key_identifier_for_new_material():
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    verify_current_head(**args)
+    nxt = successor(signer, args, m008_signer,
+                    challenge="KeyRebindingChallenge_0123456789")
+    replacement = Ed25519PrivateKey.generate()
+    public = replacement.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+    nxt["trust"] = replace(args["trust"], keys={"head-test-key": public}, generation=3)
+    nxt["receipt"]["revocation_generation"] = 3
+    resign(replacement, nxt["receipt"])
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="identifier rebound"):
+        verify_current_head(**nxt)
+    assert state(args["checkpoint"]) == before
+
+
+def test_retired_key_material_remains_pinned_after_removal_from_current_view():
+    _, rotated_signer, args, m008_signer = rotated_history()
+    nxt = successor(rotated_signer, args, m008_signer,
+                    challenge="RetiredKeyRebindingChallenge_0123456789")
+    keys = dict(args["trust"].keys)
+    keys["head-test-key"] = b"x" * 32
+    nxt["trust"] = replace(args["trust"], generation=4, keys=keys)
+    nxt["receipt"]["revocation_generation"] = 4
+    resign(rotated_signer, nxt["receipt"])
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="identifier rebound"):
+        verify_current_head(**nxt)
+    assert state(args["checkpoint"]) == before
+
+
+def test_valid_post_rotation_successor_retains_tombstones_and_key_history():
+    _, rotated_signer, args, m008_signer = rotated_history()
+    nxt = successor(rotated_signer, args, m008_signer,
+                    challenge="PostRotationSuccessorChallenge_0123456789")
+    nxt["trust"] = replace(args["trust"], generation=4)
+    nxt["receipt"]["revocation_generation"] = 4
+    resign(rotated_signer, nxt["receipt"])
+    assert verify_current_head(**nxt)["dispatch_authorized"] is False
+    cp = args["checkpoint"]
+    assert cp.revoked_key_ids == frozenset({"head-test-key"})
+    assert set(cp.pinned_key_material) == {"head-test-key", "rotated-key"}
+
+
+@pytest.mark.parametrize("change", ["mutable-tombstones", "invalid-id", "invalid-map", "invalid-material"])
+def test_malformed_checkpoint_key_lifecycle_rejects(change):
+    _, args = fixture()
+    cp = args["checkpoint"]
+    if change == "mutable-tombstones":
+        cp.revoked_key_ids = set()
+    elif change == "invalid-id":
+        cp.revoked_key_ids = frozenset({False})
+    elif change == "invalid-map":
+        cp.pinned_key_material = []
+    else:
+        cp.pinned_key_material = {"old-key": b"bad"}
+    before = (cp.sequence, cp.head, set(cp.consumed), cp.trust_content_sha256)
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    assert (cp.sequence, cp.head, set(cp.consumed), cp.trust_content_sha256) == before
 
 def test_positive_still_never_authorizes():
     _, args = fixture()
@@ -205,7 +302,7 @@ def test_same_generation_trust_equivocation_rejected(change):
             keys["additional-key"] = public
         nxt["trust"] = replace(args["trust"], keys=keys)
     before = state(args["checkpoint"])
-    with pytest.raises(HeadRejected, match="without generation advance"):
+    with pytest.raises(HeadRejected, match="without generation advance|identifier rebound"):
         verify_current_head(**nxt)
     assert state(args["checkpoint"]) == before
 

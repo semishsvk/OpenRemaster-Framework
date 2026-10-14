@@ -27,6 +27,12 @@ at the same generation rejects; key rotation requires a generation advance.
 Trust expiry is checked on every call and excluded from this content digest so
 that renewing an unchanged view does not imply a key-set change. This is local
 consistency only: caller trust remains unauthenticated external evidence.
+The local checkpoint also retains cumulative revocation tombstones and all
+previously pinned key-ID/public-key bindings. A higher generation cannot remove
+a tombstone or reuse an existing key ID for different material. Rotation uses a
+new key ID; retired key bindings remain pinned even after removal from the
+current view. These histories are process-local and disappear on unsafe reset;
+they do not establish durable external key lifecycle or rollback resistance.
 
 SyntheticCheckpoint provides one-process locking for head update and challenge
 consumption together. Failed validation leaves it unchanged. Replayed and
