@@ -100,3 +100,12 @@ gateway anti-downgrade/ACK, native worker fencing at every side effect,
 exact-SHA CI and separate owner commissioning and runtime/game fidelity gates.
 Do not merge into main or activate dispatch.
 
+## Synthetic CI coverage
+
+The M009 workflow targets draft PRs based on the pinned M008 branch and checks
+out the exact PR head SHA with read-only permissions and no persisted Git
+credentials. It selects the M001-M009 synthetic contract chain explicitly,
+including wire schemas; it does not run native workers or private R14 tests.
+The workflow definition is not evidence that GitHub Actions actually ran.
+HomePC exact-blob test evidence and GitHub Actions results remain separate.
+
