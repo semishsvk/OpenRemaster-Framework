@@ -1,7 +1,7 @@
 name: Remote Control M001 Synthetic Contracts
 on:
   pull_request:
-    branches: [main]
+    branches: [main, fix/m001-rfc3339-validator-20261013]
     paths:
       - "contracts/remote-control/**"
       - "src/openremaster/remote_control.py"

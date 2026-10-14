@@ -129,3 +129,75 @@ def test_missing_date_time_checker_fails_closed(monkeypatch):
     monkeypatch.setitem(globals(), "FormatChecker", MissingDateTimeChecker)
     with pytest.raises(RuntimeError, match="rfc3339-validator"):
         validator("request")
+
+
+def validate_triplet(values, now=NOW, schema_directory=None):
+    from openremaster.remote_control import validate_bundle
+    return validate_bundle(*values, now=now, schema_directory=(
+        ROOT / "contracts/remote-control/v1" if schema_directory is None else schema_directory))
+
+
+@pytest.mark.parametrize("status", ["PASS", "UNKNOWN"])
+def test_public_validation_entry_point(status):
+    request, worker, receipt = bundle()
+    receipt.update(status=status, evidence_sha256="c" * 64 if status == "PASS" else None)
+    assert validate_triplet((request, worker, receipt)) == status
+
+
+@pytest.mark.parametrize("index,field,value", [
+    (0, "operation", "shell.exec"),
+    (0, "schema_version", "2.0"),
+    (0, "limits", {"timeout_seconds": 61, "max_output_bytes": 1}),
+    (0, "deadline_utc", "tomorrow"),
+    (0, "deadline_utc", "2030-01-01T00:00:00"),
+    (1, "observed_utc", "2026-10-13T12:00:00"),
+    (1, "capabilities", []),
+    (2, "evidence_sha256", None),
+    (2, "schema_version", "2.0"),
+    (2, "extra", "unexpected"),
+])
+def test_public_entry_rejects_shape_before_binding(index, field, value, monkeypatch):
+    from jsonschema.exceptions import ValidationError
+    import openremaster.remote_control as module
+    values = list(bundle())
+    values[index][field] = value
+    def binding_must_not_run(*args, **kwargs):
+        raise AssertionError("binding ran before schema rejection")
+    monkeypatch.setattr(module, "check_binding", binding_must_not_run)
+    with pytest.raises(ValidationError):
+        validate_triplet(values)
+
+
+def test_public_entry_missing_format_backend(monkeypatch):
+    import jsonschema
+    class MissingDateTimeChecker:
+        checkers = {}
+    monkeypatch.setattr(jsonschema, "FormatChecker", MissingDateTimeChecker)
+    with pytest.raises(RuntimeError, match="rfc3339-validator"):
+        validate_triplet(bundle())
+
+
+@pytest.mark.parametrize("index,field,value", [
+    (0, "deadline_utc", "2026-10-13T12:00:00Z"),
+    (1, "observed_utc", "2026-10-13T11:58:59Z"),
+    (1, "state", "OFFLINE"),
+    (1, "worker_id", "different-worker"),
+    (2, "request_sha256", "d" * 64),
+])
+def test_public_entry_runs_binding_after_schema(index, field, value):
+    values = list(bundle())
+    values[index][field] = value
+    with pytest.raises(ValueError):
+        validate_triplet(values)
+
+
+def test_public_entry_missing_schema_fails_closed(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        validate_triplet(bundle(), schema_directory=tmp_path)
+
+
+def test_public_entry_invalid_schema_fails_closed(tmp_path):
+    from jsonschema.exceptions import SchemaError
+    (tmp_path / "request.schema.json").write_text('{"type": "invalid-type"}', encoding="utf-8")
+    with pytest.raises(SchemaError):
+        validate_triplet(bundle(), schema_directory=tmp_path)

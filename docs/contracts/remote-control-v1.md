@@ -64,3 +64,25 @@ must fail closed when the `date-time` format checker is not registered.
 The HomePC clean-environment check exposed this gap (216 PASS / 2 FAIL);
 with the pinned backend installed the original M001-M005 suites passed
 218/218 and the dedicated fail-closed regression passed 30/30.
+
+
+## Mandatory consumer entry point
+
+Use `validate_bundle(request, worker, receipt, now=aware_clock,
+schema_directory=trusted_checkout / "contracts/remote-control/v1")` to
+validate all three messages before binding. The directory is a caller-pinned
+trusted checkout, never a worker-supplied path; this API is intended for
+source-checkout consumers and does not package schemas into an installed wheel.
+Missing schema files, invalid schemas, missing RFC3339 support and invalid
+messages raise before binding. Do not catch these failures and fall back to
+`check_binding`. Keep raw invalid messages out of public logs.
+
+The lower-level `check_binding` remains available for existing consumers that
+already perform mandatory schema validation. The returned PASS is still only
+a structurally bound status, not signature, evidence-byte verification,
+current ownership or dispatch authorization. This patch does not alter any
+downstream M002–M009 branch or its recorded evidence.
+
+Verification for this patch: regression cases are provided, but execution
+remains unverified until an actual exact-SHA test run is recorded. Earlier
+30-test evidence above applies only to the parent RFC3339 fix.
