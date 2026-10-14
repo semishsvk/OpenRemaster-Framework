@@ -37,6 +37,14 @@ once after recovery, and reject retries when a refreshed caller trust view
 revokes the signer. This tests the local model, not a deployed authority.
 A false, absent or timed-out synthetic transport condition rejects before
 using any cached head. No network adapter is implemented.
+The caller must explicitly provide authority_outcome=COMMIT_CONFIRMED.
+Unknown, timed-out or rejected outcomes fail before challenge consumption.
+An acceptance followed by a lost response cannot be guessed or recommitted;
+external recovery must query the same operation identity, which is still not
+implemented here. Delayed receipts reject at the exact expiry boundary.
+Receipt, M008 evidence and key mappings are privately copied at entry to bind
+validation and local commit to the same caller evidence. Callers must not mutate
+inputs during copy construction; this is not a remotely authenticated snapshot.
 
 ## Required external service semantics (NOT implemented or commissioned)
 
@@ -57,7 +65,7 @@ using any cached head. No network adapter is implemented.
 
 ## Explicit limitations
 
-TrustSnapshot and authority_available are caller inputs, NOT externally current
+TrustSnapshot, authority_available and authority_outcome are caller inputs, NOT externally current
 proof. The checkpoint is mutable process-local synthetic state, not durable
 storage. A restart/rollback can replay a receipt: a test preserves this limitation.
 No claim of global replay prevention, external revocation freshness or current

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import base64
 import binascii
+from copy import deepcopy
 from dataclasses import dataclass, field
 from threading import Lock
 from datetime import timedelta
@@ -76,7 +77,8 @@ class SyntheticCheckpoint:
 
 
 def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
-                        expected_challenge, now, authority_available):
+                        expected_challenge, now, authority_available,
+                        authority_outcome):
     """Validate signed receipt + actual M008, then atomically update lab state.
 
     authority_available is a synthetic transport condition, never proof of a
@@ -84,9 +86,19 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
     """
     if authority_available is not True:
         raise HeadRejected("partition: no cached-head fallback")
+    if type(authority_outcome) is not str or authority_outcome != "COMMIT_CONFIRMED":
+        raise HeadRejected("unconfirmed authority outcome: recovery required")
     if type(trust) is not TrustSnapshot or type(checkpoint) is not SyntheticCheckpoint:
         raise HeadRejected("explicit trust and checkpoint required")
     try:
+        # Keep validation bound to one private copy of caller-owned evidence.
+        # This is not an authenticated remote snapshot or a durable transaction.
+        receipt = deepcopy(receipt)
+        m008_bundle = deepcopy(m008_bundle)
+        if type(trust.keys) is not dict:
+            raise HeadRejected("malformed trust")
+        trust = TrustSnapshot(trust.authority_id, dict(trust.keys),
+                              trust.revoked_key_ids, trust.generation, trust.expires_utc)
         moment = _now(now)
         signing_message(receipt)
         if receipt["schema"] != SCHEMA or receipt["audience"] != "ORF-CurrentHead-ReviewOnly-v1":

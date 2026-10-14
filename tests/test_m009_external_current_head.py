@@ -38,7 +38,8 @@ def fixture(*, include_m008_signer=False):
                                     frozenset(), 2, "2026-10-13T20:01:00Z"),
                 checkpoint=SyntheticCheckpoint(tuple(a[f] for f in ("authority_id", "registry_id", "project_id", "edition", "owner_work_scope_sha256")), h["sequence"], h["owner_epoch_counter"],
                                                a["fence_generation"], h["last_attestation_sha256"], 2),
-                expected_challenge=a["challenge"], now=bundle["now"], authority_available=True)
+                expected_challenge=a["challenge"], now=bundle["now"], authority_available=True,
+                authority_outcome="COMMIT_CONFIRMED")
     resign(signer, r)
     if include_m008_signer:
         return signer, args, m008_signer
@@ -53,6 +54,61 @@ def state(cp):
     return (cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation,
             set(cp.consumed), cp.trust_content_sha256)
 
+
+@pytest.mark.parametrize("outcome", [None, True, "UNKNOWN", "TIMEOUT", "COMMIT_REJECTED", "READ_CACHED_HEAD"])
+def test_unconfirmed_outcome_never_spends_challenge(outcome):
+    _, args = fixture()
+    args["authority_outcome"] = outcome
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="recovery required"):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+
+def test_lost_response_after_commit_cannot_be_guessed_or_recommitted():
+    _, args = fixture()
+    verify_current_head(**args)  # model server accepted, response then lost
+    before = state(args["checkpoint"])
+    args["authority_outcome"] = "UNKNOWN"
+    with pytest.raises(HeadRejected, match="recovery required"):
+        verify_current_head(**args)
+    args["authority_outcome"] = "COMMIT_CONFIRMED"
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+
+@pytest.mark.parametrize("seconds", [22, 23, 24, 120])
+def test_delayed_receipt_rejected_at_or_after_expiry(seconds):
+    from datetime import timedelta
+    _, args = fixture()
+    # Fixture now is 20:00:23Z, receipt expiry is 20:00:45Z.
+    moment = args["now"] + timedelta(seconds=seconds)
+    args["now"] = moment
+    args["m008_bundle"]["now"] = moment
+    args["m008_bundle"]["m005_verified_bundle"]["now"] = moment
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="receipt window|stale revocation"):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+
+def test_caller_mutation_after_signature_check_cannot_change_committed_head(monkeypatch):
+    import openremaster.m009_external_current_head as module
+    _, args = fixture()
+    original_verify = module.verify_attestation
+    signed_head = args["receipt"]["attestation_sha256"]
+    def mutate_callers_evidence(**bundle):
+        result = original_verify(**bundle)
+        # Simulate another caller changing the original structures while validation runs.
+        args["m008_bundle"]["attestation"]["r14_source_sha256"] = "e" * 64
+        args["receipt"]["attestation_sha256"] = sha256_json(args["m008_bundle"]["attestation"])
+        args["trust"].keys.clear()
+        return result
+    monkeypatch.setattr(module, "verify_attestation", mutate_callers_evidence)
+    assert verify_current_head(**args)["dispatch_authorized"] is False
+    assert args["checkpoint"].head == signed_head
+    assert args["checkpoint"].head != args["receipt"]["attestation_sha256"]
 
 def test_positive_still_never_authorizes():
     _, args = fixture()
