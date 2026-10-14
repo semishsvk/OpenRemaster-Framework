@@ -1,0 +1,169 @@
+"""Synthetic current-head tests: no HomePC active owner or native worker."""
+import base64
+from copy import deepcopy
+from dataclasses import replace
+from concurrent.futures import ThreadPoolExecutor
+
+import pytest
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+from openremaster.m005_anchor_contract import sha256_json
+from openremaster.m009_external_current_head import (
+    SCHEMA, TrustSnapshot, SyntheticCheckpoint, HeadRejected,
+    signing_message, verify_current_head,
+)
+from test_m008_owner_observation_attestation import sample, NOW
+
+
+def fixture():
+    _, bundle = sample()
+    a = bundle["attestation"]
+    h = bundle["independently_pinned_highwater"]
+    signer = Ed25519PrivateKey.generate()
+    public = signer.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+    r = {f: a[f] for f in (
+        "authority_id", "registry_id", "project_id", "edition",
+        "owner_work_scope_sha256", "challenge", "sequence",
+        "owner_epoch_counter", "fence_generation", "previous_attestation_sha256")}
+    r.update(schema=SCHEMA, audience="ORF-CurrentHead-ReviewOnly-v1", key_id="head-test-key",
+             attestation_sha256=sha256_json(a), revocation_generation=2,
+             issued_utc=a["issued_utc"], expires_utc=a["expires_utc"],
+             operation="CAS_HEAD_AND_CONSUME_CHALLENGE", signature_b64="")
+    # M008 window may be 60 seconds; M009 limits receipts to 30 seconds.
+    from datetime import datetime, timedelta
+    issued = datetime.strptime(r["issued_utc"], "%Y-%m-%dT%H:%M:%SZ")
+    r["expires_utc"] = (issued + timedelta(seconds=25)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    args = dict(receipt=r, m008_bundle=bundle,
+                trust=TrustSnapshot(a["authority_id"], {"head-test-key": public},
+                                    frozenset(), 2, "2026-10-13T20:01:00Z"),
+                checkpoint=SyntheticCheckpoint(tuple(a[f] for f in ("authority_id", "registry_id", "project_id", "edition", "owner_work_scope_sha256")), h["sequence"], h["owner_epoch_counter"],
+                                               a["fence_generation"], h["last_attestation_sha256"], 2),
+                expected_challenge=a["challenge"], now=bundle["now"], authority_available=True)
+    resign(signer, r)
+    return signer, args
+
+
+def resign(signer, r):
+    r["signature_b64"] = base64.b64encode(signer.sign(signing_message(r))).decode()
+
+
+def state(cp):
+    return cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation, set(cp.consumed)
+
+
+def test_positive_still_never_authorizes():
+    _, args = fixture()
+    result = verify_current_head(**args)
+    assert result["receipt_signature_verified"] is True
+    for f in ("dispatch_authorized", "worker_execution_authorized",
+              "external_current_head_independently_verified",
+              "durable_global_challenge_consumption_verified",
+              "current_external_revocation_verified", "rollback_resistance_verified"):
+        assert result[f] is False
+
+
+def test_same_receipt_replay_rejected():
+    _, args = fixture()
+    verify_current_head(**args)
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+
+def test_atomic_concurrent_replay_one_winner():
+    _, args = fixture()
+    def attempt(_):
+        try:
+            verify_current_head(**args)
+            return True
+        except HeadRejected:
+            return False
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        assert sum(pool.map(attempt, range(16))) == 1
+
+
+@pytest.mark.parametrize("field,value", [
+    ("sequence", 0), ("sequence", True), ("sequence", 100),
+    ("owner_epoch_counter", 0), ("owner_epoch_counter", 100),
+    ("fence_generation", 0), ("revocation_generation", 1),
+    ("previous_attestation_sha256", "e"*64), ("attestation_sha256", "f"*64),
+    ("challenge", "x"*32), ("authority_id", "wrong"), ("registry_id", "wrong"),
+    ("project_id", "wrong"), ("edition", "wrong"),
+    ("owner_work_scope_sha256", "f"*64),
+    ("issued_utc", "2026-10-13T20:00:59Z"),
+    ("expires_utc", "2026-10-13T19:59:00Z"),
+    ("expires_utc", "2026-10-13T20:05:00Z"),
+    ("schema", "other"), ("audience", "Execute"),
+    ("operation", "READ_CACHED_HEAD"),
+])
+def test_resigned_invalid_receipts_fail_without_state_change(field, value):
+    signer, args = fixture()
+    args["receipt"][field] = value
+    resign(signer, args["receipt"])
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+
+@pytest.mark.parametrize("change", [
+    "revoked", "unknown", "stale-view", "generation-rollback", "missing-trust",
+    "partition", "timeout", "bad-signature", "missing-field", "extra-field",
+    "wrong-clock", "forged-m008", "stale-checkpoint", "fence-rollback",
+    "epoch-rollback", "consumed", "wrong-scope", "bool-checkpoint",
+])
+def test_negative_trust_partition_and_monotonicity(change):
+    _, args = fixture()
+    trust = args["trust"]
+    cp = args["checkpoint"]
+    if change == "revoked":
+        args["trust"] = replace(trust, revoked_key_ids=frozenset({"head-test-key"}))
+    elif change == "unknown":
+        args["trust"] = replace(trust, keys={})
+    elif change == "stale-view":
+        args["trust"] = replace(trust, expires_utc="2026-10-13T20:00:00Z")
+    elif change == "generation-rollback":
+        cp.revocation_generation = 3
+    elif change == "missing-trust":
+        args["trust"] = None
+    elif change == "partition":
+        args["authority_available"] = False
+    elif change == "timeout":
+        args["authority_available"] = None
+    elif change == "bad-signature":
+        args["receipt"]["signature_b64"] = base64.b64encode(b"x"*64).decode()
+    elif change == "missing-field":
+        args["receipt"].pop("sequence")
+    elif change == "extra-field":
+        args["receipt"]["dispatch_authorized"] = True
+    elif change == "wrong-clock":
+        args["m008_bundle"]["now"] = None
+    elif change == "forged-m008":
+        args["m008_bundle"]["attestation"]["signature_b64"] = base64.b64encode(b"x"*64).decode()
+    elif change == "stale-checkpoint":
+        cp.head = "e"*64
+    elif change == "fence-rollback":
+        cp.fence += 1
+    elif change == "epoch-rollback":
+        cp.epoch += 1
+    elif change == "wrong-scope":
+        cp.scope = ("other",)
+    elif change == "consumed":
+        cp.consumed.add(args["expected_challenge"])
+    else:
+        cp.sequence = True
+    before = state(cp)
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    assert state(cp) == before
+
+
+def test_restart_limitation_is_explicit():
+    # A fresh local checkpoint can accept the same receipt: NOT global anti-replay.
+    _, args = fixture()
+    cp = args["checkpoint"]
+    reset = SyntheticCheckpoint(cp.scope, cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation)
+    verify_current_head(**args)
+    args["checkpoint"] = reset
+    assert verify_current_head(**args)["rollback_resistance_verified"] is False
