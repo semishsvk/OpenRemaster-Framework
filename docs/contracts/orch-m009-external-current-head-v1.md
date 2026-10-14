@@ -19,10 +19,16 @@ start after M008 issuance and end no later than M008 expiry.
 Unknown/revoked signer, expired caller trust, wrong revocation generation,
 scope mismatch, decreasing fence/epoch or prior-head mismatch reject.
 Sequence advances exactly one; epoch remains equal or advances one.
+Runtime counters share the wire maximum 9223372036854775000. Malformed
+consumed-challenge checkpoints reject before any state change.
 
 SyntheticCheckpoint provides one-process locking for head update and challenge
 consumption together. Failed validation leaves it unchanged. Replayed and
 concurrent identical receipts yield at most one successful acceptance.
+Two differently signed candidates racing from the same prior head also yield
+one winner. Partition tests preserve the unspent challenge, accept it at most
+once after recovery, and reject retries when a refreshed caller trust view
+revokes the signer. This tests the local model, not a deployed authority.
 A false, absent or timed-out synthetic transport condition rejects before
 using any cached head. No network adapter is implemented.
 
@@ -73,3 +79,4 @@ trusted R14 string-to-numeric epoch mapping, owner-scope resolver,
 gateway anti-downgrade/ACK, native worker fencing at every side effect,
 exact-SHA CI and separate owner commissioning and runtime/game fidelity gates.
 Do not merge into main or activate dispatch.
+

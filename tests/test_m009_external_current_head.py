@@ -12,11 +12,11 @@ from openremaster.m009_external_current_head import (
     SCHEMA, TrustSnapshot, SyntheticCheckpoint, HeadRejected,
     signing_message, verify_current_head,
 )
-from test_m008_owner_observation_attestation import sample, NOW
+from test_m008_owner_observation_attestation import sample, resign as resign_m008
 
 
-def fixture():
-    _, bundle = sample()
+def fixture(*, include_m008_signer=False):
+    m008_signer, bundle = sample()
     a = bundle["attestation"]
     h = bundle["independently_pinned_highwater"]
     signer = Ed25519PrivateKey.generate()
@@ -40,6 +40,8 @@ def fixture():
                                                a["fence_generation"], h["last_attestation_sha256"], 2),
                 expected_challenge=a["challenge"], now=bundle["now"], authority_available=True)
     resign(signer, r)
+    if include_m008_signer:
+        return signer, args, m008_signer
     return signer, args
 
 
@@ -167,3 +169,94 @@ def test_restart_limitation_is_explicit():
     verify_current_head(**args)
     args["checkpoint"] = reset
     assert verify_current_head(**args)["rollback_resistance_verified"] is False
+
+
+@pytest.mark.parametrize("field", [
+    "sequence", "owner_epoch_counter", "fence_generation", "revocation_generation",
+])
+def test_wire_counter_overflow_rejected_before_commit(field):
+    signer, args = fixture()
+    args["receipt"][field] = 9223372036854775001
+    resign(signer, args["receipt"])
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="wire bound"):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+
+@pytest.mark.parametrize("spent", [None, [], frozenset(), {"invalid!"}, {True}])
+def test_malformed_consumption_checkpoint_fails_closed(spent):
+    _, args = fixture()
+    cp = args["checkpoint"]
+    cp.consumed = spent
+    before = (cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation)
+    with pytest.raises(HeadRejected, match="consumed-challenge checkpoint"):
+        verify_current_head(**args)
+    assert (cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation) == before
+    assert cp.consumed is spent
+
+
+def competing_candidate(signer, args, m008_signer):
+    other = dict(args)
+    other["receipt"] = deepcopy(args["receipt"])
+    other["m008_bundle"] = deepcopy(args["m008_bundle"])
+    challenge = "DifferentCandidateChallenge_0123456789"
+    other["expected_challenge"] = challenge
+    other["m008_bundle"]["expected_challenge"] = challenge
+    other["m008_bundle"]["attestation"]["challenge"] = challenge
+    resign_m008(m008_signer, other["m008_bundle"])
+    other["receipt"]["challenge"] = challenge
+    other["receipt"]["attestation_sha256"] = sha256_json(other["m008_bundle"]["attestation"])
+    resign(signer, other["receipt"])
+    return other
+
+
+def test_competing_candidate_is_individually_valid():
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    other = competing_candidate(signer, args, m008_signer)
+    assert verify_current_head(**other)["receipt_signature_verified"] is True
+
+
+def test_two_different_signed_candidates_cannot_fork_same_head():
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    other = competing_candidate(signer, args, m008_signer)
+    def attempt(bundle):
+        try:
+            verify_current_head(**bundle)
+            return True
+        except HeadRejected:
+            return False
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        assert sum(pool.map(attempt, [args, other])) == 1
+    cp = args["checkpoint"]
+    assert cp.sequence == args["receipt"]["sequence"]
+    assert len(cp.consumed) == 1
+    assert cp.head in {args["receipt"]["attestation_sha256"], other["receipt"]["attestation_sha256"]}
+
+
+def test_partition_does_not_spend_challenge_and_recovery_accepts_once():
+    _, args = fixture()
+    before = state(args["checkpoint"])
+    args["authority_available"] = False
+    with pytest.raises(HeadRejected, match="partition"):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+    args["authority_available"] = True
+    assert verify_current_head(**args)["dispatch_authorized"] is False
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+
+
+def test_revocation_received_after_partition_prevents_retry():
+    _, args = fixture()
+    before = state(args["checkpoint"])
+    args["authority_available"] = False
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    args["authority_available"] = True
+    args["trust"] = replace(args["trust"], revoked_key_ids=frozenset({"head-test-key"}))
+    with pytest.raises(HeadRejected, match="revoked signer"):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
+

@@ -20,6 +20,7 @@ from openremaster.m008_owner_observation_attestation import (
 )
 
 SCHEMA = "ORF-M009.ExternalCurrentHeadReceipt.v1"
+MAX_WIRE_COUNTER = 9223372036854775000
 CONTEXT = b"OpenRemaster|ExternalCurrentHeadReceipt|v1\x00"
 FIELDS = frozenset({
     "schema", "audience", "authority_id", "key_id", "registry_id",
@@ -32,6 +33,12 @@ FIELDS = frozenset({
 
 class HeadRejected(ValueError):
     """Fail closed; never fall back to cached authority."""
+
+
+def _counter(value, label, minimum=0):
+    _int(value, label, minimum=minimum)
+    if value > MAX_WIRE_COUNTER:
+        raise HeadRejected(label + ": exceeds wire bound")
 
 
 def signing_message(receipt):
@@ -90,12 +97,12 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
         for f in ("owner_work_scope_sha256", "attestation_sha256", "previous_attestation_sha256"):
             _sha(receipt[f], HEX64, f)
         for f in ("sequence", "owner_epoch_counter", "fence_generation", "revocation_generation"):
-            _int(receipt[f], f, minimum=1)
+            _counter(receipt[f], f, minimum=1)
         if (type(expected_challenge) is not str or
             CHALLENGE.fullmatch(expected_challenge) is None or
             receipt["challenge"] != expected_challenge):
             raise HeadRejected("challenge binding")
-        _int(trust.generation, "trust generation", minimum=1)
+        _counter(trust.generation, "trust generation", minimum=1)
         if type(trust.keys) is not dict or type(trust.revoked_key_ids) is not frozenset:
             raise HeadRejected("malformed trust")
         if moment >= _instant(trust.expires_utc, "trust expiry"):
@@ -137,12 +144,17 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
             raise HeadRejected("receipt outlives or predates candidate")
         h = m008_bundle["independently_pinned_highwater"]
         with checkpoint._lock:
+            if type(checkpoint.consumed) is not set or any(
+                type(challenge) is not str or CHALLENGE.fullmatch(challenge) is None
+                for challenge in checkpoint.consumed
+            ):
+                raise HeadRejected("malformed consumed-challenge checkpoint")
             expected_scope = tuple(receipt[f] for f in (
                 "authority_id", "registry_id", "project_id", "edition", "owner_work_scope_sha256"))
             if checkpoint.scope != expected_scope:
                 raise HeadRejected("checkpoint scope mismatch")
             for n in (checkpoint.sequence, checkpoint.epoch, checkpoint.fence, checkpoint.revocation_generation):
-                _int(n, "checkpoint counter")
+                _counter(n, "checkpoint counter")
             _sha(checkpoint.head, HEX64, "checkpoint head")
             if (checkpoint.sequence != h["sequence"] or checkpoint.head != h["last_attestation_sha256"]
                 or checkpoint.epoch != h["owner_epoch_counter"]):
@@ -177,3 +189,4 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
         "dispatch_authorized": False,
         "worker_execution_authorized": False,
     }
+
