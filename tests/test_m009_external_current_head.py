@@ -50,7 +50,8 @@ def resign(signer, r):
 
 
 def state(cp):
-    return cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation, set(cp.consumed)
+    return (cp.sequence, cp.epoch, cp.fence, cp.head, cp.revocation_generation,
+            set(cp.consumed), cp.trust_content_sha256)
 
 
 def test_positive_still_never_authorizes():
@@ -71,6 +72,102 @@ def test_same_receipt_replay_rejected():
     with pytest.raises(HeadRejected):
         verify_current_head(**args)
     assert state(args["checkpoint"]) == before
+
+
+def successor(signer, args, m008_signer, *, challenge):
+    """Build a genuinely valid next M008/M009 head, sharing only checkpoint."""
+    next_args = dict(args)
+    next_args["m008_bundle"] = deepcopy(args["m008_bundle"])
+    next_args["receipt"] = deepcopy(args["receipt"])
+    cp = args["checkpoint"]
+    bundle = next_args["m008_bundle"]
+    h = bundle["independently_pinned_highwater"]
+    h.update(sequence=cp.sequence, owner_epoch_counter=cp.epoch,
+             last_attestation_sha256=cp.head)
+    a = bundle["attestation"]
+    a.update(sequence=cp.sequence + 1, previous_attestation_sha256=cp.head,
+             challenge=challenge)
+    bundle["expected_challenge"] = challenge
+    next_args["expected_challenge"] = challenge
+    resign_m008(m008_signer, bundle)
+    next_args["receipt"].update(sequence=a["sequence"],
+        previous_attestation_sha256=cp.head, challenge=challenge,
+        attestation_sha256=sha256_json(a))
+    resign(signer, next_args["receipt"])
+    return next_args
+
+
+def test_two_sequential_heads_advance_without_authorization():
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    verify_current_head(**args)
+    nxt = successor(signer, args, m008_signer, challenge="FreshSuccessorChallenge_0123456789")
+    result = verify_current_head(**nxt)
+    assert args["checkpoint"].sequence == args["receipt"]["sequence"] + 1
+    assert len(args["checkpoint"].consumed) == 2
+    assert result["dispatch_authorized"] is False
+
+
+def test_reused_challenge_rejected_even_with_valid_successor_head():
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    verify_current_head(**args)
+    nxt = successor(signer, args, m008_signer, challenge=args["expected_challenge"])
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="consumed challenge"):
+        verify_current_head(**nxt)
+    assert state(args["checkpoint"]) == before
+
+
+def test_key_rotation_with_generation_advance_and_old_key_revocation():
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    verify_current_head(**args)
+    nxt = successor(signer, args, m008_signer, challenge="RotatedSuccessorChallenge_0123456789")
+    new_signer = Ed25519PrivateKey.generate()
+    public = new_signer.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+    nxt["trust"] = replace(args["trust"], keys={"rotated-key": public},
+        revoked_key_ids=frozenset({"head-test-key"}), generation=3)
+    nxt["receipt"].update(key_id="rotated-key", revocation_generation=3)
+    resign(new_signer, nxt["receipt"])
+    assert verify_current_head(**nxt)["dispatch_authorized"] is False
+    assert args["checkpoint"].revocation_generation == 3
+
+
+@pytest.mark.parametrize("change", ["replace-key", "add-key", "add-revocation"])
+def test_same_generation_trust_equivocation_rejected(change):
+    signer, args, m008_signer = fixture(include_m008_signer=True)
+    verify_current_head(**args)
+    nxt = successor(signer, args, m008_signer, challenge="EquivocationChallenge_0123456789")
+    if change == "add-revocation":
+        nxt["trust"] = replace(args["trust"], revoked_key_ids=frozenset({"another-key"}))
+    else:
+        new_signer = Ed25519PrivateKey.generate()
+        public = new_signer.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)
+        keys = dict(args["trust"].keys)
+        if change == "replace-key":
+            keys["head-test-key"] = public
+            resign(new_signer, nxt["receipt"])
+        else:
+            keys["additional-key"] = public
+        nxt["trust"] = replace(args["trust"], keys=keys)
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected, match="without generation advance"):
+        verify_current_head(**nxt)
+    assert state(args["checkpoint"]) == before
+
+
+@pytest.mark.parametrize("change", ["bad-digest", "malformed-key", "bad-revocation-id"])
+def test_malformed_trust_content_fails_without_commit(change):
+    _, args = fixture()
+    if change == "bad-digest":
+        args["checkpoint"].trust_content_sha256 = "invalid"
+    elif change == "malformed-key":
+        args["trust"] = replace(args["trust"], keys={"other-key": b"bad"})
+    else:
+        args["trust"] = replace(args["trust"], revoked_key_ids=frozenset({False}))
+    before = state(args["checkpoint"])
+    with pytest.raises(HeadRejected):
+        verify_current_head(**args)
+    assert state(args["checkpoint"]) == before
+
 
 
 def test_atomic_concurrent_replay_one_winner():

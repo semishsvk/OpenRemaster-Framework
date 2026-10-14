@@ -21,6 +21,12 @@ scope mismatch, decreasing fence/epoch or prior-head mismatch reject.
 Sequence advances exactly one; epoch remains equal or advances one.
 Runtime counters share the wire maximum 9223372036854775000. Malformed
 consumed-challenge checkpoints reject before any state change.
+On the first successful commit the local checkpoint pins a SHA256 of authority,
+generation, all public keys and all revoked key IDs. A different trust content
+at the same generation rejects; key rotation requires a generation advance.
+Trust expiry is checked on every call and excluded from this content digest so
+that renewing an unchanged view does not imply a key-set change. This is local
+consistency only: caller trust remains unauthenticated external evidence.
 
 SyntheticCheckpoint provides one-process locking for head update and challenge
 consumption together. Failed validation leaves it unchanged. Replayed and

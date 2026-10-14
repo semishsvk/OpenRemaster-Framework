@@ -71,6 +71,7 @@ class SyntheticCheckpoint:
     head: str
     revocation_generation: int
     consumed: set = field(default_factory=set)
+    trust_content_sha256: str | None = None
     _lock: object = field(default_factory=Lock, repr=False)
 
 
@@ -105,6 +106,19 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
         _counter(trust.generation, "trust generation", minimum=1)
         if type(trust.keys) is not dict or type(trust.revoked_key_ids) is not frozenset:
             raise HeadRejected("malformed trust")
+        for key_id, public_key in trust.keys.items():
+            _name(key_id, "trust key id")
+            if type(public_key) is not bytes or len(public_key) != 32:
+                raise HeadRejected("malformed trust public key")
+        for key_id in trust.revoked_key_ids:
+            _name(key_id, "revoked key id")
+        trust_digest = sha256_json({
+            "authority_id": trust.authority_id,
+            "generation": trust.generation,
+            "keys": {key_id: base64.b64encode(public_key).decode("ascii")
+                     for key_id, public_key in trust.keys.items()},
+            "revoked_key_ids": sorted(trust.revoked_key_ids),
+        })
         if moment >= _instant(trust.expires_utc, "trust expiry"):
             raise HeadRejected("stale revocation view")
         issued = _instant(receipt["issued_utc"], "receipt issued")
@@ -144,6 +158,11 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
             raise HeadRejected("receipt outlives or predates candidate")
         h = m008_bundle["independently_pinned_highwater"]
         with checkpoint._lock:
+            if checkpoint.trust_content_sha256 is not None:
+                _sha(checkpoint.trust_content_sha256, HEX64, "checkpoint trust digest")
+                if (trust.generation == checkpoint.revocation_generation and
+                    trust_digest != checkpoint.trust_content_sha256):
+                    raise HeadRejected("trust content changed without generation advance")
             if type(checkpoint.consumed) is not set or any(
                 type(challenge) is not str or CHALLENGE.fullmatch(challenge) is None
                 for challenge in checkpoint.consumed
@@ -173,6 +192,7 @@ def verify_current_head(*, receipt, m008_bundle, trust, checkpoint,
             checkpoint.fence = receipt["fence_generation"]
             checkpoint.head = receipt["attestation_sha256"]
             checkpoint.revocation_generation = trust.generation
+            checkpoint.trust_content_sha256 = trust_digest
     except (ObservationRejected, InvalidSignature, ValueError, TypeError, KeyError, binascii.Error) as exc:
         if isinstance(exc, HeadRejected):
             raise
