@@ -54,5 +54,13 @@ It runs on GitHub-hosted Ubuntu with read-only repository permission, no
 credentials retained and a five-minute job bound. It does not replace Phase 2
 clean-checkout exact-SHA acceptance or run reconstruction jobs.
 
-Run: `python -m pip install pytest==8.3.5 jsonschema==4.23.0`, then
+Run: `python -m pip install pytest==8.3.5 jsonschema==4.23.0 rfc3339-validator==0.1.4`, then
 `python -m pytest -q tests/test_remote_control_contracts.py`.
+
+**Security dependency:** `jsonschema` treats `format: date-time` as advisory if the
+optional RFC 3339 checker is unavailable. Without `rfc3339-validator`, invalid
+`deadline_utc` values can pass JSON Schema validation. The test validator
+must fail closed when the `date-time` format checker is not registered.
+The HomePC clean-environment check exposed this gap (216 PASS / 2 FAIL);
+with the pinned backend installed the original M001-M005 suites passed
+218/218 and the dedicated fail-closed regression passed 30/30.
