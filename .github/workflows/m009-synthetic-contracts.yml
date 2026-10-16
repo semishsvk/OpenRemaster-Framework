@@ -1,0 +1,45 @@
+name: M009 Full Synthetic Contract Chain
+on:
+  pull_request:
+    branches: [m008/owner-observation-attestation-v1-20261014]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: m009-synthetic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic-contracts-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned synthetic test dependencies
+        run: python -m pip install pytest==8.3.5 jsonschema==4.23.0 rfc3339-validator==0.1.4 cryptography==46.0.4
+      - name: Record exact tested revision
+        run: git rev-parse HEAD
+      - name: M001-M009 synthetic contracts only
+        env:
+          PYTHONPATH: src
+        run: >-
+          python -m pytest -q
+          tests/test_remote_control_contracts.py
+          tests/test_m002_structural.py
+          tests/test_m003_cas_lab.py
+          tests/test_m004_witness_lab.py
+          tests/test_m005_anchor_contract.py
+          tests/test_m006_r14_m005_gap.py
+          tests/test_source_freshness_guard_v1.py
+          tests/test_m008_owner_observation_attestation.py
+          tests/test_m008_wire_schemas.py
+          tests/test_m009_external_current_head.py
+          tests/test_m009_wire_schema.py
