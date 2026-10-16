@@ -1,0 +1,33 @@
+name: ORCH M006 R14-M005 Contract Gap
+on:
+  pull_request:
+    branches: [integration/m005-rfc3339-failclosed-20261014]
+    paths:
+      - 'src/openremaster/m006_r14_m005_gap.py'
+      - 'tests/test_m006_r14_m005_gap.py'
+      - 'docs/contracts/orch-m006-r14-m005-gap-v0.md'
+      - '.github/workflows/m006-r14-m005-gap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orf-m006-gap-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gap-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5 jsonschema==4.23.0 rfc3339-validator==0.1.4 cryptography==46.0.4
+      - name: Offline source-independent synthetic contract gates only
+        run: PYTHONPATH=src python -m pytest -q tests/test_remote_control_contracts.py tests/test_m002_structural.py tests/test_m003_cas_lab.py tests/test_m004_witness_lab.py tests/test_m005_anchor_contract.py tests/test_m006_r14_m005_gap.py

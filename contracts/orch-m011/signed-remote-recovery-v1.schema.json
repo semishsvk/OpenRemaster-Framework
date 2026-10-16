@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/semishsvk/OpenRemaster-Framework/contracts/orch-m011/signed-remote-recovery-v1.schema.json",
+  "title": "M011 signed remote recovery review receipt (never production native authority)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "audience",
+    "authority_id",
+    "key_id",
+    "scope",
+    "operation_id",
+    "probe_id",
+    "challenge",
+    "request_sha256",
+    "prior_head_sha256",
+    "candidate_head_sha256",
+    "remote_head_sha256",
+    "sequence",
+    "owner_epoch",
+    "fence_generation",
+    "result",
+    "trust_generation",
+    "remote_operation_sha256",
+    "m009_head_receipt_sha256",
+    "issued_utc",
+    "expires_utc",
+    "signature_b64"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ORF-M011.SignedRemoteRecoveryReceipt.v1"
+    },
+    "audience": {
+      "const": "ORF-RemoteRecovery-ReviewOnly-v1"
+    },
+    "authority_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "key_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "operation_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "probe_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "challenge": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{22,128}$"
+    },
+    "request_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "prior_head_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_head_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "remote_head_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "owner_epoch": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "fence_generation": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "result": {
+      "enum": [
+        "COMMITTED",
+        "REJECTED"
+      ]
+    },
+    "trust_generation": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "remote_operation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "m009_head_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "issued_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "expires_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "signature_b64": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]{86}==$",
+      "minLength": 88,
+      "maxLength": 88
+    }
+  }
+}
