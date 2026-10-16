@@ -3,7 +3,7 @@ import subprocess
 from scripts.local_preflight import collect
 
 def g(repo: Path,*args):
-    subprocess.run(["git","-C",str(repo),*args],check=True,capture_output=True,text=True)
+    return subprocess.run(["git","-C",str(repo),*args],check=True,capture_output=True,text=True)
 
 def test_collect_is_read_only_and_detects_untracked(tmp_path):
     repo=tmp_path/"repo"; repo.mkdir()
