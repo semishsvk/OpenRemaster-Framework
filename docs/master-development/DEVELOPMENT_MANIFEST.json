@@ -203,8 +203,8 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "294c6b58d1cf78c13761d00ceed0b92a45849b98013cd70a0a1e385256233d5d",
-      "bytes": 15680
+      "sha256": "089ed9ff6c0f58c5710efdf3b65ab355824659faf5f55573ef90b5c70bb0424f",
+      "bytes": 16424
     },
     {
       "path": "development/resource_review_lab/README.md",
@@ -220,6 +220,11 @@
       "path": "development/resource_review_lab/REJECTION_IMPORT.md",
       "sha256": "9f0db7557cde92891b46d307201825ab3563833bb05fbeea3b7c7e2a67a31e86",
       "bytes": 1342
+    },
+    {
+      "path": "development/resource_review_lab/REJECTION_WITNESS.md",
+      "sha256": "6c177b02db4a4efdf1b7e8e07b4ef62f3a4ed02315f37b364f983c9a223de580",
+      "bytes": 1360
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -312,6 +317,11 @@
       "bytes": 2431
     },
     {
+      "path": "development/resource_review_lab/lab/rejection_witness.py",
+      "sha256": "3af448b299f985f6e07542d2231f74430b325c65f175fc0d6fde1891a416e1f4",
+      "bytes": 4846
+    },
+    {
       "path": "development/resource_review_lab/lab/resource_anchor.py",
       "sha256": "acb1bb29c6e79a75ee164c66fb5ef0088b9bb144836739db99c0bbd0aa627d25",
       "bytes": 5683
@@ -363,8 +373,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "5108207de368890d3fd619e1210704404ff65e82176b428418cc68e00200cb1b",
-      "bytes": 4325
+      "sha256": "2f400fcb4d6438da1b6f97722352871984f49e6f6ff3b44e794c512fd108ec95",
+      "bytes": 4373
     },
     {
       "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
@@ -460,6 +470,11 @@
       "path": "development/resource_review_lab/tests/test_rejection_import.py",
       "sha256": "b35148c76ee025cf569d2182654dead783eeefdb2faa45d5f1779e42be733c32",
       "bytes": 5391
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_rejection_witness.py",
+      "sha256": "545b0d7aa9e5292ed66d3c71e53895ccc8262af15d6fb612cd57bb01b705163e",
+      "bytes": 6332
     },
     {
       "path": "development/resource_review_lab/tests/test_resource_anchor.py",
