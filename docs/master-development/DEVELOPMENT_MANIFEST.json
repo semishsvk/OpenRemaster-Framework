@@ -203,13 +203,18 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "3e93e7816cd423dd66d4cff4dd18779098e7ff24a1270b606ab7c180649a61e4",
-      "bytes": 18354
+      "sha256": "9d8d644a8fecd868ef988f85cdae1dad9454e355eac1d8560c90c8fa004c3764",
+      "bytes": 18849
     },
     {
       "path": "development/resource_review_lab/P8_AUDIT.md",
       "sha256": "3985de6aa23177ea73f31627310f6788c8537d47eab0f76a9832b8dea1db6946",
       "bytes": 1926
+    },
+    {
+      "path": "development/resource_review_lab/P8_AUDIT_WITNESS.md",
+      "sha256": "21325dd47a61f192aa785ac97bb63390fec410420f5d07b4addd3ae5d7c8b5dc",
+      "bytes": 1573
     },
     {
       "path": "development/resource_review_lab/P8_CONSUMER.md",
@@ -398,8 +403,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "6fdc6e708a05affdfa6a8ca4ddae2fb0a9fb2b62151faf9284b2fd12b778f590",
-      "bytes": 4629
+      "sha256": "7e788629b9cadc1ebf664ab1e40c2b2851bfcd12dd0acfcae7bfadecac19a219",
+      "bytes": 4827
     },
     {
       "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
@@ -480,6 +485,11 @@
       "path": "development/resource_review_lab/tests/test_p8_audit.py",
       "sha256": "a840f667ca6208ad07d590b90a1d0bb3d96ce1f69eed9954aa243ebbadbac780",
       "bytes": 7262
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_p8_audit_witness.py",
+      "sha256": "185ea89daa52e960e5f47376d08a0b74cd083c87301dd7a621a2944a2a54175f",
+      "bytes": 9122
     },
     {
       "path": "development/resource_review_lab/tests/test_p8_consumer.py",
