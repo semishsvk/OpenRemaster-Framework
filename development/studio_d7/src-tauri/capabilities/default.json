@@ -1,0 +1,8 @@
+{
+  "identifier": "shadow-main",
+  "description": "Read-only UI with no native capabilities",
+  "windows": [
+    "main"
+  ],
+  "permissions": []
+}

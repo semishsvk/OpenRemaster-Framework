@@ -1,0 +1,9 @@
+# Isolated P8 journal validation candidate
+
+This is an additive hardening candidate derived from the existing Windows locked-journal prototype. Its string-return API, RESERVE event format, fsync, byte-range lock and replay rejection are preserved. It adds bounded strict JSON/schema/sequence/input validation and machine-readable HOLD reasons for malformed data and I/O failures. Failed fsync is explicitly uncertain and never requests retry. No production queue or active journal is read or written.
+
+The existing ten-case Platform audit was reused against a byte-identical local copy. New Windows API tests first demonstrated eight failures and four passes on the original implementation. The candidate rejects malformed/nonfinite/duplicate JSON, unknown event fields, nonsequential records, invalid identifiers/digests, repeated historical IDs and excessive size. Existing valid logs remain readable within the stated bounds. Rejecting formerly accepted invalid data is intentional and requires owner-selected integration before deployment.
+
+Actual msvcrt locking and two-process replay tests run only on Windows. Other platforms return WINDOWS_LOCK_UNAVAILABLE_HOLD and explicitly skip those runtime tests; they still test pure validation. No substitute lock or simulated runtime PASS is used. A separate guard test covers the missing-platform branch.
+
+A coherently rewritten structurally valid hash chain remains possible. Tests preserve and expose that limitation. A local hash is not writer authentication, current owner admission, external antirollback, crash recovery, path/junction isolation or a durable independent audit. SHADOW_RESERVED never means dispatch/release authorization. This candidate is not installed; original Platform files and writer ownership remain unchanged. No new scheduler, authority, signing keys or live service is introduced.

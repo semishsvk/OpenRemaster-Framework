@@ -1,0 +1,101 @@
+{
+  "schema": "OpenRemaster.StudioNativeReadiness.v1",
+  "release": "UI-004/r3",
+  "generatedUtc": "2026-10-18T10:07:16+00:00",
+  "method": "PINNED_READ_ONLY_PE_IMPORT_AUDIT_PLUS_LOCAL_WINDOWS_IPC_POC",
+  "platform": "Windows x64 HomePC",
+  "binaryClosure": {
+    "observedDirectImportsOnly": true,
+    "runtimeFullClosureVerified": false,
+    "importNameResolutionVerified": false,
+    "nativeLoaderPolicyVerified": false,
+    "relocatableNodePythonRuntime": false,
+    "binaries": {
+      "python": {
+        "fileName": "python.exe",
+        "sourceType": "LOCAL_WINDOWS_IMAGE_OBSERVATION",
+        "sha256": "cce21c0e8710e304273e98ac4b2b0f5aceb639acbcd2343cbaa5c4e81619c45b",
+        "bytes": 106328,
+        "format": "PE32+",
+        "machineHex": "0x8664",
+        "sectionCount": 6,
+        "directImportDllNames": [
+          "API-MS-WIN-CRT-HEAP-L1-1-0.DLL",
+          "API-MS-WIN-CRT-LOCALE-L1-1-0.DLL",
+          "API-MS-WIN-CRT-MATH-L1-1-0.DLL",
+          "API-MS-WIN-CRT-RUNTIME-L1-1-0.DLL",
+          "API-MS-WIN-CRT-STDIO-L1-1-0.DLL",
+          "KERNEL32.DLL",
+          "PYTHON314.DLL",
+          "VCRUNTIME140.DLL"
+        ],
+        "directImportCount": 8,
+        "delayImportsEnumerated": false,
+        "forwardersAndTransitiveImportsResolved": false
+      },
+      "node": {
+        "fileName": "node.exe",
+        "sourceType": "LOCAL_WINDOWS_IMAGE_OBSERVATION",
+        "sha256": "3602f2bb1a10f2cbab4c36886218a33c1ab3db87290e73b033c46c77147d0237",
+        "bytes": 92825416,
+        "format": "PE32+",
+        "machineHex": "0x8664",
+        "sectionCount": 10,
+        "directImportDllNames": [
+          "ADVAPI32.DLL",
+          "CRYPT32.DLL",
+          "DBGHELP.DLL",
+          "IPHLPAPI.DLL",
+          "KERNEL32.DLL",
+          "OLE32.DLL",
+          "SHELL32.DLL",
+          "USER32.DLL",
+          "USERENV.DLL",
+          "WINMM.DLL",
+          "WS2_32.DLL"
+        ],
+        "directImportCount": 11,
+        "delayImportsEnumerated": false,
+        "forwardersAndTransitiveImportsResolved": false
+      }
+    }
+  },
+  "ipcPrototype": {
+    "implementation": ".NET 9 NamedPipeServerStream test-only",
+    "testedOnWindows": true,
+    "testCount": 20,
+    "testResult": "PASS",
+    "oneShot": true,
+    "currentUserOnlyFlag": true,
+    "distinctRoleTokenTested": false,
+    "signedOwnerAuthenticated": false,
+    "actualTauriIPCIntegrated": false,
+    "canServeOriginalGameOrK003": false,
+    "noBackgroundService": true
+  },
+  "admission": {
+    "ownerSigned": false,
+    "witnessIndependent": false,
+    "windowsDistinctRoleTokenVerified": false,
+    "protectedInstallRootVerified": false,
+    "publisherSignatureVerified": false,
+    "trustedComponentManifest": false,
+    "canonicalFrameworkCoreOwnerSelected": false,
+    "approvedStudioIconAssetVerified": false,
+    "tauriNativeBuildTested": false,
+    "componentManagerProductionVerified": false,
+    "assetLabsProductionVerified": false,
+    "nativeWorkerV2MayRun": false,
+    "productionAdmission": "HOLD",
+    "jobDispatch": false,
+    "autoRetry": false
+  },
+  "plannedPackaging": {
+    "target": "OpenRemasterStudio-Setup-x64.exe",
+    "oneInstallerCompletePlatformModularRuntime": true,
+    "installerProduced": false,
+    "studioAppExeProduced": false,
+    "approvedIconReplacementAllowed": false
+  },
+  "caveat": "Local SHA matches and same-user pipe tests are not signatures, global owner/witness proof, distinct Windows role-token proof, native GUI acceptance, dependency closure, or production authorization."
+}

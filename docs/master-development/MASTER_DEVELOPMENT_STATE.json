@@ -1,0 +1,490 @@
+{
+  "schema": "OpenRemaster.MasterDevelopmentState.v3",
+  "version": 3,
+  "observed_utc": "2026-10-25T16:18:06.492643+00:00",
+  "parent_checkpoint_sha256": "5b5c31ed9f74f43d69a247757f2b24eec3e1f4b95cdc86b79f455394b1061eb8",
+  "coordination": "OpenRemaster — Master Development",
+  "thread_id": "01a1734c-aca7-7d03-8a77-1168008db312",
+  "mode": "ISOLATED_DEVELOPMENT_CANDIDATE",
+  "production_go": false,
+  "inventory_complete": false,
+  "canonical_baseline_replaced": false,
+  "historical_threads_preserved": true,
+  "shared_sources_modified": false,
+  "max_heavy_slots": 3,
+  "single_writer": true,
+  "backlog": [
+    {
+      "id": "R01",
+      "priority": "P0",
+      "title": "Historický register",
+      "dependencies": "none",
+      "acceptance": "Každá požiadavka má zdroj a traceability; chýbajúce scope explicitne vyriešené",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R02",
+      "priority": "P0",
+      "title": "Kanonický integračný baseline",
+      "dependencies": "R01",
+      "acceptance": "Pripnuté komponenty; 2 čisté behy a fresh-copy s rovnakým semantic digest",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R03",
+      "priority": "P0",
+      "title": "Autoritatívne projekcie",
+      "dependencies": "R02",
+      "acceptance": "Stale/offline/older-response scenáre; žiadny zastaraný dispatch",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R04",
+      "priority": "P1",
+      "title": "Projektové natívne UX",
+      "dependencies": "R03",
+      "acceptance": "10 natívnych scenárov; klávesnica; 100/150/200 DPI",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R05",
+      "priority": "P0",
+      "title": "Phase2 closure",
+      "dependencies": "R02",
+      "acceptance": "12/12 requirement kontraktov; dva consumers; neporušená Phase1",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R06",
+      "priority": "P0",
+      "title": "Izolovaný skutočný DEV workflow",
+      "dependencies": "R03+R05+D1-D6 reconciliation",
+      "acceptance": "Studio až nezávislý validator; idempotencia; fence a corpus izolácia",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R07",
+      "priority": "P0",
+      "title": "Lifecycle a recovery",
+      "dependencies": "R06",
+      "acceptance": "4 crash points; UNKNOWN reconciliation; obnova dát a oprávnení",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R08",
+      "priority": "P1",
+      "title": "Governor a tracing",
+      "dependencies": "R06",
+      "acceptance": "GAME/LIGHT; iba vlastnené procesy; operation_id end-to-end",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R09",
+      "priority": "P0",
+      "title": "Dva reálne herné consumers",
+      "dependencies": "R05+R06+R07",
+      "acceptance": "Originál/remaster alignment; save/load; prvá vložená odchýlka nájdená",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R10",
+      "priority": "P1",
+      "title": "RE a Asset Labs",
+      "dependencies": "R05+R06",
+      "acceptance": "Corpus pozitívny aj malformed scenár; provenance a opakovanie",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R11",
+      "priority": "P1",
+      "title": "ORION retrieval a bounded plans",
+      "dependencies": "R03+R05+R06",
+      "acceptance": "80 navrhnutých benchmark prípadov; žiadna eskalácia autority",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R12",
+      "priority": "P1",
+      "title": "Lokalizácia v runtime",
+      "dependencies": "R09",
+      "acceptance": "Placeholder/font kontroly; skutočný dialóg alebo menu",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R13",
+      "priority": "P1",
+      "title": "One Installer a platformy",
+      "dependencies": "R04+R07+R08+R09+R10+R11+R12",
+      "acceptance": "Čistý Windows; update/interruption/rollback so schémou; offline",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "R14",
+      "priority": "P0_RELEASE",
+      "title": "Finálny dual audit a produkcia",
+      "dependencies": "R13",
+      "acceptance": "Rovnaký finálny source digest; 0 high/critical; kvalifikované finálne podpísané bajty; G09/G10",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-001",
+      "priority": "P1",
+      "title": "World Discovery & Source Contracts",
+      "dependencies": "R01+R02",
+      "acceptance": "Pinned discovery; preserve unknowns; full corpus separately measured",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-002",
+      "priority": "P1",
+      "title": "Victory, Failure & Ending Predicates",
+      "dependencies": "GLCA-001",
+      "acceptance": "Original victory/failure/ending predicates with source and reference evidence",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-003",
+      "priority": "P1",
+      "title": "Dependency Graph & Reachability Analysis",
+      "dependencies": "GLCA-001+GLCA-002",
+      "acceptance": "Bounded guarded state paths; ownership/timers/save semantics",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-004",
+      "priority": "P1",
+      "title": "Softlock & Dead-End Detection",
+      "dependencies": "GLCA-002+GLCA-003",
+      "acceptance": "12 classes; 8 statuses; no static promotion; intentional dead ends preserved",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-005",
+      "priority": "P1",
+      "title": "Authentic Gameplay Replay & Fidelity",
+      "dependencies": "GLCA-001+GLCA-002+GLCA-003+R06+R09",
+      "acceptance": "Authentic paired replay; independent fidelity; first causal divergence",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-006",
+      "priority": "P1",
+      "title": "Automated Negative & Regression Tests",
+      "dependencies": "GLCA-001..005 incremental",
+      "acceptance": "Approved negatives and authentic regression fixtures; independent review",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-007",
+      "priority": "P1",
+      "title": "Orchestrator & Studio Integration",
+      "dependencies": "GLCA-001..006+R03+R06+R08+R11",
+      "acceptance": "Existing K003/Host admission; six Studio views; no second scheduler",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "GLCA-008",
+      "priority": "P0_RELEASE",
+      "title": "Production Acceptance & Release Gates",
+      "dependencies": "GLCA-001..007+R14+G09+G10",
+      "acceptance": "Independent validation; production worker; clean pinned rebuild; separate release",
+      "status": "PRESERVED_NOT_REACCEPTED"
+    },
+    {
+      "id": "RLR-01",
+      "title": "Corpus discovery",
+      "priority": "P1",
+      "dependencies": "GLCA-001",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-02",
+      "title": "World/object source contracts",
+      "priority": "P1",
+      "dependencies": "GLCA-001",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-03",
+      "title": "Dialogue source contracts",
+      "priority": "P1",
+      "dependencies": "GLCA-001/002",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-04",
+      "title": "Typed canonical state",
+      "priority": "P1",
+      "dependencies": "GLCA-001/002",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-05",
+      "title": "Puzzle dependencies",
+      "priority": "P1",
+      "dependencies": "GLCA-003",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-06",
+      "title": "Bounded path witnesses",
+      "priority": "P1",
+      "dependencies": "GLCA-003",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-07",
+      "title": "Ending/softlock classification",
+      "priority": "P1",
+      "dependencies": "GLCA-004",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-08",
+      "title": "Authentic differential replay",
+      "priority": "P1",
+      "dependencies": "GLCA-005/006",
+      "status": "HOLD_AUTHENTIC_REPLAY_MISSING",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "RLR-09",
+      "title": "Logic atlas",
+      "priority": "P1",
+      "dependencies": "GLCA-007",
+      "status": "PARTIAL_SYNTHETIC_CONTRACT",
+      "acceptance": "Source-bound per-game evidence and independent validation; model results never establish original behavior"
+    },
+    {
+      "id": "DT-01",
+      "title": "Independent identity and admission",
+      "priority": "P0_RELEASE",
+      "dependencies": "Existing K003/Owner/Governor authority",
+      "status": "HOLD",
+      "acceptance": "Independently verified trust and authorization"
+    },
+    {
+      "id": "DT-02",
+      "title": "Pinned clean rebuild",
+      "priority": "P0_RELEASE",
+      "dependencies": "Existing K003/Owner/Governor authority",
+      "status": "HOLD",
+      "acceptance": "Independently verified trust and authorization"
+    },
+    {
+      "id": "DT-03",
+      "title": "Signing service boundary",
+      "priority": "P0_RELEASE",
+      "dependencies": "Existing K003/Owner/Governor authority",
+      "status": "HOLD",
+      "acceptance": "Independently verified trust and authorization"
+    },
+    {
+      "id": "DT-04",
+      "title": "Independent release authorization",
+      "priority": "P0_RELEASE",
+      "dependencies": "Existing K003/Owner/Governor authority",
+      "status": "HOLD",
+      "acceptance": "Independently verified trust and authorization"
+    },
+    {
+      "id": "DT-05",
+      "title": "Production shadow validation",
+      "priority": "P0_RELEASE",
+      "dependencies": "Existing K003/Owner/Governor authority",
+      "status": "HOLD",
+      "acceptance": "Independently verified trust and authorization"
+    },
+    {
+      "id": "DT-06",
+      "title": "Explicit production activation",
+      "priority": "P0_RELEASE",
+      "dependencies": "Existing K003/Owner/Governor authority",
+      "status": "HOLD",
+      "acceptance": "Independently verified trust and authorization"
+    }
+  ],
+  "implementation_inventory": [
+    {
+      "id": "Framework Core",
+      "status": "IMPLEMENTED / NOT YET ACCEPTED",
+      "verification_scope": "Architecture overlay and source-bound checkpoint; no fresh full Core test run",
+      "next_gate": "Reconcile Phase10 r142 source map and canonical Core revision",
+      "accepted_release": false
+    },
+    {
+      "id": "Studio frontend/backend/design/branding",
+      "status": "ACTIVE DEVELOPMENT",
+      "verification_scope": "Multiple isolated native/UX revisions; active canonical Studio thread owns integration",
+      "next_gate": "Owner-selected source and branding baseline; separate GUI acceptance",
+      "accepted_release": false
+    },
+    {
+      "id": "ORION routing/recovery",
+      "status": "EXPERIMENTAL / SHADOW-ONLY",
+      "verification_scope": "Pinned model architecture and bounded proposal lifecycle; no trusted live routing established",
+      "next_gate": "Bind independent receipts to existing K003 planner; add routing/lifecycle regressions",
+      "accepted_release": false
+    },
+    {
+      "id": "Native Development Worker",
+      "status": "IMPLEMENTED / NOT YET ACCEPTED",
+      "verification_scope": "Unsigned build result exists; actual EXE and frontend hashes independently reopened in this session",
+      "next_gate": "Reconcile active writer FINAL-QUALIFICATION and scoped governor/admission evidence",
+      "accepted_release": false
+    },
+    {
+      "id": "K003 Execution Control",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "Existing orchestration source inspected; production owner/admission integration remains gated",
+      "next_gate": "Use existing owner barrier; no legacy gateway promotion",
+      "accepted_release": false
+    },
+    {
+      "id": "Owner Admission and writer leases",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "V2 authority and trust seams exist; legacy leases has non-atomic check/replace acquisition",
+      "next_gate": "Resolve authoritative active lease provider and independently admitted owner/witness",
+      "accepted_release": false
+    },
+    {
+      "id": "Resource Governor and hardware monitoring",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "Extensive candidates and reconciliation evidence exist; no current global allocation authority verified",
+      "next_gate": "Independent A01/owner evidence and live GAME/LIGHT tests",
+      "accepted_release": false
+    },
+    {
+      "id": "Automatic GAME/LIGHT",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "Live, replay, transition and safety candidates present; current enforcement not verified",
+      "next_gate": "Verify current bridge inputs without starting heavy jobs",
+      "accepted_release": false
+    },
+    {
+      "id": "Fidelity and Causal Gates",
+      "status": "IMPLEMENTED / NOT YET ACCEPTED",
+      "verification_scope": "Existing dedicated gate packages; no new original gameplay or fidelity execution",
+      "next_gate": "Project-specific source/oracle admission and fidelity evidence",
+      "accepted_release": false
+    },
+    {
+      "id": "Build/candidate/release controls",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "DEV Studio build demonstrated; Phase10 release reality/readiness HOLD preserved",
+      "next_gate": "Independent clean-build and signing-service trust adapters",
+      "accepted_release": false
+    },
+    {
+      "id": "Asset Labs / reverse engineering / World IR",
+      "status": "UNKNOWN",
+      "verification_scope": "Not sufficiently source-verified during bounded first inventory; corpora excluded",
+      "next_gate": "Resolve source ownership and exact World IR/Asset Lab implementation paths",
+      "accepted_release": false
+    },
+    {
+      "id": "Knowledge Graph / Obsidian Bridge",
+      "status": "EXPERIMENTAL / SHADOW-ONLY",
+      "verification_scope": "Existing architecture descriptors identify shadow knowledge context",
+      "next_gate": "Source/GUI acceptance; no trusted authority inferred from knowledge records",
+      "accepted_release": false
+    },
+    {
+      "id": "Platform Abstraction / Steam Deck",
+      "status": "ISOLATED CANDIDATE",
+      "verification_scope": "Platform policy and readiness present; recorded accepted native game exports = 0",
+      "next_gate": "Per-game Linux replay and Deck hardware acceptance",
+      "accepted_release": false
+    },
+    {
+      "id": "Installer / updates / rollback",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "D7 development installer install/rollback evidence discovered; production updater unknown",
+      "next_gate": "Independently review installer scope and production update/rollback chain",
+      "accepted_release": false
+    },
+    {
+      "id": "Branding / original game logos",
+      "status": "ACTIVE DEVELOPMENT",
+      "verification_scope": "Studio brand/localization candidates exist; per-game logo provenance not fully reconciled",
+      "next_gate": "Preserve branding writer; resolve original logo evidence by game",
+      "accepted_release": false
+    },
+    {
+      "id": "Security / audit / provenance / signing",
+      "status": "PARTIALLY IMPLEMENTED",
+      "verification_scope": "Real CNG test candidate and source pins present; test keys do not establish production custody",
+      "next_gate": "Independent signer, issuer, witness and immutable clean-build evidence",
+      "accepted_release": false
+    },
+    {
+      "id": "Secure Production Worker",
+      "status": "APPROVED / NOT IMPLEMENTED",
+      "verification_scope": "Architecture approved by user; no independently verified production-eligible worker established",
+      "next_gate": "Independent validation and separate explicit production activation approval",
+      "accepted_release": false
+    },
+    {
+      "id": "Dual-Trust contract crosswalk",
+      "status": "ISOLATED CANDIDATE",
+      "verification_scope": "New offline requirements lint and shadow transition matrix; no runtime registration",
+      "next_gate": "Wire existing independently verified authority adapters in isolated candidate",
+      "accepted_release": false
+    }
+  ],
+  "priority_order": [
+    "R01",
+    "R02",
+    "R03",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "GLCA-001",
+    "GLCA-002",
+    "GLCA-003",
+    "RLR-01",
+    "RLR-04",
+    "RLR-06",
+    "GLCA-007",
+    "R14"
+  ],
+  "new_modules": [
+    "GLCA retail source/state/IR/model/atlas contracts",
+    "GLCA-based master advisory workflow",
+    "Dual-Trust worker/handoff wire schemas",
+    "Read-only Studio development checkpoint panel",
+    "Read-only R06 intake-to-advisory bridge; independent authority remains unverified"
+  ],
+  "reused_modules": [
+    "Existing GLCA core/source/replay/tasks",
+    "Shadow Dual-Trust linter and receipt crosswalk",
+    "R06 structural evidence intake",
+    "Unsigned native DEV supervisor/broker/host",
+    "D7 Studio source snapshot",
+    "M012 Core contracts",
+    "Historical code vault"
+  ],
+  "limitations": [
+    "Not an exhaustive account-history merge",
+    "No real retail-corpus admission or execution",
+    "No native GUI or new native rebuild",
+    "Protected owner/resource evidence unresolved",
+    "No trusted production worker or signing activation"
+  ],
+  "r06_intake_bridge": {
+    "status": "SOURCE_TESTED_HOLD",
+    "tests": 19,
+    "complete_development_suite": 89,
+    "real_report_status": "HOLD",
+    "live_dispatch": false,
+    "independent_crypto_verified": false
+  }
+}

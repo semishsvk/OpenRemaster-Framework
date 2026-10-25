@@ -1,0 +1,87 @@
+{
+  "schema": "OpenRemaster.StudioInspectorCapture.v1",
+  "status": "SOURCE_BOUND_READONLY_CAPTURED_PRODUCTION_HOLD",
+  "code": "SOURCE_BOUND_CAPTURE_ACCEPTED",
+  "captureStartedUtc": "2026-10-18T09:38:33.436Z",
+  "expiresUtc": "2026-10-18T09:39:03.436Z",
+  "sourceMode": "LOCAL_SIGNLESS_PINNED_HOST_OPERATOR_CAPTURE",
+  "sourceAuthority": "UNSIGNED_LOCAL_SHA256_ONLY",
+  "productionAdmission": "HOLD",
+  "ownerSelectedId": null,
+  "sourceCorporaTouched": false,
+  "dispatchAuthorized": false,
+  "nativeWorkerUsed": false,
+  "autoRetry": false,
+  "originalGamesTouched": false,
+  "hostReadOnly": true,
+  "records": [
+    {
+      "id": "cp_04573f19e83e10ada3102de6f9518c008b4ff8c2d35c23712c37770a3c3d791a",
+      "project": "OpenRemaster",
+      "workstream": "EvidenceCache",
+      "edition": "Framework0",
+      "scope": "EvidenceDependency",
+      "sourceSchema": "OpenRemaster.DerivedEvidenceCacheCheckpoint.v1",
+      "sourceSha256": "e0a582f08b4869a1340c6ac0cdc7e656246029fdb7f1436f9f348387fe4c51f9",
+      "reportedStatus": "ISOLATED_SOFTWARE_AND_SOURCE_BOUND_CACHE_PASS__PRODUCTION_HOLD",
+      "reportedAtUtc": null,
+      "parentIds": [
+        "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64"
+      ],
+      "observationClass": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+      "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION"
+    },
+    {
+      "id": "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64",
+      "project": "OpenRemaster",
+      "workstream": "CrosscuttingUpgrades",
+      "edition": "Framework0",
+      "scope": "EvidenceDependency",
+      "sourceSchema": "OpenRemaster.IsolatedCrosscuttingUpgradeCheckpoint.v1",
+      "sourceSha256": "e9647e621b111305a9e92ba1859569caca96b9d9f00c33c6e2a418615c0f8dab",
+      "reportedStatus": "ISOLATED_SHADOW_SOFTWARE_AND_SOURCE_PINS_PASS__PRODUCTION_HOLD",
+      "reportedAtUtc": null,
+      "parentIds": [],
+      "observationClass": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+      "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION"
+    }
+  ],
+  "total": 2,
+  "snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+  "hostSourcePins": {
+    "inspector_host_v1.py": "ce9c448d33c7acda71a2cdefa5507d9e3dec3d2817e0c2f5f786864c8a61ca56",
+    "HOST_SOURCE_PINS.json": "1f14b49d8697be862350bdb047fc0eaed116fc9eca9297f3b83c4c32a3ed5ccd",
+    "inspector_session_v1.cjs": "7b3b1cc23abb8b128dbd73bdcd80996e4bcdf9b41bbb850ab7edab4dec6e618c",
+    "inspector_r1/continuation_consumer_v1.cjs": "15efdd594c9b35285c36e252b91e821cbfe83399de159ff4da220bf0a87687c1"
+  },
+  "requestAudit": [
+    {
+      "method": "health.get",
+      "responseSha256": "068c4e0058a0dde277fa717ca5b4088df42ac76813b68a10dd69d5397254cdfb",
+      "acceptedReadOnly": true
+    },
+    {
+      "method": "checkpoints.list",
+      "responseSha256": "ae9cee239bb5ec82abc370f447c7bec87088d634a32255d4092b87f1723ecd74",
+      "acceptedReadOnly": true
+    },
+    {
+      "method": "checkpoints.get",
+      "responseSha256": "75033011f7fef44cf68f0d294a36850fd91061a9da615c90192a20a93ed5d33d",
+      "acceptedReadOnly": true
+    },
+    {
+      "method": "checkpoints.get",
+      "responseSha256": "305560570f9a76e51042cbbf8cdb9563f76267d69b091cc1c320ec2e857dfdbd",
+      "acceptedReadOnly": true
+    }
+  ],
+  "captureCompletedUtc": "2026-10-18T09:38:35.296Z",
+  "registryDecision": "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED",
+  "registryBlockers": [
+    "EXTERNAL_OWNER_CANONICAL_SELECTION_REQUIRED"
+  ],
+  "freshnessAssertion": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+  "hostCheckpointScope": "ONLY_2_EXISTING_PINNED_FRAMEWORK_CHECKPOINTS_NOT_GLOBAL",
+  "generation": 1
+}

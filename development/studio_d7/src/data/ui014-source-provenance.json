@@ -1,0 +1,71 @@
+{
+  "schema": "OpenRemaster.StudioUI014.IntegrationSourceReview.v1",
+  "release": "ORF-STUDIO-UI-20261018-r13",
+  "generatedUtc": "2026-10-18T15:42:52+00:00",
+  "status": "SEALED_R20_GATE_A_PLUS_ARCHIVED_INSPECTOR_PROTOCOL_PASS_PRODUCTION_HOLD",
+  "authority": "LOCAL_UNSIGNED_SHA_ONLY_NOT_CURRENT_WINDOWS_OR_EXTERNAL_OWNER",
+  "sourcePins": {
+    "studio_r20_zip": "85f09b960f03528594546aaf851e2eae57efe4d28b62aa221b47129026028a21",
+    "studio_r20_checkpoint": "85b196e25fed615b099fc280f259fa9d3ed5b8abcf1bd6183f99815fb8b8ef4f",
+    "studio_r12_zip": "a781c45e39f13ae15c95f6bdeba8db7ef3252e1df8119669a150bee593fe8403",
+    "original_k003": "644f9ef4d001a56ee9738d91ac558c5fed32967a17819245a3174b0815fe1d7a",
+    "host_replay_original_ts": "2dc3233bee5a5d32ad337e52770aedfc257e867d006400a777e9cfe0aaf2a481",
+    "host_replay_original_json": "39316fadd308cf6897949a77d3c7ad65cfa431fa6abdc21d10f8f1fa51202f35",
+    "desktop_preflight_r21": "440e76cb8717f2a75e33c45d1598241f0a8744c3e13d61d6032b92c98d717702",
+    "r20_base_only_integration_test": "2e72b5a382bc4df6d5d09389c251f903e3037c68b8796e41c05c3c81dfb3fe98"
+  },
+  "sealedGateAPins": {
+    "src/gate-a-r18a.ts": "1499bd30b8611452cb4113083ba01350a173d2618e77f2efea08e56bd6a1846e",
+    "src/gate-a-styles.css": "6075adaace56ea7858e42724781b999098688eae8428d157436f2e725f9c9ff5",
+    "src/GateAReviewPanel.tsx": "f5e207c6db5e09d4d69e391a820357e6be6efb52a7c161b0e5aed6418e6bc952",
+    "src/data/gate-a-r18a.json": "b0f40ce8b776486c69f2b984621f8c6201b559ef54eaba6721453a28ceece8f7",
+    "tests/gate-a-r18a.test.mjs": "f5a297fa63bda69b5c5603eb604c8f30a9887c0eecee91b484aa1116370472ca",
+    "src/GameCompletionLab.tsx": "75fc07e5e09ea61591f1ac736a705c4d3fa3db83d7ede03b9777daca4ab922ed",
+    "src/data/game-completion-board.json": "c4cfe09b4ddc35094f490d3a79b817d26dddab6ba0d69e52b3810159f4909e5c"
+  },
+  "originalR20": {
+    "readOnlyNodeTests": 260,
+    "oldStudioScreens": 22,
+    "gateARequirements": 9,
+    "independentReviewerFields": 22,
+    "r12SourcePreserved": true,
+    "nativeAppOrInstallerBuilt": false,
+    "productionAllowed": false,
+    "frozenR20TestArchivedNotMisrunAgainstR13": true
+  },
+  "archivedHost": {
+    "historicalRealWindowsRequests": 6,
+    "successfulReadOnlyResponses": 5,
+    "staleSnapshotRejected": 1,
+    "permittedMethods": [
+      "health.get",
+      "checkpoints.list",
+      "checkpoints.get"
+    ],
+    "actualLiveHostRPCInThisStudio": 0,
+    "newOperatingSystemProcessLaunched": false,
+    "currentOwnerWitnessAuthenticated": false,
+    "canDispatch": false
+  },
+  "desktop": {
+    "preflightSourceDate": "2026-10-18T15:11:26.759825+00:00",
+    "sourcePrerequisitesPresent": 5,
+    "productionBlockers": 15,
+    "nativeRustToolchainVerified": false,
+    "approvedStudioIconVerified": false,
+    "publisherSignatureVerified": false,
+    "independentGateA_B_CApproved": false,
+    "oneInstallerAccepted": false
+  },
+  "production": {
+    "status": "HOLD_NO_AUTO_RETRY",
+    "noNewScheduler": true,
+    "maxGlobalHeavySlots": 3,
+    "oneWriterPerGame": true,
+    "originalGameDataAccessed": false,
+    "K003Modified": false,
+    "autoRetry": false,
+    "externalOwnerApproved": false,
+    "nativeWorkerActivated": false
+  }
+}

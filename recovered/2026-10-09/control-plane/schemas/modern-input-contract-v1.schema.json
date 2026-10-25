@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"ModernInputContract v1",
+  "type":"object",
+  "required":["schema","project","semantic_actions","profiles","test_backend","semantics_policy"],
+  "properties":{
+    "schema":{"const":"ModernInputContract.v1"},
+    "project":{"type":"string","minLength":1},
+    "semantic_actions":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string"}},
+    "profiles":{"type":"object","required":["test","modern","classic"]},
+    "test_backend":{"type":"object","required":["adapter","deterministic","host_coordinate_independent"]},
+    "semantics_policy":{"type":"object","required":["preserve_gameplay_timing","preserve_collision","preserve_simulation"]}
+  }
+}

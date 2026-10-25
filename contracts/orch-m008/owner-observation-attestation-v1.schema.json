@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/semishsvk/OpenRemaster-Framework/contracts/orch-m008/owner-observation-attestation-v1.schema.json",
+  "title": "ORF M008 Ed25519 Owner Observation Review Envelope — NEVER EXECUTION AUTHORITY",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "audience",
+    "authority_id",
+    "key_id",
+    "registry_id",
+    "project_id",
+    "edition",
+    "policy_epoch_id",
+    "r14_owner_id",
+    "m005_owner_id",
+    "owner_work_scope_sha256",
+    "r14_policy_sha256",
+    "r14_anchor_sha256",
+    "source_guard_sha256",
+    "source_capture_sha256",
+    "source_capture_finished_utc",
+    "r14_source_sha256",
+    "m005_source_revision",
+    "corpus_sha256",
+    "owner_observation_sha256",
+    "owner_observation_size_bytes",
+    "r14_owner_epoch_id",
+    "owner_epoch_counter",
+    "fence_generation",
+    "nonce_sha256",
+    "m005_anchor_sha256",
+    "sequence",
+    "previous_attestation_sha256",
+    "challenge",
+    "observed_utc",
+    "issued_utc",
+    "expires_utc",
+    "signature_b64"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ORF-M008.OwnerObservationAttestation.v1"
+    },
+    "audience": {
+      "const": "ORF-ExternalOwnerObservation-ReviewOnly-v1"
+    },
+    "authority_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "key_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "registry_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "edition": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "policy_epoch_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "r14_owner_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "m005_owner_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "owner_work_scope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "r14_policy_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "r14_anchor_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_guard_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_capture_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "source_capture_finished_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "r14_source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "m005_source_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "corpus_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "owner_observation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "owner_observation_size_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 67108864
+    },
+    "r14_owner_epoch_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "owner_epoch_counter": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "fence_generation": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "nonce_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "m005_anchor_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9223372036854775000
+    },
+    "previous_attestation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "challenge": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{22,128}$"
+    },
+    "observed_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "issued_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "expires_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "signature_b64": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+      "minLength": 86,
+      "maxLength": 128
+    }
+  }
+}

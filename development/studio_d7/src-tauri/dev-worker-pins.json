@@ -1,0 +1,16 @@
+{
+  "root": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-05",
+  "python": "C:\\Users\\msemj\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "python_sha256": "7a4102b91959bb234507850ea584e1d31d300a6831b171e4aadc59ff592f0234",
+  "broker_sha256": "0221a7106b724b762ed49a6bff0429da0e23d8f4001c6d7d9d55aa9055522436",
+  "manifest_sha256": "e3786fc8dd7013497c0bc3b330319a5188089cb9416f0121000afe75f9c82cc3",
+  "dev_self_signed_verifier": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-05\\dev_self_signed_verifier.py",
+  "dev_self_signed_verifier_sha256": "7a046fca5ff8713d63596a97861997059442727111306e9b057242c7a2f716c3",
+  "dev_self_signed_issuer": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-05\\dev_self_signed_issuer.py",
+  "dev_self_signed_issuer_sha256": "c67acb441424b45d1c7a7299449827675ad5e6276962008220dab0c19cff79f4",
+  "dev_packet_template": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-05\\dev-evidence\\ui-admission-packet.json",
+  "dev_packet_template_sha256": "ab8ea1fa687f3942e976308f75ae9fcdaf71406319088325da7810ba47f7a03f",
+  "dev_packet": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-05\\dev-evidence\\ui-admission-packet-test.json",
+  "dev_receipt": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-05\\dev-evidence\\ui-admission-receipt.json",
+  "dev_receipt_sha256": "87c6524815e83dafad91496b7b9ae694510bda6dc5164c9ae39e607b7eb63704"
+}
