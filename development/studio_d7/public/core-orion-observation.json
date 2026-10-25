@@ -1,0 +1,17 @@
+{
+  "schema": "ORF.CoreOrion.Readonly.v1",
+  "status": "VERIFIED_TEST_RECEIPT_HOLD",
+  "signatureCount": 3,
+  "fixtureSha256": "bda5d2858113ff7f65f23fb01a142b70c78f42940af8409657dd3412fe24fcbc",
+  "project": "SyntheticEvaluation",
+  "runId": "run-r2",
+  "clockMode": "SAVED_SYNTHETIC_FIXTURE_TIME",
+  "sourceMode": "CORE_EXTENSION_EXISTING_ORION_VERIFIER",
+  "productionAdmission": "HOLD_NO_AUTO_RETRY",
+  "dispatchAuthorized": false,
+  "automaticRetry": false,
+  "productionSigning": false,
+  "modelInvoked": false,
+  "workerStarted": false,
+  "journalWritten": false
+}

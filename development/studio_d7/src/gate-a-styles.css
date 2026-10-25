@@ -1,0 +1,47 @@
+/* r19 independent Gate A review panel — additive to Studio r11 design system.
+   Self-contained local UI only. No privileged behavior / form submission. */
+.gatea-shell{background:#151f29;border:1px solid #33504b;border-radius:12px;padding:24px;margin:5px 0 24px;box-shadow:0 12px 36px rgba(0,0,0,.12)}
+.gatea-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:21px}
+.gatea-kicker{font-size:9px;letter-spacing:1.65px;text-transform:uppercase;font-weight:780;color:#8ac8b8}
+.gatea-head h3{font-size:22px;margin:8px 0 7px;letter-spacing:-.6px;color:#e6f0f0;font-weight:680}
+.gatea-explainer{max-width:660px;font-size:11.5px;line-height:1.65;margin:0;color:#a3b5bb}
+.gatea-pill{font-size:9px;letter-spacing:.5px;font-weight:750;border-radius:5px;padding:6px 8px;border:1px solid #71504c;white-space:nowrap}
+.gatea-hold{background:#30252a;border-color:#89544f;color:#f4a79d}
+.gatea-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:17px}
+.gatea-metrics>div{display:flex;flex-direction:column;min-height:81px;padding:16px;border:1px solid #33414c;border-radius:8px;background:#1b2933}
+.gatea-metrics strong{font-size:25px;line-height:1.05;letter-spacing:-.7px;color:#dcece8}
+.gatea-metrics span{font-size:10px;color:#879fac;margin-top:9px;line-height:1.4}
+.gatea-notice{padding:13px 15px;border:1px solid #695446;background:#272922;border-radius:7px;font-size:11px;line-height:1.7;color:#e3c6a5;margin-bottom:19px}
+.gatea-layout{display:grid;grid-template-columns:minmax(240px,.85fr) minmax(300px,1.5fr);gap:15px;align-items:start}
+.gatea-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gatea-item{min-width:0;text-align:left;border:1px solid #33434c;border-radius:7px;background:#1a2731;color:#d5e4e6;padding:12px;display:flex;flex-direction:column;gap:6px;transition:background .15s,border-color .15s}
+.gatea-item:hover{background:#23333d;border-color:#527569}
+.gatea-item.gatea-active{background:#1d3735;border-color:#75b29b}
+.gatea-item-top{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.gatea-item-top>b{color:#9bd9c1;font-size:12px}
+.gatea-item>.gatea-item-top>.gatea-pill{font-size:8px;padding:4px 5px}
+.gatea-item>strong{font-size:11px;line-height:1.4;text-transform:capitalize;font-weight:690}
+.gatea-item>small{font-size:9px;color:#859aa8;line-height:1.4}
+.gatea-detail{border:1px solid #34524e;border-radius:9px;background:#17272e;padding:22px;min-width:0}
+.gatea-detail-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;border-bottom:1px solid #34484d;padding-bottom:14px}
+.gatea-detail h4{font-size:16px;letter-spacing:-.3px;line-height:1.4;margin:6px 0 0}
+.gatea-description{font-size:12px;line-height:1.7;color:#c4d8d4;margin:18px 0}
+.gatea-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;border-top:1px solid #33434b;padding-top:12px}
+.gatea-detail-grid h5{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#8fb5a7;margin:7px 0 8px}
+.gatea-detail-grid ul{margin:0;padding-left:18px}
+.gatea-detail-grid li,.gatea-small{font-size:10.5px;color:#a8bbc0;line-height:1.75}
+.gatea-next{border:1px solid #454f45;border-radius:7px;background:#242e2c;padding:12px;margin:18px 0 12px}
+.gatea-next b{font-size:11px;color:#badac9}
+.gatea-next p{font-size:10.5px;color:#a5b9b8;line-height:1.65;margin:4px 0 0}
+.gatea-export{font-size:11px;font-weight:690;padding:11px 14px;background:#24483d;color:#d9f1e8;border:1px solid #4d8c74;border-radius:7px}
+.gatea-export:hover{background:#305e4e}
+.gatea-wave-strip{margin-top:17px;padding-top:16px;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;border-top:1px solid #354650}
+.gatea-wave-strip>div{padding:8px 5px;text-align:center;background:#1f2d35;border-radius:6px;border:1px solid #2b424c}
+.gatea-wave-strip span{display:block;font-size:9px;color:#829ca5}
+.gatea-wave-strip b{display:block;margin-top:5px;color:#b4d8c7;font-size:10px;white-space:nowrap}
+.gatea-footer{margin-top:17px;display:flex;align-items:flex-end;justify-content:space-between;gap:17px;color:#849ca4;font-size:9.5px;line-height:1.5}
+.gatea-footer b{color:#a7d5c3;display:block;margin-bottom:4px}
+.gatea-footer code{font-size:10px;overflow-wrap:anywhere;color:#87bcae}
+@media(max-width:1150px){.gatea-layout{grid-template-columns:1fr}.gatea-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.gatea-wave-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.gatea-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.gatea-shell{padding:16px}.gatea-head{flex-direction:column;gap:10px}.gatea-list{grid-template-columns:repeat(2,minmax(0,1fr))}.gatea-detail-grid{grid-template-columns:1fr}.gatea-wave-strip{grid-template-columns:repeat(4,minmax(0,1fr))}}

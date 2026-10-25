@@ -82,15 +82,58 @@ def test_unexpected_confirmation_without_prepare(tmp_path):
     with init(tmp_path) as l:
         with pytest.raises(RecoveryHold):l.reconcile('operation-001',outcome='COMMIT_CONFIRMED',receipt_digest=C)
 
+def _create_symlink_or_skip(link,target):
+    """Only Windows missing-privilege setup is an environment limitation."""
+    try:
+        link.symlink_to(target)
+    except OSError as exc:
+        if getattr(exc, 'winerror', None) == 1314:
+            pytest.skip('Windows identity lacks symlink privilege; real symlink rejection remains unverified here')
+        raise
 def test_symlinked_ledger_refused(tmp_path):
+    """Real filesystem security test; never replaced with simulated evidence."""
     other=tmp_path/'outside.sqlite3';other.write_bytes(b'untrusted')
-    (tmp_path/'m010-review-only.sqlite3').symlink_to(other)
-    with pytest.raises(RecoveryHold):DurableReviewLedger(tmp_path)
+    _create_symlink_or_skip(tmp_path/'m010-review-only.sqlite3',other)
+    with pytest.raises(RecoveryHold,match='refusing symlinked ledger'):
+        DurableReviewLedger(tmp_path)
+    assert other.read_bytes()==b'untrusted'
 
 def test_same_scope_competing_candidate_fails(tmp_path):
     with init(tmp_path) as l:
         prepare(l)
         with pytest.raises(RecoveryHold):prepare(l,'operation-002','challenge-002',C)
+
+def test_symlink_guard_refuses_before_database_connect_simulated(tmp_path,monkeypatch):
+    """Branch-only evidence; real filesystem symlink test remains separate."""
+    from pathlib import Path
+    import openremaster.m010_durable_recovery as recovery
+    ledger=tmp_path/'m010-review-only.sqlite3'
+    original=Path.is_symlink
+    monkeypatch.setattr(Path,'is_symlink',lambda path:True if path==ledger else original(path))
+    def forbidden_connect(*args,**kwargs):
+        pytest.fail('Symlink guard must reject before SQLite opens the ledger')
+    monkeypatch.setattr(recovery.sqlite3,'connect',forbidden_connect)
+    with pytest.raises(RecoveryHold,match='refusing symlinked ledger'):
+        DurableReviewLedger(tmp_path)
+    assert not ledger.exists()
+
+def test_missing_symlink_privilege_is_explicit_environment_skip(tmp_path,monkeypatch):
+    from pathlib import Path
+    error=OSError('synthetic missing privilege');error.winerror=1314
+    def unavailable(*args,**kwargs):raise error
+    monkeypatch.setattr(Path,'symlink_to',unavailable)
+    with pytest.raises(pytest.skip.Exception,match='real symlink rejection remains unverified'):
+        _create_symlink_or_skip(tmp_path/'link',tmp_path/'target')
+
+@pytest.mark.parametrize('winerror',[5,None])
+def test_unexpected_symlink_setup_errors_are_not_skipped(tmp_path,monkeypatch,winerror):
+    from pathlib import Path
+    error=OSError('synthetic unexpected setup failure')
+    if winerror is not None:error.winerror=winerror
+    def broken(*args,**kwargs):raise error
+    monkeypatch.setattr(Path,'symlink_to',broken)
+    with pytest.raises(OSError,match='unexpected setup failure'):
+        _create_symlink_or_skip(tmp_path/'link',tmp_path/'target')
 
 def test_missing_receipt_confirmation_fails(tmp_path):
     with init(tmp_path) as l:

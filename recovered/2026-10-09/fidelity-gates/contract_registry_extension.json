@@ -1,0 +1,74 @@
+{
+  "schema": "OpenRemaster.FrameworkContractExtension.v1",
+  "id": "ORF-FIDELITY-GATES-20261009-r1",
+  "decision": "USER_APPROVED_2026-10-09",
+  "phase1_baseline": "FROZEN_UNCHANGED",
+  "architecture": "ENGINE_NEUTRAL_SIDECAR",
+  "contracts": [
+    {
+      "id": "OracleAlignmentContract.v1",
+      "implementation": "alignment.py",
+      "states": [
+        "ALIGNED",
+        "ALIGNMENT_BLOCKED",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    {
+      "id": "ComparisonAdmissibilityGuard.v1",
+      "implementation": "alignment.py",
+      "states": [
+        "ADMISSIBLE",
+        "BLOCKED"
+      ]
+    },
+    {
+      "id": "CausalFidelityDiff.v1",
+      "implementation": "causal.py",
+      "states": [
+        "EVALUATED",
+        "ALIGNMENT_BLOCKED",
+        "PARTIAL_INVALID"
+      ]
+    },
+    {
+      "id": "ResourceResolutionContract.v1",
+      "implementation": "semantics.py",
+      "states": [
+        "RESOLUTION_CONTRACT_PASS",
+        "STRUCTURAL_ONLY",
+        "BLOCKED"
+      ]
+    },
+    {
+      "id": "SemanticPopulationGuard.v1",
+      "implementation": "semantics.py",
+      "states": [
+        "POPULATION_CONTRACT_PASS",
+        "STRUCTURAL_PASS_SEMANTIC_HOLD",
+        "FAIL"
+      ]
+    }
+  ],
+  "promotion_policy": {
+    "pixel_comparison_requires_aligned_oracle": true,
+    "invalid_alignment_not_fidelity_fail": true,
+    "missing_provenance_fail_closed": true,
+    "fidelity_verified_requires_existing_independent_validator": true,
+    "rdc_stream_fidelity_authority": false
+  },
+  "integration": {
+    "adapter": "orch_adapter.gated_validate",
+    "mode": "OPT_IN_PRODUCTION_HOLD",
+    "shared_validator_modified": false,
+    "shared_worker_modified": false,
+    "require_owner_leased_native_canary": true
+  },
+  "tests": {
+    "suite": "python -m unittest discover -s . -p test_*.py -q",
+    "fixtures": "synthetic plus actual Zork R27, MDK v3, U9 NONFIXED, Fallout 2 DAT2",
+    "fidelity_runtime_verification": "NOT_RUN_FOR_NEW_CONTRACTS"
+  },
+  "owner_scope": "NEW_VERSIONED_PACKAGE_ONLY",
+  "heavy_workers_started": 0
+}

@@ -1,0 +1,49 @@
+{
+  "$id": "urn:openremaster:CausalFidelityDiff.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "admission": {
+      "type": "object"
+    },
+    "observations": {
+      "items": {
+        "properties": {
+          "controlled_intervention": {
+            "type": "boolean"
+          },
+          "error_after": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "error_before": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "independent_repeat": {
+            "type": "boolean"
+          },
+          "layer": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "mechanism": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "layer",
+          "mechanism"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "admission",
+    "observations"
+  ],
+  "title": "CausalFidelityDiff.v1",
+  "type": "object"
+}

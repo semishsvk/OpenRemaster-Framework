@@ -1,0 +1,169 @@
+{
+  "schema": "OpenRemaster.Studio.RuntimePackagingEvidence.v1",
+  "releaseId": "ORF-STUDIO-UI-20261018-r6",
+  "generatedUtc": "2026-10-18T11:24:44+00:00",
+  "status": "PINNED_NATIVE_EVIDENCE_VALIDATED__INSTALLER_NO_GO",
+  "sourceAuthority": "LOCAL_UNSIGNED_SHA256_ONLY",
+  "scope": "TWO_SEPARATE_NW025_U_AND_Z_EVIDENCE_SCOPES_NOT_ONE_RUNTIME_PROOF",
+  "sourcePins": {
+    "studioParentR5": "56d3cdeba937b019c2d345e801cf5ed8c5cb55f55d6a6494bfc05163e70e9ea5",
+    "uManifest": "68697d9003fdf86667eb96d53d321f93444599a38bb4be0535740b9955810ae4",
+    "uBoundary": "8f07a283fe6bed4b9aa3038777914869c91e17573b878ed9610d7bc36194553e",
+    "uGraph": "d9131a4ae15faf5938646761e8fd8385601321d7e7ec8221bde4deb9a7c7ef8e",
+    "zManifest": "2a74b83da5fd66ebfbb04b05b6975c50e5f16c0acdc72fa26e6eb7ac0f1cb773",
+    "zLoads": "7678099a60dd88a7e8bb5179d7df7f92434f0136138d03568dea7c9025798e26",
+    "zStdout": "15a6d54d5ea4f71d8e4d00d7f870cedbc7e785132db479aa3eee8b30a1ed206f",
+    "pythonLicense": "935cf13e19f8c31b497d20b05d73623431a226b230c3599bc30fa3348979bc68"
+  },
+  "staticAudit": {
+    "origin": "NW025-U",
+    "originalBinaryRootCount": 37,
+    "directExternalNames": 36,
+    "directApiSetContracts": 14,
+    "directSystem32FilenameCandidates": 22,
+    "directUnclassified": 0,
+    "actualLoaderResolutionAccepted": false,
+    "boundedGraphFiles": 256,
+    "boundedGraphOriginalRuntimeFiles": 37,
+    "boundedGraphWindowsFiles": 219,
+    "boundedGraphImportEdges": 9331,
+    "boundedGraphApiSetEdges": 7534,
+    "boundedGraphNoFilenameCandidateEdges": 5,
+    "boundedGraphComplete": false,
+    "graphBudgetReached": true,
+    "windowsSystemDllsToIncludeInInstaller": false,
+    "nodeVersion": "24.19.0",
+    "pythonLicensePresent": true,
+    "pythonLicenseSha256": "935cf13e19f8c31b497d20b05d73623431a226b230c3599bc30fa3348979bc68",
+    "nodeRuntimeLicenseObtained": false,
+    "redistributionApproved": false
+  },
+  "loadedModuleAudit": {
+    "origin": "NW025-Z",
+    "observationKind": "ONE_POST_TEST_SNAPSHOT_NOT_FULL_DYNAMIC_CLOSURE",
+    "isolatedRuntimeSource": "NW025-Y_HISTORICAL_CANDIDATE",
+    "checksPassed": 20,
+    "checksTotal": 20,
+    "observedNativeModules": 40,
+    "runtimeModules": 17,
+    "windowsLocationModules": 23,
+    "unexpectedModuleLocations": 0,
+    "runtimeModulesMatchYManifest": true,
+    "fullTransientLoaderHistoryCaptured": false,
+    "cleanMachineTested": false,
+    "productionHostRpcInvoked": false,
+    "moduleFileNamesAndHashes": [
+      {
+        "fileName": "python.exe",
+        "sha256": "cce21c0e8710e304273e98ac4b2b0f5aceb639acbcd2343cbaa5c4e81619c45b",
+        "bytes": 106328
+      },
+      {
+        "fileName": "VCRUNTIME140.dll",
+        "sha256": "052ad6a20d375957e82aa6a3c441ea548d89be0981516ca7eb306e063d5027f4",
+        "bytes": 120400
+      },
+      {
+        "fileName": "python314.dll",
+        "sha256": "1ac15e2224581fc678bbd17728b9aa538d47b891b72c76499ef07e54cd74f151",
+        "bytes": 6753112
+      },
+      {
+        "fileName": "python3.DLL",
+        "sha256": "be1017ca4ca8ff837efbb343d5c8f739bd67bd1c43fb41068a539b19357c0213",
+        "bytes": 74072
+      },
+      {
+        "fileName": "_ctypes.pyd",
+        "sha256": "f8a9f7831e81b2bfba12456e589f8198114f24986bd527ac231a844565afcddb",
+        "bytes": 142680
+      },
+      {
+        "fileName": "libffi-8.dll",
+        "sha256": "eff52743773eb550fcc6ce3efc37c85724502233b6b002a35496d828bd7b280a",
+        "bytes": 39696
+      },
+      {
+        "fileName": "_hashlib.pyd",
+        "sha256": "d4524b261f09806a828c62fc97e8517328b23d65ab87d20706a4bafd86bbf345",
+        "bytes": 69464
+      },
+      {
+        "fileName": "libcrypto-3.dll",
+        "sha256": "e03dd02fdcfb791981c9962827cfcf495f2a47a514c1526efb57f847a9df514a",
+        "bytes": 5229424
+      },
+      {
+        "fileName": "_ssl.pyd",
+        "sha256": "43e60bbdff2fe41701f39fa25ea6a8251a2b7623ff18f980a209a451eb5e648f",
+        "bytes": 184664
+      },
+      {
+        "fileName": "libssl-3.dll",
+        "sha256": "1e4bc0638682bfcbb36f4465d6a2e9944d917a60f05ecc8ddf9e96847e05e13f",
+        "bytes": 794992
+      },
+      {
+        "fileName": "_socket.pyd",
+        "sha256": "ff3e97cd11bdc68798e5b3dcd5295d1efba179b7344142d50d066bbf1c2d79cd",
+        "bytes": 87384
+      },
+      {
+        "fileName": "_sqlite3.pyd",
+        "sha256": "c6d7bcea0084bcfa3c487bd7040350ee7c77f4108ce74b964f760133b2a7a6b2",
+        "bytes": 132440
+      },
+      {
+        "fileName": "sqlite3.dll",
+        "sha256": "bf85c9ae8a9eda75ce45dee2d325aabc4426557c5223b38cb4271f860cc808c2",
+        "bytes": 1584984
+      },
+      {
+        "fileName": "_bz2.pyd",
+        "sha256": "a4be36fffeefa8b24c1234d548da8f05558aba53c2ea7d1d2614776eaad8fbf4",
+        "bytes": 87384
+      },
+      {
+        "fileName": "_lzma.pyd",
+        "sha256": "f7ad11fbbb7aeaf7b6566a532a3243e3ae5f92bac480dbe5c2ef300fe2c1dabe",
+        "bytes": 161112
+      },
+      {
+        "fileName": "_decimal.pyd",
+        "sha256": "04738ee6b96bcc6351446b011b523d831aa88ec3f11d4b64c33414c965b56b80",
+        "bytes": 290648
+      },
+      {
+        "fileName": "pyexpat.pyd",
+        "sha256": "b6d5142424d161039c25bea00e6acd8f7b1a5331d3994d9f3c28bd083ede159f",
+        "bytes": 218968
+      }
+    ]
+  },
+  "installer": {
+    "installerStatus": "NO_GO",
+    "installerBuilt": false,
+    "nodeRuntimeLicenseObtained": false,
+    "portableRuntimeClosureComplete": false,
+    "minimumRequiredComponentsInstalled": false,
+    "originalStudioIconVerified": false,
+    "publisherSignatureVerified": false,
+    "independentOwnerWitnessApproved": false,
+    "differentWindowsSidVerified": false,
+    "nativeTauriExecutableBuilt": false,
+    "productionDispatchAllowed": false,
+    "automaticRetry": false,
+    "originalGameDataAccessed": false,
+    "modelCalls": 0,
+    "nativeWorkerStarts": 0
+  },
+  "blockerCodes": [
+    "GRAPH_BOUND_REACHED",
+    "TRANSITIVE_DYNAMIC_APISET_LOADER_UNVERIFIED",
+    "FIVE_DEEP_GRAPH_EDGES_WITHOUT_FILENAME_CANDIDATE_NOT_A_LOADER_FAILURE",
+    "NODE_RUNTIME_LICENSE_NOTICE_NOT_OBTAINED",
+    "CLEAN_MACHINE_AND_RELOCATION_NOT_VERIFIED",
+    "PUBLISHER_AND_OWNER_WITNESS_NOT_SIGNED",
+    "TAURI_RUNTIME_AND_INSTALLER_NOT_BUILT"
+  ]
+}

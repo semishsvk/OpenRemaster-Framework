@@ -1,0 +1,2 @@
+# These reused source bytes are SHA-pinned by the GLCA replay adapter.
+development/glca/reused/** -text

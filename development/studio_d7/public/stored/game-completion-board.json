@@ -1,0 +1,262 @@
+{
+  "schema": "OpenRemaster.StudioGameCompletionReadiness.v1",
+  "release": "ORF-STUDIO-UI-20261018-r12",
+  "generatedUtc": "2026-10-18T14:20:35+00:00",
+  "sourceClass": "HISTORICAL_REAL_GAME_CHECKPOINT_TRIAGE_NOT_REAL_RUNTIME",
+  "status": "TWO_GAMES_SOURCE_TRIAGE_VALIDATED__GAMEPLAY_FIDELITY_HOLD",
+  "sourcePins": {
+    "studioParentR11": "8771434f02188076dd30e6638a2bb436e592f3b9a72224170d1c5e2589608417",
+    "gameBridgeSealedR1": "a930d6b9247683852edbb8188545a0315b2106ef9bd9088ea9ce0cc3b8a16a0e",
+    "originalK003": "644f9ef4d001a56ee9738d91ac558c5fed32967a17819245a3174b0815fe1d7a",
+    "sourceCheckpoint": "31c8147c482be3df0f78214a16732c6755375daaff9b345adfa7521ab0b674c1",
+    "sourcePins": "6475a0032be90297cb343442847a93425918d2f0c2046a262ef054a4b39dab6e",
+    "gameCompletionReview": "67f3c700fa48a376afb2238bcdfcffe71834ec26063e7516f1bc1a2435548b10",
+    "selectedNextTasks": "38e4ab24efc7a6ce73f62f9dc7f00c7d802f72ecb6adce0caa210db61fb4d628",
+    "firstDivergenceGate": "7a8692d743d926e6e99f19bc6d5aeca23464d996d96e8ea0941a7099353fc3ff"
+  },
+  "gameSourceSha": {
+    "mdk_checkpoint": "78c0587d9e37d371cf0f4d4010eaa0e8f38468f52d8be8e04a91181d2aa81839",
+    "mdk_native_admission": "1fe7ab2fa3267793d5f0ec0ba7fa0a40c9f2c215acaef8a441bc3cbc32ff93b8",
+    "mdk_source56": "677ff401ba133d170e1388b2164152be08fca6950027be9bdbced19ea6e45a51",
+    "stone_checkpoint": "2898143df6a5bd1652e83465ba6804bb22e3ead9fbebe59aaa17a8e3598c24ce",
+    "stone_palette": "6203e6837cc73017f33586fd4086ac24caf5912b6c14c08b15429544919db851"
+  },
+  "sourceCheckpointUtc": "2026-10-18T14:13:20.248966+00:00",
+  "sourceSoftwareTests": {
+    "originalArchitectureR1": 30,
+    "gameBridgeR1": 46,
+    "totalHistorical": 76
+  },
+  "games": [
+    {
+      "id": "OpenMDK1",
+      "sourceCheckpoint": "C285",
+      "nextBlocker": "MDK56_XPGUN_PROVIDER",
+      "acceptedStage": "NONE_INDEPENDENTLY_ATTESTED",
+      "sourceRoles": [
+        "mdk_checkpoint",
+        "mdk_source56",
+        "mdk_native_admission"
+      ],
+      "sourceRolePins": {
+        "mdk_checkpoint": "78c0587d9e37d371cf0f4d4010eaa0e8f38468f52d8be8e04a91181d2aa81839",
+        "mdk_source56": "677ff401ba133d170e1388b2164152be08fca6950027be9bdbced19ea6e45a51",
+        "mdk_native_admission": "1fe7ab2fa3267793d5f0ec0ba7fa0a40c9f2c215acaef8a441bc3cbc32ff93b8"
+      },
+      "firstAction": "Bounded original opcode 0x56 / decimal 86 at PC 43085, model XPGUN, provider source and exact callback provenance",
+      "acceptance": [
+        "Resolve original shared/external XPGUN model provider and source identity; source_model_CMI_relative 0 is not a direct file offset",
+        "Separately verify original provider callback 0xA940 vs distinct initializer 0xA7AB, avoiding conflation",
+        "Validate source-only transition and bounded signed model/handler tests before original native gameplay claims",
+        "Keep original HMO3 entry, HMO4 event, animation/collision/audio and full playable/retail fidelity HOLD until genuine aligned original replay"
+      ],
+      "taskGraph": [
+        {
+          "id": "MDK56_XPGUN_PROVIDER",
+          "priority": "P0",
+          "stage": "PLAYABLE",
+          "state": "EXECUTION_ADMISSION_HOLD",
+          "unmetDependencies": [],
+          "editorialImpactScore": 7,
+          "editorialHeuristic": 8.0,
+          "evidenceSha256": "c4a1f1efef30f75224b78b4bbec4d500d061df3e6dbc68f0477aa3756e57fce4",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "MDK_DOOR_RUNTIME",
+          "priority": "P0",
+          "stage": "PLAYABLE",
+          "state": "DEPENDENCY_HOLD",
+          "unmetDependencies": [
+            "MDK56_XPGUN_PROVIDER"
+          ],
+          "editorialImpactScore": 5,
+          "editorialHeuristic": 4.0,
+          "evidenceSha256": "7feddafb4c071b80df6acb3c342c50bf296cac8a2b66202d4f6d129a08f93287",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "MDK_REPLAY",
+          "priority": "P1",
+          "stage": "FIDELITY_VERIFIED",
+          "state": "DEPENDENCY_HOLD",
+          "unmetDependencies": [
+            "MDK_NATIVE_EVENT"
+          ],
+          "editorialImpactScore": 4,
+          "editorialHeuristic": 3.0,
+          "evidenceSha256": "0111baf12ae8baad9dad7444a235b22f9c58879d985ad851d54c37784b3dc1a3",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "MDK_NATIVE_EVENT",
+          "priority": "P0",
+          "stage": "REPLAY_VERIFIED",
+          "state": "DEPENDENCY_HOLD",
+          "unmetDependencies": [
+            "MDK56_XPGUN_PROVIDER",
+            "MDK_DOOR_RUNTIME"
+          ],
+          "editorialImpactScore": 3,
+          "editorialHeuristic": 5.0,
+          "evidenceSha256": "f4a54afc787c31847560fb2ad03d6a0570470fe655c60922beb6322866085da3",
+          "modelAllowed": false,
+          "workerAllowed": false
+        }
+      ],
+      "diagnostics": {
+        "kind": "ORIGINAL_OPCODE_SOURCE_PROVENANCE",
+        "opcodeDecimal": 86,
+        "pc": 43085,
+        "model": "XPGUN",
+        "sourceOperationsVerified": 7,
+        "doorSourceMechanism": "PASS_SOURCE_ONLY",
+        "originalHmo3RuntimeEventVerified": false
+      },
+      "firstPlayableVerified": false,
+      "fidelityVerified": false,
+      "independentOwnerAdmitted": false,
+      "mayDispatch": false
+    },
+    {
+      "id": "OpenStonekeep",
+      "sourceCheckpoint": "STONE-K306-VIEW011",
+      "nextBlocker": "STONE_K307_COMPOSITOR",
+      "acceptedStage": "NONE_INDEPENDENTLY_ATTESTED",
+      "sourceRoles": [
+        "stone_checkpoint",
+        "stone_palette"
+      ],
+      "sourceRolePins": {
+        "stone_checkpoint": "2898143df6a5bd1652e83465ba6804bb22e3ead9fbebe59aaa17a8e3598c24ce",
+        "stone_palette": "6203e6837cc73017f33586fd4086ac24caf5912b6c14c08b15429544919db851"
+      },
+      "firstAction": "Trace original 0x39328 compositor stage caller, conditional frontwall selector and post-object painter calls",
+      "acceptance": [
+        "Capture original dynamic branch and 10 post-object-stage calls with source/destination pixel provenance, without changing original game data",
+        "Differentiate 5748 original index-pixel mismatches from already confirmed 64000/64000 RGB palette RAM correlation",
+        "Keep door 3931, HUD 1077 and upper right wall 672 region pixels explicit; 68 remaining are not silently marked repaired",
+        "Repair index frame/HUD/door only against independently aligned native original frame and game pose",
+        "Keep hardware DAC write timing and gameplay turn/move/interact/save-load replay HOLD until observed and accepted"
+      ],
+      "taskGraph": [
+        {
+          "id": "STONE_K307_COMPOSITOR",
+          "priority": "P0",
+          "stage": "PLAYABLE",
+          "state": "EXECUTION_ADMISSION_HOLD",
+          "unmetDependencies": [],
+          "editorialImpactScore": 6,
+          "editorialHeuristic": 8.0,
+          "evidenceSha256": "1edc69a7a610d3c78eac8d876ed7fe654da9dbb16538bd6120f4a43118f50678",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "STONE_DAC_TIMING",
+          "priority": "P1",
+          "stage": "RUNTIME_BOUND",
+          "state": "EXECUTION_ADMISSION_HOLD",
+          "unmetDependencies": [],
+          "editorialImpactScore": 4,
+          "editorialHeuristic": 6.0,
+          "evidenceSha256": "e12b03343130557a509593a0c8fa9812680813429d2783061eb8da1080fae4ca",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "STONE_FIDELITY",
+          "priority": "P1",
+          "stage": "FIDELITY_VERIFIED",
+          "state": "DEPENDENCY_HOLD",
+          "unmetDependencies": [
+            "STONE_GAMEPLAY_REPLAY"
+          ],
+          "editorialImpactScore": 3,
+          "editorialHeuristic": 3.0,
+          "evidenceSha256": "e12b03343130557a509593a0c8fa9812680813429d2783061eb8da1080fae4ca",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "STONE_GAMEPLAY_REPLAY",
+          "priority": "P0",
+          "stage": "REPLAY_VERIFIED",
+          "state": "DEPENDENCY_HOLD",
+          "unmetDependencies": [
+            "STONE_HUD_DOOR",
+            "STONE_DAC_TIMING"
+          ],
+          "editorialImpactScore": 3,
+          "editorialHeuristic": 5.0,
+          "evidenceSha256": "1edc69a7a610d3c78eac8d876ed7fe654da9dbb16538bd6120f4a43118f50678",
+          "modelAllowed": false,
+          "workerAllowed": false
+        },
+        {
+          "id": "STONE_HUD_DOOR",
+          "priority": "P0",
+          "stage": "PLAYABLE",
+          "state": "DEPENDENCY_HOLD",
+          "unmetDependencies": [
+            "STONE_K307_COMPOSITOR"
+          ],
+          "editorialImpactScore": 3,
+          "editorialHeuristic": 4.0,
+          "evidenceSha256": "1edc69a7a610d3c78eac8d876ed7fe654da9dbb16538bd6120f4a43118f50678",
+          "modelAllowed": false,
+          "workerAllowed": false
+        }
+      ],
+      "diagnostics": {
+        "kind": "ORIGINAL_INDEX_PIXEL_MISMATCH",
+        "framePixels": 64000,
+        "mismatchedIndexPixels": 5748,
+        "regions": {
+          "door": 3931,
+          "HUD": 1077,
+          "rightWall": 672,
+          "other": 68
+        },
+        "sourcePaletteRgbPixelsCorrelated": 64000,
+        "usedPaletteIndicesProven": 144,
+        "dacTimingVerified": false
+      },
+      "firstPlayableVerified": false,
+      "fidelityVerified": false,
+      "independentOwnerAdmitted": false,
+      "mayDispatch": false
+    }
+  ],
+  "firstDivergence": {
+    "status": "BLOCKED_NO_ALIGNED_GAME_TRACE_PAIR",
+    "validEventPairs": 0,
+    "canCallOracle": false,
+    "required": [
+      "Original runtime/source identity and edition fingerprint independently verified",
+      "Separate authentic original and candidate event streams, byte-hashed and independently reopened",
+      "Same scenario, initial state, controlled inputs, ticks, timebase and capture point",
+      "Independent witness/capture signature + current owner scope",
+      "Only then call inherited First-Divergence; technical alignment does not imply full fidelity"
+    ]
+  },
+  "policy": {
+    "sameAssistantSourceIntegrityNotExternalSignature": true,
+    "editorialImpactScoresNotPercentages": true,
+    "noCrossGameRanking": true,
+    "originalGameCorporaNotAccessedHere": true,
+    "originalGameRuntimeCaptureNotProduced": true,
+    "independentOwnerWitnessAccepted": false,
+    "currentK003GUILeaseObtained": false,
+    "modelInvocation": false,
+    "workerStart": false,
+    "gameDispatch": false,
+    "autoRetry": false,
+    "productionAdmission": "HOLD_NO_AUTO_RETRY",
+    "maxGlobalHeavySlots": 3,
+    "singleWriter": true
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "afterFirstPassNextTaskId": "T2",
+  "automaticRetry": false,
+  "checkpointRecordedUtc": "2026-10-18T13:18:48.362871+00:00",
+  "currentNativeWorkerObserved": false,
+  "dispatchAuthorized": false,
+  "globalHeavyMaximum": 3,
+  "historicalTests": {
+    "governor": 15,
+    "lifecycle": 45,
+    "orion": 115,
+    "planner": 40,
+    "total": 215
+  },
+  "independentOwnerAuthenticated": false,
+  "independentWitnessAuthenticated": false,
+  "initialNextTaskId": "T1",
+  "leaseAuthorized": false,
+  "maxPublishedModelPlans": 1,
+  "modelInvocationAuthorized": false,
+  "observationMode": "HISTORICAL_SYNTHETIC_NOT_LIVE",
+  "originalK003Sha256": "644f9ef4d001a56ee9738d91ac558c5fed32967a17819245a3174b0815fe1d7a",
+  "productionAdmission": "HOLD_NO_AUTO_RETRY",
+  "productionAdmitted": false,
+  "scenarios": {
+    "afterPass": {
+      "executionPermitted": false,
+      "proposalSha256": "7464bde0081fbdf8e7418b6fdc66656dfedf5cb567b3a5cab6aaf755006344ce",
+      "published": 1,
+      "status": "ONE_READY_SHADOW_CANDIDATE_HOLD",
+      "suppressed": 3,
+      "taskId": "T2"
+    },
+    "changed": {
+      "mayExecute": false,
+      "mayRetry": false,
+      "proposalSha256": "c181e271f4eea6afc0b129f89cac385c26a6969af0ab2de1820d75210572a6c7",
+      "status": "STALE_OR_CHANGED_PROPOSAL_HOLD",
+      "unchanged": false
+    },
+    "completed": {
+      "executionPermitted": false,
+      "proposalSha256": "3dc73c67b90a2bbf020b7b56f49ba6dc20ee27f1798e2aa162dced0c74ae1959",
+      "published": 0,
+      "status": "NO_READY_CANDIDATE_HOLD",
+      "suppressed": 0,
+      "taskId": null
+    },
+    "gameGpu": {
+      "executionPermitted": false,
+      "proposalSha256": "bcec6fc23c751d31e61527f4cd0df9ec5ea674a68db9e40bfcef2ffae31b0e3c",
+      "published": 0,
+      "status": "NO_READY_CANDIDATE_HOLD",
+      "suppressed": 0,
+      "taskId": null
+    },
+    "gameOffGpu": {
+      "executionPermitted": false,
+      "proposalSha256": "502ac5a537d94156c0e0d648ef1fe6a439c0aee1fe9ee00a2a11e994e2e3d236",
+      "published": 1,
+      "status": "ONE_READY_SHADOW_CANDIDATE_HOLD",
+      "suppressed": 4,
+      "taskId": "T1"
+    },
+    "initial": {
+      "executionPermitted": false,
+      "proposalSha256": "c181e271f4eea6afc0b129f89cac385c26a6969af0ab2de1820d75210572a6c7",
+      "published": 1,
+      "status": "ONE_READY_SHADOW_CANDIDATE_HOLD",
+      "suppressed": 4,
+      "taskId": "T1"
+    },
+    "unchanged": {
+      "mayExecute": false,
+      "mayRetry": false,
+      "proposalSha256": "c181e271f4eea6afc0b129f89cac385c26a6969af0ab2de1820d75210572a6c7",
+      "status": "UNCHANGED_SHADOW_PROPOSAL_HOLD",
+      "unchanged": true
+    },
+    "unknownPrior": {
+      "executionPermitted": false,
+      "proposalSha256": null,
+      "published": 0,
+      "status": "INVALID_OR_UNTRUSTED_PLAN_HOLD",
+      "suppressed": 0,
+      "taskId": null
+    }
+  },
+  "schema": "OpenRemaster.StudioBoundedPlanEvidence.v1",
+  "signedLifecycleVerified": false,
+  "singleWriter": true,
+  "sourceAuthority": "UNSIGNED_LOCAL_SHA256_ONLY",
+  "sourceMemberHashes": {
+    "checkpoint": "6ef137d8cbdd97d08368b344bf14405badf54b3df6b4648682147d6418f4cf4e",
+    "scenarios": "4b3115e3627c13826315614b8867f379b0279ad4c627f4f7e59de7675b697fbd",
+    "work_package": "0bad979f285838c1b6b0e22960afd6c143af8d5933119415897477a6a4f4f13b"
+  },
+  "status": "ARCHIVED_SINGLE_TASK_SHADOW_HOLD",
+  "tasks": [
+    {
+      "dependsOn": [],
+      "goal": "Pinned historical snapshot",
+      "id": "T1",
+      "operationId": "cycle-20261018-r11-T1",
+      "ownerAdmitted": false,
+      "running": false
+    },
+    {
+      "dependsOn": [
+        "T1"
+      ],
+      "goal": "Original K003 validation",
+      "id": "T2",
+      "operationId": "cycle-20261018-r11-T2",
+      "ownerAdmitted": false,
+      "running": false
+    },
+    {
+      "dependsOn": [
+        "T2"
+      ],
+      "goal": "Historical receipt chain",
+      "id": "T3",
+      "operationId": "cycle-20261018-r11-T3",
+      "ownerAdmitted": false,
+      "running": false
+    },
+    {
+      "dependsOn": [
+        "T3"
+      ],
+      "goal": "Historical CLI",
+      "id": "T4",
+      "operationId": "cycle-20261018-r11-T4",
+      "ownerAdmitted": false,
+      "running": false
+    },
+    {
+      "dependsOn": [
+        "T4"
+      ],
+      "goal": "Qualification and boundary",
+      "id": "T5",
+      "operationId": "cycle-20261018-r11-T5",
+      "ownerAdmitted": false,
+      "running": false
+    }
+  ],
+  "workerStartAuthorized": false,
+  "zipSha256": "f7f47d1531f41c0e5b0332a269b4fda69ca68f8259c353e430708cd92f0bb9d4"
+}

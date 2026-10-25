@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ORCH-K003 Control Job v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "job_id",
+    "project",
+    "task",
+    "inputs",
+    "required_capabilities",
+    "execution",
+    "validation"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ORCH-K003.Job.v1"
+    },
+    "job_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs": {
+      "type": "array"
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "godot_runtime",
+            "executable_runtime",
+            "fidelity_runtime"
+          ]
+        },
+        "project_path": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "executable": {
+          "type": "string"
+        },
+        "runtime_kind": {
+          "enum": [
+            "dosbox",
+            "scummvm",
+            "godot"
+          ]
+        },
+        "config_source": {
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 900
+        },
+        "window_title_contains": {
+          "type": "string"
+        },
+        "require_audio": {
+          "type": "boolean"
+        },
+        "audio_duration_ms": {
+          "type": "integer",
+          "minimum": 250,
+          "maximum": 15000
+        },
+        "capture_backend": {
+          "const": "windows_graphics_capture"
+        },
+        "capture_mode": {
+          "enum": [
+            "strict_fidelity",
+            "passive_diagnostic",
+            "targeted_input_diagnostic"
+          ]
+        },
+        "capture_delay_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 45,
+          "description": "Global maximum; runtime restricts strict and targeted modes to 12 seconds. 45 seconds is passive-only."
+        },
+        "input_plan": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "at_seconds",
+                  "key"
+                ],
+                "properties": {
+                  "at_seconds": {
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 44.5
+                  },
+                  "key": {
+                    "enum": [
+                      "SPACE",
+                      "ENTER",
+                      "ESCAPE",
+                      "LEFT",
+                      "RIGHT",
+                      "UP",
+                      "DOWN"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "at_seconds",
+                  "action",
+                  "client_x",
+                  "client_y"
+                ],
+                "properties": {
+                  "at_seconds": {
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 44.5
+                  },
+                  "action": {
+                    "const": "MOUSE_LEFT_CLICK"
+                  },
+                  "client_x": {
+                    "type": "integer",
+                    "minimum": 8,
+                    "maximum": 8191
+                  },
+                  "client_y": {
+                    "type": "integer",
+                    "minimum": 8,
+                    "maximum": 8191
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "allow_owned_menu_quit": {
+          "type": "boolean"
+        },
+        "capture_schedule_seconds": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 5,
+          "items": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 75
+          },
+          "description": "v2_extended requires passive_diagnostic. v1 remains maximum 44 enforced at runtime."
+        },
+        "seed_saves": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "minLength": 64,
+                "maxLength": 64
+              }
+            }
+          }
+        },
+        "capture_schedule_contract": {
+          "enum": [
+            "v1",
+            "v2_extended"
+          ]
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "expected_exit_code"
+      ],
+      "properties": {
+        "expected_exit_code": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
