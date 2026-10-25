@@ -197,6 +197,171 @@
       "bytes": 1841
     },
     {
+      "path": "development/resource_review_lab/MANIFEST.json",
+      "sha256": "0bbb18f75e6a53e9bf22260536a7c7072e8c56418ac672d3d087df55c17a2d32",
+      "bytes": 8764
+    },
+    {
+      "path": "development/resource_review_lab/README.md",
+      "sha256": "9225d17d68a62bc8bc7d49e9a1a3c340b666fdbbacbf6c1a790dde8c6f2a2027",
+      "bytes": 1403
+    },
+    {
+      "path": "development/resource_review_lab/framework/openremaster/__init__.py",
+      "sha256": "539d0808be9e2221a7b7bc81065107273763b4dce721ca4225725dc735b5e308",
+      "bytes": 61
+    },
+    {
+      "path": "development/resource_review_lab/framework/openremaster/m005_anchor_contract.py",
+      "sha256": "88471fda6e27da6ebc456a6ca0529f9bc269df70df43949aab6e2020fc2051b2",
+      "bytes": 13362
+    },
+    {
+      "path": "development/resource_review_lab/framework/openremaster/m010_durable_recovery.py",
+      "sha256": "09ca848d1092fd6626408084b769801f4ec6189792b15e56f62c84622c5a440f",
+      "bytes": 8524
+    },
+    {
+      "path": "development/resource_review_lab/framework/openremaster/m011_signed_recovery.py",
+      "sha256": "2ade013adc064e0c7face0c56b615d72bcf94b2cbd0450ceb5fd71b9e1369496",
+      "bytes": 21308
+    },
+    {
+      "path": "development/resource_review_lab/framework/openremaster/m012_independent_head_witness.py",
+      "sha256": "337a9581f56762dd3a9f8d23b3e1813026494522022a1c35ec563f771f2b7b83",
+      "bytes": 8971
+    },
+    {
+      "path": "development/resource_review_lab/lab/admission_boundary_base.py",
+      "sha256": "6738f28884db09ee98c3b6f034ddc275d99fe3ac77ff52ce6589ffad3d4ab078",
+      "bytes": 2830
+    },
+    {
+      "path": "development/resource_review_lab/lab/admission_shadow.py",
+      "sha256": "fe2fe15b835139265a88e8c8d9dcf067ea126697779bebe63c0e4fe374b78da4",
+      "bytes": 5115
+    },
+    {
+      "path": "development/resource_review_lab/lab/authority.py",
+      "sha256": "db84511fa3c56c6ef335914594024c2c03f7891d7fc62bfd018fd88a23976a9b",
+      "bytes": 220
+    },
+    {
+      "path": "development/resource_review_lab/lab/governor.py",
+      "sha256": "ca3406910fbd3522fb489ab5f80b30d694b2f7716dd48fd518855cbb9603ef9b",
+      "bytes": 4419
+    },
+    {
+      "path": "development/resource_review_lab/lab/resource_anchor.py",
+      "sha256": "acb1bb29c6e79a75ee164c66fb5ef0088b9bb144836739db99c0bbd0aa627d25",
+      "bytes": 5683
+    },
+    {
+      "path": "development/resource_review_lab/lab/resource_authority.py",
+      "sha256": "7c5d26905dd2340c16dc2d028a3d570bce3aae29ce5ee536ad224873a72f497e",
+      "bytes": 31851
+    },
+    {
+      "path": "development/resource_review_lab/lab/resource_observation.py",
+      "sha256": "08b49d6a436f6d641b32a3bdec754b6b2981dc4e589b3e3982f0b5827e827140",
+      "bytes": 6547
+    },
+    {
+      "path": "development/resource_review_lab/lab/resource_transaction.py",
+      "sha256": "7804dcab02846f7fb103aeb9e9997550db37ba14f2e2657828479a5e1f135198",
+      "bytes": 2863
+    },
+    {
+      "path": "development/resource_review_lab/lab/resource_witness.py",
+      "sha256": "2b60280fda7c159c0655ecec4daff2230ccba863b5c5eefdce35875ff1d2553c",
+      "bytes": 5757
+    },
+    {
+      "path": "development/resource_review_lab/lab/work_identity.py",
+      "sha256": "949a3e5f84b1bff71b397b19cca011bc3c9899499707c3c4847f3c0ec365dd3f",
+      "bytes": 4520
+    },
+    {
+      "path": "development/resource_review_lab/production-owner-authority-v1/anchor.py",
+      "sha256": "fdf7a8873e600efd2866ff9b3f038cf6651ba07e0ae2a1bfc2a4dbdafc8cfccd",
+      "bytes": 1299
+    },
+    {
+      "path": "development/resource_review_lab/production-owner-authority-v1/scope.py",
+      "sha256": "c7dc5d9000cbf21a7635e561fb19f36ec4864e0fb97e3374d70fc6b85d417420",
+      "bytes": 1564
+    },
+    {
+      "path": "development/resource_review_lab/requirements.txt",
+      "sha256": "46c6a0ebe4d3e55e8731c619c3acb75633ac858dbf622692e24eebc6796f6006",
+      "bytes": 37
+    },
+    {
+      "path": "development/resource_review_lab/run_review.py",
+      "sha256": "75e72f2d71d39b1fe8444445f64bd16676ca353e93631a49fcb25dfbbdb044ad",
+      "bytes": 3453
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_admission_shadow.py",
+      "sha256": "1c797e52fb2deee8606ad36e0721aa5e2e1cf61b9f50a61fbcd9c34c34c6cf93",
+      "bytes": 9072
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_anchor.py",
+      "sha256": "c07c2ae20442ab48540edb9d5da1edcf0c33cbf30bba59f7b5e628bf367e497d",
+      "bytes": 1149
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_governor.py",
+      "sha256": "b5eaa83a2e7db5519e76c7b45c2ed71a0d970cea56f7e81016e26f45b3a77975",
+      "bytes": 5919
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_m011_signed_recovery.py",
+      "sha256": "939162815f390d8e14ab0cad6f79c47f383ea5c595e71c3b6673007a774577b4",
+      "bytes": 30034
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_m012_independent_head_witness.py",
+      "sha256": "b162ff2068ff51dc24a490518b1c74cb77c4eaa9cc02296c8b71eb6e20be3d76",
+      "bytes": 8921
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_resource_anchor.py",
+      "sha256": "8b32bdecc1de9d41ee15d8eccc691ccbbe687d79f0ceec44bbb6150fb520717c",
+      "bytes": 7201
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_resource_integrity.py",
+      "sha256": "c57d81f3d81af35d47cc2c34ef71add6cbe8141b002fffa19eea06eb37fa01f7",
+      "bytes": 6666
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_resource_observation.py",
+      "sha256": "db1f20584551e5a546718311535b6336921b1cce3b558551448366ab9ac5b25e",
+      "bytes": 8249
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_resource_transaction.py",
+      "sha256": "69f39746e315f697867d12ef9ce57be2f40e7d30a58b7fe5252c6ec6a6e286c8",
+      "bytes": 10138
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_resource_witness.py",
+      "sha256": "5a724b7fbcca62a0adf8240d6eb60f43bd426f67c8bd84db4484e83c9e0bbba1",
+      "bytes": 7451
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_witness_key_separation.py",
+      "sha256": "4ead773e576d875ca8d5d67aab93e1d8e2d8175526241edd4525082f8d6baa44",
+      "bytes": 3734
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_work_identity.py",
+      "sha256": "e9027cffc468351e8ced7eca3c6698fd0949a7a316295a83ce1ea0e638da573b",
+      "bytes": 7481
+    },
+    {
       "path": "development/studio_d7/evidence/NODE_v24.19.0_WINDOWS_SIGNATURE.json",
       "sha256": "58f7383ce36b6b2d96b0de3a7d01d770eb70ead3e00b8c38f925512da917b7f9",
       "bytes": 968
