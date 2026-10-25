@@ -2,6 +2,8 @@
 
 Portable offline source and tests for development admission, resource observations, disposable SQLite reservation/recovery and separate signed witness review.
 
+boundary_review.py adds bounded Python source-syntax observation without importing or executing worker source. Function names, literal request sets and call syntax are observations only; comments, metadata and a named admission function never establish trusted admission, current ownership, liveness or K003 compatibility.
+
 Install the pinned review dependencies from requirements.txt, then run:
 
 ```text

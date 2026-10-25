@@ -198,13 +198,13 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "2c7b18a4ff2eec564e457f01e0321ac8d239585d90c9fd5d87cd4bc705c2caaa",
-      "bytes": 8995
+      "sha256": "eae496903b37a716d8c786352d69dd46c1543564e23f7e7e54b012292b4012ee",
+      "bytes": 9492
     },
     {
       "path": "development/resource_review_lab/README.md",
-      "sha256": "06b01c2a6b1b35e08e682774df700bd7f3596625ba824eadde90e354230aeb84",
-      "bytes": 1481
+      "sha256": "b973c70f891f904b73ef4e961265544627e39bc1138cfab0ad2d3bbfbec510e7",
+      "bytes": 1805
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -245,6 +245,11 @@
       "path": "development/resource_review_lab/lab/authority.py",
       "sha256": "db84511fa3c56c6ef335914594024c2c03f7891d7fc62bfd018fd88a23976a9b",
       "bytes": 220
+    },
+    {
+      "path": "development/resource_review_lab/lab/boundary_review.py",
+      "sha256": "20be1a094a534e50e8ed26924d14a6b0a01f0085257fe43d797be0b432f6cb98",
+      "bytes": 3004
     },
     {
       "path": "development/resource_review_lab/lab/governor.py",
@@ -303,8 +308,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "f7a905ea65eeab7f6d84e9ed0a8364a3bca0e4aa6743e960c35a9c73b1b3f902",
-      "bytes": 3530
+      "sha256": "a8f93fc8b756efdfc3110468755157bf79100eda4f28ccb6547911de0b90ee46",
+      "bytes": 3574
     },
     {
       "path": "development/resource_review_lab/tests/test_admission_shadow.py",
@@ -315,6 +320,11 @@
       "path": "development/resource_review_lab/tests/test_anchor.py",
       "sha256": "c07c2ae20442ab48540edb9d5da1edcf0c33cbf30bba59f7b5e628bf367e497d",
       "bytes": 1149
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_boundary_review.py",
+      "sha256": "bdc5a242f857210f574d8cebb7901f60952b97a8a4944b8b47334a9f076a7681",
+      "bytes": 3386
     },
     {
       "path": "development/resource_review_lab/tests/test_governor.py",
