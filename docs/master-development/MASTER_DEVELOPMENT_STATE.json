@@ -1,8 +1,8 @@
 {
-  "schema": "OpenRemaster.MasterDevelopmentState.v2",
-  "version": 2,
-  "observed_utc": "2026-10-25T15:40:17.072382+00:00",
-  "parent_checkpoint_sha256": "7b23dd5c928cc2e59b03607bec6296d2ddecb2e8d7384edb62e6a87d7d79bc72",
+  "schema": "OpenRemaster.MasterDevelopmentState.v3",
+  "version": 3,
+  "observed_utc": "2026-10-25T16:18:06.492643+00:00",
+  "parent_checkpoint_sha256": "5b5c31ed9f74f43d69a247757f2b24eec3e1f4b95cdc86b79f455394b1061eb8",
   "coordination": "OpenRemaster — Master Development",
   "thread_id": "01a1734c-aca7-7d03-8a77-1168008db312",
   "mode": "ISOLATED_DEVELOPMENT_CANDIDATE",
@@ -460,7 +460,8 @@
     "GLCA retail source/state/IR/model/atlas contracts",
     "GLCA-based master advisory workflow",
     "Dual-Trust worker/handoff wire schemas",
-    "Read-only Studio development checkpoint panel"
+    "Read-only Studio development checkpoint panel",
+    "Read-only R06 intake-to-advisory bridge; independent authority remains unverified"
   ],
   "reused_modules": [
     "Existing GLCA core/source/replay/tasks",
@@ -477,5 +478,13 @@
     "No native GUI or new native rebuild",
     "Protected owner/resource evidence unresolved",
     "No trusted production worker or signing activation"
-  ]
+  ],
+  "r06_intake_bridge": {
+    "status": "SOURCE_TESTED_HOLD",
+    "tests": 19,
+    "complete_development_suite": 89,
+    "real_report_status": "HOLD",
+    "live_dispatch": false,
+    "independent_crypto_verified": false
+  }
 }
