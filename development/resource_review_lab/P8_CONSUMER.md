@@ -1,0 +1,9 @@
+# Isolated P8 status consumer review
+
+The inspected direct consumers of the Windows locked journal are collision regression scripts. They fail if outcomes differ from their expected shadow counts. No production consumer connection was established in the selected sources. The current native gateway uses a separate transport/nonce-marker/queue path; it was read as source only, never imported, started or connected. The earlier durable handoff and r2 state-machine prototypes are different contracts and are not silently substituted for this journal.
+
+This candidate extends the existing P8 observe_safely boundary. The original boundary checks dispatch and worker-start claims but forwards other supplied fields. Negative-first tests reproduced four failing cases for queue, retry and other capability claims. The isolated copy rejects explicit capability escalation and normalizes missing legacy flags to False, preserving existing read-only status behavior. It does not change live providers or the gateway.
+
+The new observe_journal_status function consumes an already reported scalar status, without invoking the journal or a callback. Every known HOLD, replay, uncertain write, unknown value and even SHADOW_RESERVED maps to HOLD_NO_AUTO_RETRY with enqueue/dispatch/start/sign/publish/promote/fallback disabled. Replay and uncertain writes are marked query-only; no query is performed. No arbitrary truthy string, unknown HOLD suffix or forged dict becomes admission.
+
+These are shadow observation contracts, not a queue dispatcher or execution authority. Production handoff, owner/resource fencing, authenticated journal head, crash/path safety and independent acceptance remain HOLD. Existing Windows-only tests retain their platform skips on Linux. No shared code, tasks, ACLs, secrets or active queue is changed.
