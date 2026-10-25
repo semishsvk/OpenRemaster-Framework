@@ -7,7 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
-from .core import require, digest, reachability
+from .core import require, digest, reachability, canonical_state_bytes
 
 FIELDS=('location','inventory','objects','globals','npcs','timers','scripts','save','terminal')
 EVIDENCE_STATES=('SOURCE_ONLY','STATIC_CANDIDATE','RUNTIME_REFERENCE_VERIFIED',
@@ -65,9 +65,7 @@ def typed_state(project, fields):
         else:require(set(value)=={'known'},'UNKNOWN_VALUE_FORBIDDEN')
         result[key]=value
     # JSON preserves false/0 and timer/owner distinctions; caller data are detached.
-    try:raw=json.dumps(result,sort_keys=True,separators=(',',':'),allow_nan=False)
-    except (ValueError,TypeError) as e:raise ValueError('NONCANONICAL_STATE') from e
-    require(len(raw)<=250000,'STATE_BOUND')
+    raw=canonical_state_bytes(result)
     detached=json.loads(raw)
     state=dict(schema='OpenRemaster.RLR.StateIR.v1',project=project,fields=detached)
     return dict(**state,state_digest=digest(state),complete=all(v['known'] for v in detached.values()),

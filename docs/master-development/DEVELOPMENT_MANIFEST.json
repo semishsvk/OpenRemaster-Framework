@@ -53,8 +53,8 @@
     },
     {
       "path": "development/glca/glca/core.py",
-      "sha256": "66880fa89409401253640603ca823fde1af977dad57bc8952157ec1d3f3a521a",
-      "bytes": 7021
+      "sha256": "7d5a1a97406de011425008725c1e74006c84afb96ff3f9d5dd2da1d3fa20c49c",
+      "bytes": 8923
     },
     {
       "path": "development/glca/glca/replay.py",
@@ -68,8 +68,8 @@
     },
     {
       "path": "development/glca/glca/retail.py",
-      "sha256": "67e8c2cbb8285b78717d4dee085cf32e107b48e76a1e1c125062219710814600",
-      "bytes": 8381
+      "sha256": "2f63137b075dd291ed950abe37e0e19fbeb4891dcbf84dd1f874ea93397b5cc1",
+      "bytes": 8230
     },
     {
       "path": "development/glca/glca/source.py",
@@ -105,6 +105,11 @@
       "path": "development/glca/tests/test_retail.py",
       "sha256": "9c186dc40e03210d728b090688c30742721512a366a70dcecbfdb77c01e28d11",
       "bytes": 4896
+    },
+    {
+      "path": "development/glca/tests/test_state_identity.py",
+      "sha256": "21ed3eba0f7464d536e887a150fe56b20eba57cff3836b26d911cba3c4756fea",
+      "bytes": 3743
     },
     {
       "path": "development/glca/tests/test_tasks.py",

@@ -3,6 +3,7 @@ from collections import deque
 import hashlib
 import json
 import re
+import math
 
 CLASSES = dict(zip((f"SL-{i:02}" for i in range(1, 13)), (
     "Lost Critical Item", "Unrecoverable Item Ownership", "Irreversible Puzzle State",
@@ -26,6 +27,45 @@ def require(condition, reason):
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
                                     allow_nan=False).encode()).hexdigest()
+
+
+def canonical_state_bytes(value):
+    """Bounded strict JSON state identity, preserving numeric/boolean types.
+
+    Unknowns use the caller's explicit typed-field marker; null inside a
+    claimed known state is rejected. No tuple or object-key coercion occurs.
+    """
+    active=set();nodes=0;text_units=0
+    def visit(item,depth):
+        nonlocal nodes,text_units
+        nodes+=1
+        require(nodes<=10000 and depth<=32,'STATE_STRUCTURE_BOUND')
+        kind=type(item)
+        require(item is not None,'UNKNOWN_STATE_VALUE')
+        if kind is str:
+            text_units+=len(item);require(text_units<=250000,'STATE_TEXT_BOUND');return
+        if kind in (bool,int):return
+        if kind is float:
+            require(math.isfinite(item),'NONFINITE_STATE_VALUE');return
+        require(kind in (dict,list),'UNSUPPORTED_STATE_VALUE_TYPE')
+        identity=id(item);require(identity not in active,'CYCLIC_STATE_VALUE')
+        active.add(identity)
+        try:
+            if kind is dict:
+                for key,child in item.items():
+                    require(type(key) is str,'STATE_OBJECT_KEY_MUST_BE_STRING')
+                    text_units+=len(key);require(text_units<=250000,'STATE_TEXT_BOUND')
+                    visit(child,depth+1)
+            else:
+                for child in item:visit(child,depth+1)
+        finally:active.remove(identity)
+    visit(value,0)
+    try:
+        raw=json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False).encode('ascii')
+    except (ValueError,TypeError,OverflowError,RecursionError) as exc:
+        raise Hold('NONCANONICAL_STATE_VALUE') from exc
+    require(len(raw)<=250000,'STATE_BYTES_BOUND')
+    return raw
 
 
 def read_pinned(path, expected, max_bytes=32 * 1024 * 1024):
@@ -112,7 +152,11 @@ def state_roundtrip(before, after):
             required <= before.keys() and required <= after.keys(), "INCOMPLETE_SAVE_STATE")
     require(all(value is not None for doc in (before, after) for value in doc.values()),
             "UNKNOWN_SAVE_STATE")
-    changes = sorted(k for k in before.keys() | after.keys() if before.get(k) != after.get(k))
+    canonical_state_bytes(before)
+    canonical_state_bytes(after)
+    changes = sorted(k for k in before.keys() | after.keys()
+                     if k not in before or k not in after
+                     or canonical_state_bytes(before[k]) != canonical_state_bytes(after[k]))
     return {"status": "FAIL" if changes else "PASS", "scope": "SUPPLIED_STATE_ONLY",
             "differences": changes, "native_roundtrip_verified": False}
 
