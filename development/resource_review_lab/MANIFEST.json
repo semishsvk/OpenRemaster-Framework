@@ -54,21 +54,21 @@
       "path": "lab/authority.py",
       "sha256": "db84511fa3c56c6ef335914594024c2c03f7891d7fc62bfd018fd88a23976a9b",
       "bytes": 220,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "lab/boundary_review.py",
       "sha256": "20be1a094a534e50e8ed26924d14a6b0a01f0085257fe43d797be0b432f6cb98",
       "bytes": 3004,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "lab/d7_compatibility.py",
       "sha256": "5352a9300efb96265de910345b9401111e730f00a8853d7c08f6e29b9e98873f",
       "bytes": 5523,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
@@ -91,6 +91,13 @@
       "bytes": 4419,
       "origin": "candidate-v12/existing/native-v2-offline-governor-candidate-v1/governor.py",
       "kind": "BYTE_EXACT_REUSE"
+    },
+    {
+      "path": "lab/proposal_binding.py",
+      "sha256": "005f73cfccc2b39b57e0bd412b055359c27a02c075966fc1512600f969848f13",
+      "bytes": 3589,
+      "origin": "v025_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "lab/resource_anchor.py",
@@ -152,28 +159,35 @@
       "path": "pytest.ini",
       "sha256": "a5391176dc65929be49b64fe01988ac4008164dff446ed2e34508ad4b88b5f04",
       "bytes": 37,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "README.md",
-      "sha256": "16ec8bc5941c569f0547a60d6ab3dcd2775247d650c1418f155f129c5505a1ab",
-      "bytes": 2321,
-      "origin": "v022_portable_review_adapter",
+      "sha256": "639857e6360262ac7339a795b4938cb8fa8fd336e7dc4bec7eba5d1db7ce106d",
+      "bytes": 2702,
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "requirements.txt",
       "sha256": "4e10c6c84b3f1a9faa2a232aa00e7360b329ab43ff283e8353dfc72bf5d96c66",
       "bytes": 57,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "run_review.py",
-      "sha256": "47516eb818aed5fc6a7ac2f88dac78d5df4af60893f713c987766b669c486e4d",
-      "bytes": 3724,
-      "origin": "v022_portable_review_adapter",
+      "sha256": "77232f9cd6cbad784552d7371aa839274c625b9e2b4aa734cd797ae65fe790fc",
+      "bytes": 3851,
+      "origin": "v025_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "schemas/named-dev-build-proposal.schema.json",
+      "sha256": "dadfc351a70821d63fe3b12547fc4818e97b286749d5c955a22da1a75b844532",
+      "bytes": 2198,
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
@@ -198,17 +212,31 @@
       "kind": "BYTE_EXACT_REUSE"
     },
     {
+      "path": "tests/test_binding.py",
+      "sha256": "40d307f595fa04a46e8c74c34732ee6b091282ea0036308ce08a59b65a9b3082",
+      "bytes": 5088,
+      "origin": "v025_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "tests/test_binding_boundary.py",
+      "sha256": "9f6e8debb6705aeb0782688d623c09b42cd836b64bf0fb5561311e8738adbe9d",
+      "bytes": 1804,
+      "origin": "v025_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
+    },
+    {
       "path": "tests/test_boundary_review.py",
       "sha256": "bdc5a242f857210f574d8cebb7901f60952b97a8a4944b8b47334a9f076a7681",
       "bytes": 3386,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "tests/test_d7_compatibility.py",
       "sha256": "3c00dd1d6dfdd1cb117d4c0415fe846d934fd4bd7f571d9f7fb9aa4cee29a4e2",
       "bytes": 6484,
-      "origin": "v022_portable_review_adapter",
+      "origin": "v025_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
@@ -245,6 +273,13 @@
       "bytes": 8921,
       "origin": "integration/tests/test_m012_independent_head_witness.py",
       "kind": "BYTE_EXACT_REUSE"
+    },
+    {
+      "path": "tests/test_proposal.py",
+      "sha256": "77eb13112a55982362ae331ca3dd3dabf9ffff31e696f789c9b6978ba82e7648",
+      "bytes": 2225,
+      "origin": "v025_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "tests/test_resource_anchor.py",

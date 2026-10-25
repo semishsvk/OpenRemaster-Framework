@@ -198,13 +198,13 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "edadae9434d5d06e73bd1cc63cac53a6abca2e95a932693ccabcb938f845dc5a",
-      "bytes": 11420
+      "sha256": "6383a722790ca997a31ed103c4bc76a8e18e1581f8c4ace5307383bc1a00a842",
+      "bytes": 12675
     },
     {
       "path": "development/resource_review_lab/README.md",
-      "sha256": "16ec8bc5941c569f0547a60d6ab3dcd2775247d650c1418f155f129c5505a1ab",
-      "bytes": 2321
+      "sha256": "639857e6360262ac7339a795b4938cb8fa8fd336e7dc4bec7eba5d1db7ce106d",
+      "bytes": 2702
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -272,6 +272,11 @@
       "bytes": 4419
     },
     {
+      "path": "development/resource_review_lab/lab/proposal_binding.py",
+      "sha256": "005f73cfccc2b39b57e0bd412b055359c27a02c075966fc1512600f969848f13",
+      "bytes": 3589
+    },
+    {
       "path": "development/resource_review_lab/lab/resource_anchor.py",
       "sha256": "acb1bb29c6e79a75ee164c66fb5ef0088b9bb144836739db99c0bbd0aa627d25",
       "bytes": 5683
@@ -323,8 +328,13 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "47516eb818aed5fc6a7ac2f88dac78d5df4af60893f713c987766b669c486e4d",
-      "bytes": 3724
+      "sha256": "77232f9cd6cbad784552d7371aa839274c625b9e2b4aa734cd797ae65fe790fc",
+      "bytes": 3851
+    },
+    {
+      "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
+      "sha256": "dadfc351a70821d63fe3b12547fc4818e97b286749d5c955a22da1a75b844532",
+      "bytes": 2198
     },
     {
       "path": "development/resource_review_lab/schemas/orch-k003-job.schema.json",
@@ -340,6 +350,16 @@
       "path": "development/resource_review_lab/tests/test_anchor.py",
       "sha256": "c07c2ae20442ab48540edb9d5da1edcf0c33cbf30bba59f7b5e628bf367e497d",
       "bytes": 1149
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_binding.py",
+      "sha256": "40d307f595fa04a46e8c74c34732ee6b091282ea0036308ce08a59b65a9b3082",
+      "bytes": 5088
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_binding_boundary.py",
+      "sha256": "9f6e8debb6705aeb0782688d623c09b42cd836b64bf0fb5561311e8738adbe9d",
+      "bytes": 1804
     },
     {
       "path": "development/resource_review_lab/tests/test_boundary_review.py",
@@ -375,6 +395,11 @@
       "path": "development/resource_review_lab/tests/test_m012_independent_head_witness.py",
       "sha256": "b162ff2068ff51dc24a490518b1c74cb77c4eaa9cc02296c8b71eb6e20be3d76",
       "bytes": 8921
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_proposal.py",
+      "sha256": "77eb13112a55982362ae331ca3dd3dabf9ffff31e696f789c9b6978ba82e7648",
+      "bytes": 2225
     },
     {
       "path": "development/resource_review_lab/tests/test_resource_anchor.py",

@@ -18,3 +18,5 @@ The output directory must be new and outside this source package. The entry poin
 There is one current disposable resource authority implementation. authority.py only exposes compatibility contract names from that implementation; it does not add another scheduler or admission service. Existing source ancestry is recorded in MANIFEST.json. Keep these raw bytes unchanged across newline conversion because verifier source identity is pinned.
 
 This package creates only synthetic temporary test state and ephemeral fixture keys. It provides no live telemetry, independent provider, worker dispatch, production signing, publishing or database migration. Passing source/tests is not production acceptance. Do not install the lab on an active worker or treat its marker, callback or fixture signature as authority.
+
+Named DEV build schema and binding reviewer are offline proposals. Recipe pins supplied by a caller are not authenticated here. Owner/resource digests bind selected identifiers and never replace full admission. No canonical Studio mapping or K003 extension is accepted by these tests. Repeated reviews do not reserve nonces or authorize duplicate execution.
