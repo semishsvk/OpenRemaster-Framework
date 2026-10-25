@@ -42,6 +42,11 @@
       "bytes": 3432
     },
     {
+      "path": "development/glca/ACTION_MODEL.md",
+      "sha256": "ab1e8ebfda77b23295a7670a0e3bade4c9402799a746973fa02b04aea0674903",
+      "bytes": 2130
+    },
+    {
       "path": "development/glca/INPUT_PINS.json",
       "sha256": "13de238098514f587c1c98788a15a07f3faa0dfbeddee73e6c971ec32e7050f0",
       "bytes": 525
@@ -82,6 +87,11 @@
       "bytes": 2400
     },
     {
+      "path": "development/glca/glca/transitions.py",
+      "sha256": "29d46f656dc7a0eb753bdbe0d8c1bb7d04b336137c964fc74fea34397ce21bfe",
+      "bytes": 11435
+    },
+    {
       "path": "development/glca/reused/evidence_cache_v1.py",
       "sha256": "79309a8f8574065fd6e7cdb674cb6f837a638444e86096a216de17d557ade4d1",
       "bytes": 12065
@@ -115,6 +125,11 @@
       "path": "development/glca/tests/test_tasks.py",
       "sha256": "15cc62471fc748a95b828e40eee7a972e26c40b54ca28359966d5ff3aa8e53a0",
       "bytes": 2142
+    },
+    {
+      "path": "development/glca/tests/test_transitions.py",
+      "sha256": "7e54ca288d64d5bcba47fb266922daacc4c0ba62081d250938bea91a964e0cd6",
+      "bytes": 11575
     },
     {
       "path": "development/native_worker/README.md",
