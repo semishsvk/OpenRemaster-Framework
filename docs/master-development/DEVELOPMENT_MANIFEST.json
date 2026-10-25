@@ -748,8 +748,13 @@
     },
     {
       "path": "development/workflow/master_workflow.py",
-      "sha256": "fde8becb92b60ce45ee6f4390ea61af444c84bbb1c91f9f2b33f47db3dc63624",
-      "bytes": 2194
+      "sha256": "30e1fb570af2a5cb8fb4eef32488991b5403d61c40053fe0b992997eff5f53e0",
+      "bytes": 3409
+    },
+    {
+      "path": "development/workflow/test_advisory_witness.py",
+      "sha256": "811ab312d93e57f978bc9ba377b2ade88cb2cef8dc524e46b010458dce42dbec",
+      "bytes": 4795
     },
     {
       "path": "development/workflow/test_intake_bridge.py",
