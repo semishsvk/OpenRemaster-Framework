@@ -403,8 +403,8 @@
     },
     {
       "path": "development/studio_d7/src/MasterDevelopmentPanel.tsx",
-      "sha256": "74c43037a7f32a9f90a08b484a52202466a81ef91b911f53b6e621ab2d8a6d8c",
-      "bytes": 1876
+      "sha256": "d3301892439997c41b6250831d8b0d74acb80d2b808b16de6636a8b0840223b9",
+      "bytes": 2760
     },
     {
       "path": "development/studio_d7/src/NativeBuildLab.tsx",
@@ -622,6 +622,11 @@
       "bytes": 222
     },
     {
+      "path": "development/studio_d7/src/modelWitnessView.ts",
+      "sha256": "6b4dbf90adaa902432e640bebe676f64d555ec008f3e61775c1be5e02ed0bd44",
+      "bytes": 4109
+    },
+    {
       "path": "development/studio_d7/src/native-build.css",
       "sha256": "14cfc6ae1689a3e5d217e36d77c824bbadbc618a1768a82bdf4636147e0aa17a",
       "bytes": 5925
@@ -700,6 +705,11 @@
       "path": "development/studio_d7/src/ux-navigation.ts",
       "sha256": "2ca98ffdfcddda22c43b95ca023cfbdd3edebf92b62eb190ca0405feb2b14500",
       "bytes": 1349
+    },
+    {
+      "path": "development/studio_d7/tests/modelWitnessView.test.cjs",
+      "sha256": "b25cb72447cc81ac58b7fbdbc4a062031556a03f9dae02cd2fda052ded25c41d",
+      "bytes": 6935
     },
     {
       "path": "development/studio_d7/tools/canonical_proxy.mjs",
