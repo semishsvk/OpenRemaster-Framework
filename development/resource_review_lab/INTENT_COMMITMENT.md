@@ -1,0 +1,9 @@
+# Offline signed-job intent commitment v1
+
+The existing grant signs `job_sha256`, and the existing transaction binds the exact job bytes. The proposal also contains `job_bytes_sha256`. Embedding a hash of the whole proposal back into that job would create a circular hash dependency.
+
+This candidate adds a `development_intent` commitment inside synthetic Job.v1 test payloads. The commitment hashes a domain-separated canonical object containing every proposal field except `job_bytes_sha256`. The existing proposal binding reviewer independently checks that excluded field against the exact signed job bytes. Together these checks bind the complete proposal without a recursive digest. The final full proposal digest is recorded in the shadow review evidence.
+
+This does not extend or activate the live K003 schema, modify the broker's three-field request, add signature keys, repurpose existing snapshot/checkpoint fields, or add another authority. Existing grant and resource-transaction implementations remain byte-identical. The commitment is cryptographic content binding under synthetic fixture keys; recipe authenticity, current identity, independent source verification, project mapping and live admission remain unverified. Every result is HOLD and denies dispatch, signing, publishing, promotion and fallback.
+
+The read-only reviewer is also composed into the existing disposable resource-check hook. It re-verifies copied signed inputs at the transaction clock before the unchanged hook reserves resource state. The existing ACK/event job digest binds the intent indirectly; no extra claim fields or database are introduced. Tests verify rollback, replay, owner loss and resource fence changes. This remains an isolated lab composition, not an installed live authority. No execution wiring is authorized by this candidate.

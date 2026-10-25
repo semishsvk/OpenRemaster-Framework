@@ -197,9 +197,14 @@
       "bytes": 1841
     },
     {
+      "path": "development/resource_review_lab/INTENT_COMMITMENT.md",
+      "sha256": "112203096e890949c9a3fa7d543d27f73472538085b24b08ab30600e89cf92f9",
+      "bytes": 1836
+    },
+    {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "6f39581d8f766ccf5327a2fbba34b3b8d3082214db50e5b2cf282b487bb85e00",
-      "bytes": 12932
+      "sha256": "f3a1c0280e6c5d457a898e837f343f0aeb2f0b75b22bef9c67258f47508945f4",
+      "bytes": 14192
     },
     {
       "path": "development/resource_review_lab/README.md",
@@ -252,6 +257,11 @@
       "bytes": 3004
     },
     {
+      "path": "development/resource_review_lab/lab/committed_resource_check.py",
+      "sha256": "614f8cff6d5e04fdcfa8760ad8aabe361baab792b2efabad52ccaeee7fb3756e",
+      "bytes": 1506
+    },
+    {
       "path": "development/resource_review_lab/lab/d7_compatibility.py",
       "sha256": "5352a9300efb96265de910345b9401111e730f00a8853d7c08f6e29b9e98873f",
       "bytes": 5523
@@ -275,6 +285,11 @@
       "path": "development/resource_review_lab/lab/proposal_binding.py",
       "sha256": "005f73cfccc2b39b57e0bd412b055359c27a02c075966fc1512600f969848f13",
       "bytes": 3589
+    },
+    {
+      "path": "development/resource_review_lab/lab/proposal_commitment.py",
+      "sha256": "00a1a4b1b8f9fe31079ec6e5f59d1b695075adc0691b716c40e62ef6df82d9bb",
+      "bytes": 2603
     },
     {
       "path": "development/resource_review_lab/lab/resource_anchor.py",
@@ -328,8 +343,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "900e6a305d3c6d4c866489c94308f01d5a4cb893e81385cf30a390b11ea7f504",
-      "bytes": 3882
+      "sha256": "dfbf763bffdc7a7b7792882f3bc64c1ad98191561f0d391f975c4b95dd3c0651",
+      "bytes": 3993
     },
     {
       "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
@@ -372,6 +387,11 @@
       "bytes": 3386
     },
     {
+      "path": "development/resource_review_lab/tests/test_committed_transaction.py",
+      "sha256": "c88e88f94fae439f45b91e6137a721be3da8b37dd07383fb4abbdb44c9f0abaa",
+      "bytes": 4701
+    },
+    {
       "path": "development/resource_review_lab/tests/test_d7_compatibility.py",
       "sha256": "3c00dd1d6dfdd1cb117d4c0415fe846d934fd4bd7f571d9f7fb9aa4cee29a4e2",
       "bytes": 6484
@@ -405,6 +425,11 @@
       "path": "development/resource_review_lab/tests/test_proposal.py",
       "sha256": "77eb13112a55982362ae331ca3dd3dabf9ffff31e696f789c9b6978ba82e7648",
       "bytes": 2225
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_proposal_commitment.py",
+      "sha256": "0f9770445f8714a311391bffacadb9158a7190402efc284ab872893a9fccc88f",
+      "bytes": 4685
     },
     {
       "path": "development/resource_review_lab/tests/test_resource_anchor.py",
