@@ -54,15 +54,36 @@
       "path": "lab/authority.py",
       "sha256": "db84511fa3c56c6ef335914594024c2c03f7891d7fc62bfd018fd88a23976a9b",
       "bytes": 220,
-      "origin": "v021_portable_review_adapter",
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "lab/boundary_review.py",
       "sha256": "20be1a094a534e50e8ed26924d14a6b0a01f0085257fe43d797be0b432f6cb98",
       "bytes": 3004,
-      "origin": "v021_portable_review_adapter",
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "lab/d7_compatibility.py",
+      "sha256": "5352a9300efb96265de910345b9401111e730f00a8853d7c08f6e29b9e98873f",
+      "bytes": 5523,
+      "origin": "v022_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "lab/dev_receipt_crosswalk.py",
+      "sha256": "65b92537b40647e4026545ec5e2dd1b6c0cc8224d4a829d4e6a801748049e37a",
+      "bytes": 1848,
+      "origin": "integration/development/dual_trust/dev_receipt_crosswalk.py",
+      "kind": "BYTE_EXACT_REUSE"
+    },
+    {
+      "path": "lab/dual_trust_shadow.py",
+      "sha256": "65534f8006eb03403a2bccb936bfb4cc33f9540ef8ee7a96ef346c579fa52606",
+      "bytes": 3988,
+      "origin": "integration/development/dual_trust/dual_trust_shadow.py",
+      "kind": "BYTE_EXACT_REUSE"
     },
     {
       "path": "lab/governor.py",
@@ -131,29 +152,36 @@
       "path": "pytest.ini",
       "sha256": "a5391176dc65929be49b64fe01988ac4008164dff446ed2e34508ad4b88b5f04",
       "bytes": 37,
-      "origin": "v021_portable_review_adapter",
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "README.md",
-      "sha256": "b973c70f891f904b73ef4e961265544627e39bc1138cfab0ad2d3bbfbec510e7",
-      "bytes": 1805,
-      "origin": "v021_portable_review_adapter",
+      "sha256": "16ec8bc5941c569f0547a60d6ab3dcd2775247d650c1418f155f129c5505a1ab",
+      "bytes": 2321,
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "requirements.txt",
-      "sha256": "46c6a0ebe4d3e55e8731c619c3acb75633ac858dbf622692e24eebc6796f6006",
-      "bytes": 37,
-      "origin": "v021_portable_review_adapter",
+      "sha256": "4e10c6c84b3f1a9faa2a232aa00e7360b329ab43ff283e8353dfc72bf5d96c66",
+      "bytes": 57,
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
     },
     {
       "path": "run_review.py",
-      "sha256": "a8f93fc8b756efdfc3110468755157bf79100eda4f28ccb6547911de0b90ee46",
-      "bytes": 3574,
-      "origin": "v021_portable_review_adapter",
+      "sha256": "47516eb818aed5fc6a7ac2f88dac78d5df4af60893f713c987766b669c486e4d",
+      "bytes": 3724,
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "schemas/orch-k003-job.schema.json",
+      "sha256": "aa126363777186df589b0a27a35006f6f570b834108cd8501291f30432fac006",
+      "bytes": 5785,
+      "origin": "orchestrator/control-plane/schemas/orch-k003-job.schema.json",
+      "kind": "BYTE_EXACT_REUSE"
     },
     {
       "path": "tests/test_admission_shadow.py",
@@ -173,8 +201,29 @@
       "path": "tests/test_boundary_review.py",
       "sha256": "bdc5a242f857210f574d8cebb7901f60952b97a8a4944b8b47334a9f076a7681",
       "bytes": 3386,
-      "origin": "v021_portable_review_adapter",
+      "origin": "v022_portable_review_adapter",
       "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "tests/test_d7_compatibility.py",
+      "sha256": "3c00dd1d6dfdd1cb117d4c0415fe846d934fd4bd7f571d9f7fb9aa4cee29a4e2",
+      "bytes": 6484,
+      "origin": "v022_portable_review_adapter",
+      "kind": "PACKAGE_ADAPTER"
+    },
+    {
+      "path": "tests/test_dev_receipt_crosswalk.py",
+      "sha256": "0c993f384221ebc1f760155977ae196432dcc19169af6fa45ce1c7df83135a5e",
+      "bytes": 1095,
+      "origin": "integration/development/dual_trust/test_dev_receipt_crosswalk.py",
+      "kind": "BYTE_EXACT_REUSE"
+    },
+    {
+      "path": "tests/test_dual_trust_shadow.py",
+      "sha256": "8050798f76a4f3e5dd1024652f0f9be014712cdceb9afd01b7604888a38b9160",
+      "bytes": 3432,
+      "origin": "integration/development/dual_trust/test_dual_trust_shadow.py",
+      "kind": "BYTE_EXACT_REUSE"
     },
     {
       "path": "tests/test_governor.py",

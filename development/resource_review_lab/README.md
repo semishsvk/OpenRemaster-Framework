@@ -4,6 +4,8 @@ Portable offline source and tests for development admission, resource observatio
 
 boundary_review.py adds bounded Python source-syntax observation without importing or executing worker source. Function names, literal request sets and call syntax are observations only; comments, metadata and a named admission function never establish trusted admission, current ownership, liveness or K003 compatibility.
 
+d7_compatibility.py reviews the historical three-field broker request, not the larger Rust IPC payload. It reuses the existing DEV result observer and resource/identity review, then checks the unchanged pinned K003 job schema. A DEV build is not silently converted to executable runtime. Missing mapping/authority stays HOLD; status remains query-only and no query is performed. Unsigned development results never require production signing credentials, and a prebuild review does not require a prior build result.
+
 Install the pinned review dependencies from requirements.txt, then run:
 
 ```text

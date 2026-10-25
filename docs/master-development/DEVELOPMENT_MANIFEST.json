@@ -198,13 +198,13 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "eae496903b37a716d8c786352d69dd46c1543564e23f7e7e54b012292b4012ee",
-      "bytes": 9492
+      "sha256": "edadae9434d5d06e73bd1cc63cac53a6abca2e95a932693ccabcb938f845dc5a",
+      "bytes": 11420
     },
     {
       "path": "development/resource_review_lab/README.md",
-      "sha256": "b973c70f891f904b73ef4e961265544627e39bc1138cfab0ad2d3bbfbec510e7",
-      "bytes": 1805
+      "sha256": "16ec8bc5941c569f0547a60d6ab3dcd2775247d650c1418f155f129c5505a1ab",
+      "bytes": 2321
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -250,6 +250,21 @@
       "path": "development/resource_review_lab/lab/boundary_review.py",
       "sha256": "20be1a094a534e50e8ed26924d14a6b0a01f0085257fe43d797be0b432f6cb98",
       "bytes": 3004
+    },
+    {
+      "path": "development/resource_review_lab/lab/d7_compatibility.py",
+      "sha256": "5352a9300efb96265de910345b9401111e730f00a8853d7c08f6e29b9e98873f",
+      "bytes": 5523
+    },
+    {
+      "path": "development/resource_review_lab/lab/dev_receipt_crosswalk.py",
+      "sha256": "65b92537b40647e4026545ec5e2dd1b6c0cc8224d4a829d4e6a801748049e37a",
+      "bytes": 1848
+    },
+    {
+      "path": "development/resource_review_lab/lab/dual_trust_shadow.py",
+      "sha256": "65534f8006eb03403a2bccb936bfb4cc33f9540ef8ee7a96ef346c579fa52606",
+      "bytes": 3988
     },
     {
       "path": "development/resource_review_lab/lab/governor.py",
@@ -303,13 +318,18 @@
     },
     {
       "path": "development/resource_review_lab/requirements.txt",
-      "sha256": "46c6a0ebe4d3e55e8731c619c3acb75633ac858dbf622692e24eebc6796f6006",
-      "bytes": 37
+      "sha256": "4e10c6c84b3f1a9faa2a232aa00e7360b329ab43ff283e8353dfc72bf5d96c66",
+      "bytes": 57
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "a8f93fc8b756efdfc3110468755157bf79100eda4f28ccb6547911de0b90ee46",
-      "bytes": 3574
+      "sha256": "47516eb818aed5fc6a7ac2f88dac78d5df4af60893f713c987766b669c486e4d",
+      "bytes": 3724
+    },
+    {
+      "path": "development/resource_review_lab/schemas/orch-k003-job.schema.json",
+      "sha256": "aa126363777186df589b0a27a35006f6f570b834108cd8501291f30432fac006",
+      "bytes": 5785
     },
     {
       "path": "development/resource_review_lab/tests/test_admission_shadow.py",
@@ -325,6 +345,21 @@
       "path": "development/resource_review_lab/tests/test_boundary_review.py",
       "sha256": "bdc5a242f857210f574d8cebb7901f60952b97a8a4944b8b47334a9f076a7681",
       "bytes": 3386
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_d7_compatibility.py",
+      "sha256": "3c00dd1d6dfdd1cb117d4c0415fe846d934fd4bd7f571d9f7fb9aa4cee29a4e2",
+      "bytes": 6484
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_dev_receipt_crosswalk.py",
+      "sha256": "0c993f384221ebc1f760155977ae196432dcc19169af6fa45ce1c7df83135a5e",
+      "bytes": 1095
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_dual_trust_shadow.py",
+      "sha256": "8050798f76a4f3e5dd1024652f0f9be014712cdceb9afd01b7604888a38b9160",
+      "bytes": 3432
     },
     {
       "path": "development/resource_review_lab/tests/test_governor.py",
