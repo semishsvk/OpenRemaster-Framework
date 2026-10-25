@@ -27,7 +27,7 @@ def main():
     out.mkdir(parents=True,exist_ok=False)
     sys.path[:0]=[str(ROOT/'lab'),str(ROOT/'production-owner-authority-v1'),str(ROOT/'framework'),str(ROOT/'tests')]
     import pytest
-    tests=['test_p8_consumer.py','test_p8_journal.py','test_rejection_witness.py','test_rejection_import.py','test_rejection_evidence.py','test_committed_transaction.py','test_proposal_commitment.py','test_admission_contention.py','test_binding.py','test_binding_boundary.py','test_proposal.py','test_d7_compatibility.py','test_dev_receipt_crosswalk.py','test_dual_trust_shadow.py','test_boundary_review.py','test_resource_witness.py','test_m012_independent_head_witness.py','test_witness_key_separation.py','test_resource_anchor.py','test_anchor.py','test_resource_integrity.py','test_resource_transaction.py','test_resource_observation.py','test_work_identity.py','test_admission_shadow.py','test_governor.py']
+    tests=['test_p8_audit.py','test_p8_consumer.py','test_p8_journal.py','test_rejection_witness.py','test_rejection_import.py','test_rejection_evidence.py','test_committed_transaction.py','test_proposal_commitment.py','test_admission_contention.py','test_binding.py','test_binding_boundary.py','test_proposal.py','test_d7_compatibility.py','test_dev_receipt_crosswalk.py','test_dual_trust_shadow.py','test_boundary_review.py','test_resource_witness.py','test_m012_independent_head_witness.py','test_witness_key_separation.py','test_resource_anchor.py','test_anchor.py','test_resource_integrity.py','test_resource_transaction.py','test_resource_observation.py','test_work_identity.py','test_admission_shadow.py','test_governor.py']
     result=pytest.main(['-c',str(ROOT/'pytest.ini'),'--rootdir='+str(ROOT),'--confcutdir='+str(ROOT),*[str(ROOT/'tests'/t) for t in tests],'-q','--junitxml='+str(out/'review.xml'),'--basetemp='+str(out/'temp'),'-o','cache_dir='+str(out/'cache')])
     names=['p8_failclosed','p8_journal','rejection_witness','rejection_import','rejection_evidence','committed_resource_check','proposal_commitment','proposal_binding','d7_compatibility','dev_receipt_crosswalk','dual_trust_shadow','boundary_review','admission_boundary_base','admission_shadow','authority','resource_authority','work_identity','resource_observation','resource_transaction','resource_anchor','resource_witness','governor','scope','anchor','openremaster.m005_anchor_contract','openremaster.m010_durable_recovery','openremaster.m011_signed_recovery','openremaster.m012_independent_head_witness']+[Path(t).stem for t in tests]+['test_m011_signed_recovery']
     imports=[]
@@ -39,6 +39,8 @@ def main():
     from rejection_evidence import export_bundle
     import test_rejection_evidence as rejection_cases
     (out/'REJECTION_EVIDENCE.json').write_text(json.dumps(export_bundle(rejection_cases.RECORDS),indent=2)+'\n',encoding='utf-8')
+    import test_p8_audit as p8_cases
+    (out/'P8_REJECTION_EVIDENCE.json').write_text(json.dumps(export_bundle(p8_cases.RECORDS),indent=2)+'\n',encoding='utf-8')
     (out/'IMPORTS.json').write_text(json.dumps(imports,indent=2)+'\n',encoding='utf-8')
     summary=dict(status='PASS' if result==0 else 'FAIL',source_files=count,scope='OFFLINE_SYNTHETIC_REVIEW_ONLY',imports_within_package=True,worker_started=False,independent_authority_verified=False,production_go=False)
     (out/'SUMMARY.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')

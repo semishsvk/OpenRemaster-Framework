@@ -4,6 +4,8 @@ from copy import deepcopy
 from admission_boundary_base import canonical
 
 REASONS=frozenset({'UNKNOWN_WORKER_IDENTITY','INVALID_CREDENTIALS','MISSING_ATTESTATION','WRONG_TRUST_CLASS','STALE_OWNER_LEASE','UNAUTHORIZED_PROJECT','CONCURRENT_WRITER','SOURCE_HASH_MISMATCH','DEPENDENCY_HASH_MISMATCH','MISSING_FIDELITY_GATE','INCOMPLETE_PROVENANCE','INVALID_SIGNING_AUTHORIZATION','DEVELOPMENT_RELEASE_ATTEMPT','TRUST_ESCALATION_ATTEMPT','PRODUCTION_WORKER_UNAVAILABLE','RELEASE_FALLBACK_ATTEMPT','OWNER_EPOCH_GENERATION_LEASE_OR_SOURCE_HOLD','RESOURCE_OPERATION_ALREADY_PRESENT_QUERY_ONLY','RESOURCE_FENCE_OR_POLICY_CHANGED','NONCE_JOB_OR_OPERATION_REPLAY_CONFLICT','GAME_WIP_LIMIT_DENIED','FOURTH_HEAVY_SLOT_DENIED','RESOURCE_REVIEW_GOVERNOR_LIGHT_GAMING','AUDIT_EXPORT_UNAVAILABLE','UNCLASSIFIED_FAILURE'})
+P8_REASONS=frozenset({'INPUT_SCHEMA_HOLD','WINDOWS_LOCK_UNAVAILABLE_HOLD','JOURNAL_IO_HOLD','LOCK_TIMEOUT_HOLD','PARTIAL_JOURNAL_HOLD','JOURNAL_JSON_OR_SCHEMA_HOLD','JOURNAL_EVENT_SCHEMA_HOLD','HASH_CHAIN_HOLD','JOURNAL_HISTORY_REPLAY_HOLD','JOURNAL_BOUND_HOLD','SHADOW_RESERVATION_NOT_AUTHORITY','JOURNAL_REPLAY_QUERY_ONLY','JOURNAL_WRITE_UNCERTAIN_QUERY_ONLY','UNRECOGNIZED_JOURNAL_STATUS','UNEXPECTED_PROVIDER_FAILURE'})
+REASONS=REASONS|P8_REASONS
 HASHES={'job_sha256','request_sha256','proposal_sha256'}
 CONTEXT={'attempt_id','operation_id','input_digests'}
 def digest(value):return hashlib.sha256(canonical(value)).hexdigest()
@@ -17,6 +19,12 @@ def rejection_record(decision,context,*,observed_at):
     if type(observed_at) is not int or not 0<=observed_at<=253402300799:raise ValueError('REJECTION_TIME_INVALID')
     body=dict(schema='OpenRemaster.ShadowRejectionEvidence.v1',scope='REPORTED_SHADOW_DECISION_NOT_INDEPENDENT_AUDIT',decision=decision['decision'],reason_code=decision['reason'] if decision['reason'] in REASONS else 'UNCLASSIFIED_FAILURE',observed_at=observed_at,**deepcopy(context),independent_authority_verified=False,durability_verified=False,transaction_outcome='NOT_ATTESTED',may_dispatch=False,may_sign=False,may_publish=False,may_promote=False,may_fallback=False,automatic_retry=False,production_go=False)
     return dict(body,record_sha256=digest(body))
+
+def record_p8_status(status,context,*,observed_at):
+    """Record an already reported scalar status through the existing boundary."""
+    from p8_failclosed import observe_journal_status
+    reported=observe_journal_status(status)
+    return rejection_record(dict(decision='HOLD',reason=reported['reason_code']),context,observed_at=observed_at)
 
 def validate_record(record):
     if type(record) is not dict:raise ValueError('REJECTION_RECORD_INVALID')

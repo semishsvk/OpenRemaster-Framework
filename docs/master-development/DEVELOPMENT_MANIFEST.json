@@ -203,8 +203,13 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "7146d3261f3961de6801eb3e6344a91a89348be8812b5cc49f4a6f4d9c56c463",
-      "bytes": 17875
+      "sha256": "3e93e7816cd423dd66d4cff4dd18779098e7ff24a1270b606ab7c180649a61e4",
+      "bytes": 18354
+    },
+    {
+      "path": "development/resource_review_lab/P8_AUDIT.md",
+      "sha256": "3985de6aa23177ea73f31627310f6788c8537d47eab0f76a9832b8dea1db6946",
+      "bytes": 1926
     },
     {
       "path": "development/resource_review_lab/P8_CONSUMER.md",
@@ -328,8 +333,8 @@
     },
     {
       "path": "development/resource_review_lab/lab/rejection_evidence.py",
-      "sha256": "136f8083870ee1aac5bc3118ab738415d365956c19958862b1ff00b4f9421c44",
-      "bytes": 3830
+      "sha256": "776a19bde1d80ff43ff6963524dfb027a766438364ef1ceb2bc2b169edffae4b",
+      "bytes": 4627
     },
     {
       "path": "development/resource_review_lab/lab/rejection_import.py",
@@ -393,8 +398,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "322800360f26673aac3ee1ae59a06fcb97ad43001d7fbc9e4672b77c08f4f23a",
-      "bytes": 4445
+      "sha256": "6fdc6e708a05affdfa6a8ca4ddae2fb0a9fb2b62151faf9284b2fd12b778f590",
+      "bytes": 4629
     },
     {
       "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
@@ -470,6 +475,11 @@
       "path": "development/resource_review_lab/tests/test_m012_independent_head_witness.py",
       "sha256": "b162ff2068ff51dc24a490518b1c74cb77c4eaa9cc02296c8b71eb6e20be3d76",
       "bytes": 8921
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_p8_audit.py",
+      "sha256": "a840f667ca6208ad07d590b90a1d0bb3d96ce1f69eed9954aa243ebbadbac780",
+      "bytes": 7262
     },
     {
       "path": "development/resource_review_lab/tests/test_p8_consumer.py",

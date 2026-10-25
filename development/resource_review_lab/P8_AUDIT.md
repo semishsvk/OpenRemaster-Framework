@@ -1,0 +1,9 @@
+# P8 status to existing rejection evidence integration
+
+This candidate adds a vetted P8 reason-code set and one pure record_p8_status entry point to the existing rejection exporter. It reuses the hardened observation boundary and original record/export/import schemas. It consumes a reported scalar result only: it does not call the journal, query state, write a queue, spend a nonce or create a new audit authority.
+
+Thirteen journal outcomes preserve explicit diagnostics. Replay and uncertain writes retain QUERY_ONLY reason codes and automatic_retry=False. Unknown raw strings or forged dictionaries become UNRECOGNIZED_JOURNAL_STATUS without exporting raw paths/details. Generic unknown reasons continue to normalize to UNCLASSIFIED_FAILURE. SHADOW_RESERVED still produces a HOLD record and never admission.
+
+The harness exercises disposable journal -> existing boundary -> existing record/export -> strict expected-bytes import. Real Windows integration covers malformed JSON, partial tail, unknown event, replay, injected fsync uncertainty and read I/O failure. Portable cases cover rejected input and the explicitly simulated missing-platform branch. Real Windows locking tests are skipped on other platforms without substituting a lock. Test-generated P8_REJECTION_EVIDENCE.json is written outside source alongside the previous rejection evidence, preserving the two evidence sets.
+
+Operation identity remains unknown where not independently supplied. The harness hashes its declared journal input tuple, not an admitted D7 broker request. Timestamps are synthetic, and fault injection/simulated platform branches are test evidence only. transaction_outcome remains NOT_ATTESTED; query-only does not mean a query occurred. A locally derived expected digest checks integrity only. No durable complete live audit, independently authenticated origin, source/owner/resource admission or release readiness is established.
