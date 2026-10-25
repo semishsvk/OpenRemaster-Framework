@@ -101,6 +101,15 @@ def verify_independent_witness(*,receipt,receipt_trust,receipt_authority,
         _name(key_id)
         if type(key) is not bytes or len(key)!=32:raise WitnessHold("invalid pinned witness key")
     for key_id in t.revoked:_name(key_id)
+    # Authority/key identifiers do not prove separate signing roles. Match the
+    # conservative full-domain separation used by the sibling M012 head review,
+    # including aliases and revoked entries retained in the pinned trust views.
+    recovery_keys=receipt_trust.public_keys
+    if (type(recovery_keys) is not dict or
+        any(type(key) is not bytes or len(key)!=32 for key in recovery_keys.values())):
+        raise WitnessHold("invalid receipt trust key material")
+    if set(recovery_keys.values()) & set(t.keys.values()):
+        raise WitnessHold("shared signing key material across receipt and witness trust domains")
     issued=_time(w["issued_utc"])
     expires=_time(w["expires_utc"])
     if not(issued<=current<expires and timedelta(0)<expires-issued<=timedelta(seconds=45)):
