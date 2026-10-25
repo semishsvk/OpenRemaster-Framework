@@ -198,13 +198,13 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "6383a722790ca997a31ed103c4bc76a8e18e1581f8c4ace5307383bc1a00a842",
-      "bytes": 12675
+      "sha256": "6f39581d8f766ccf5327a2fbba34b3b8d3082214db50e5b2cf282b487bb85e00",
+      "bytes": 12932
     },
     {
       "path": "development/resource_review_lab/README.md",
-      "sha256": "639857e6360262ac7339a795b4938cb8fa8fd336e7dc4bec7eba5d1db7ce106d",
-      "bytes": 2702
+      "sha256": "6f0304b5a9bc1bf02b8b9cb438db0d7592b16f786ca6756259cfbec53bf3a4ca",
+      "bytes": 3054
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -328,8 +328,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "77232f9cd6cbad784552d7371aa839274c625b9e2b4aa734cd797ae65fe790fc",
-      "bytes": 3851
+      "sha256": "900e6a305d3c6d4c866489c94308f01d5a4cb893e81385cf30a390b11ea7f504",
+      "bytes": 3882
     },
     {
       "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
@@ -340,6 +340,11 @@
       "path": "development/resource_review_lab/schemas/orch-k003-job.schema.json",
       "sha256": "aa126363777186df589b0a27a35006f6f570b834108cd8501291f30432fac006",
       "bytes": 5785
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_admission_contention.py",
+      "sha256": "9af6073d38f4ccdd0b53cbbf0adb35d428da9eebfb68ef3f0a7cd7fca2f44dc7",
+      "bytes": 5793
     },
     {
       "path": "development/resource_review_lab/tests/test_admission_shadow.py",
