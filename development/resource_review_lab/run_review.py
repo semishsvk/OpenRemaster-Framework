@@ -28,7 +28,7 @@ def main():
     sys.path[:0]=[str(ROOT/'lab'),str(ROOT/'production-owner-authority-v1'),str(ROOT/'framework'),str(ROOT/'tests')]
     import pytest
     tests=['test_resource_witness.py','test_m012_independent_head_witness.py','test_witness_key_separation.py','test_resource_anchor.py','test_anchor.py','test_resource_integrity.py','test_resource_transaction.py','test_resource_observation.py','test_work_identity.py','test_admission_shadow.py','test_governor.py']
-    result=pytest.main([*[str(ROOT/'tests'/t) for t in tests],'-q','--junitxml='+str(out/'review.xml'),'--basetemp='+str(out/'temp'),'-o','cache_dir='+str(out/'cache')])
+    result=pytest.main(['-c',str(ROOT/'pytest.ini'),'--rootdir='+str(ROOT),'--confcutdir='+str(ROOT),*[str(ROOT/'tests'/t) for t in tests],'-q','--junitxml='+str(out/'review.xml'),'--basetemp='+str(out/'temp'),'-o','cache_dir='+str(out/'cache')])
     names=['admission_boundary_base','admission_shadow','authority','resource_authority','work_identity','resource_observation','resource_transaction','resource_anchor','resource_witness','governor','scope','anchor','openremaster.m005_anchor_contract','openremaster.m010_durable_recovery','openremaster.m011_signed_recovery','openremaster.m012_independent_head_witness']+[Path(t).stem for t in tests]+['test_m011_signed_recovery']
     imports=[]
     for name in names:

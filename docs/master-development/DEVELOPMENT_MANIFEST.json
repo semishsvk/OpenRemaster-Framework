@@ -198,13 +198,13 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "0bbb18f75e6a53e9bf22260536a7c7072e8c56418ac672d3d087df55c17a2d32",
-      "bytes": 8764
+      "sha256": "2c7b18a4ff2eec564e457f01e0321ac8d239585d90c9fd5d87cd4bc705c2caaa",
+      "bytes": 8995
     },
     {
       "path": "development/resource_review_lab/README.md",
-      "sha256": "9225d17d68a62bc8bc7d49e9a1a3c340b666fdbbacbf6c1a790dde8c6f2a2027",
-      "bytes": 1403
+      "sha256": "06b01c2a6b1b35e08e682774df700bd7f3596625ba824eadde90e354230aeb84",
+      "bytes": 1481
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -292,14 +292,19 @@
       "bytes": 1564
     },
     {
+      "path": "development/resource_review_lab/pytest.ini",
+      "sha256": "a5391176dc65929be49b64fe01988ac4008164dff446ed2e34508ad4b88b5f04",
+      "bytes": 37
+    },
+    {
       "path": "development/resource_review_lab/requirements.txt",
       "sha256": "46c6a0ebe4d3e55e8731c619c3acb75633ac858dbf622692e24eebc6796f6006",
       "bytes": 37
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "75e72f2d71d39b1fe8444445f64bd16676ca353e93631a49fcb25dfbbdb044ad",
-      "bytes": 3453
+      "sha256": "f7a905ea65eeab7f6d84e9ed0a8364a3bca0e4aa6743e960c35a9c73b1b3f902",
+      "bytes": 3530
     },
     {
       "path": "development/resource_review_lab/tests/test_admission_shadow.py",
