@@ -92,6 +92,11 @@
       "bytes": 11435
     },
     {
+      "path": "development/glca/glca/witness.py",
+      "sha256": "1017aeb39b8ae2792ecfe0b017ffd946dcb5c9638cec1abb34135c57b1bbe220",
+      "bytes": 3283
+    },
+    {
       "path": "development/glca/reused/evidence_cache_v1.py",
       "sha256": "79309a8f8574065fd6e7cdb674cb6f837a638444e86096a216de17d557ade4d1",
       "bytes": 12065
@@ -130,6 +135,11 @@
       "path": "development/glca/tests/test_transitions.py",
       "sha256": "7e54ca288d64d5bcba47fb266922daacc4c0ba62081d250938bea91a964e0cd6",
       "bytes": 11575
+    },
+    {
+      "path": "development/glca/tests/test_witness.py",
+      "sha256": "219e4422604a77bd96c13b2f56173ab99e41925f19bdb7a2858d6dcf14599bde",
+      "bytes": 4672
     },
     {
       "path": "development/native_worker/README.md",
