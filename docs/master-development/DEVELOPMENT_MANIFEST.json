@@ -203,13 +203,18 @@
     },
     {
       "path": "development/resource_review_lab/MANIFEST.json",
-      "sha256": "f3a1c0280e6c5d457a898e837f343f0aeb2f0b75b22bef9c67258f47508945f4",
-      "bytes": 14192
+      "sha256": "2787644d5a0d3e31c9de33dfa168afad9d963cff6005404c0cba0290e1e23634",
+      "bytes": 14939
     },
     {
       "path": "development/resource_review_lab/README.md",
       "sha256": "6f0304b5a9bc1bf02b8b9cb438db0d7592b16f786ca6756259cfbec53bf3a4ca",
       "bytes": 3054
+    },
+    {
+      "path": "development/resource_review_lab/REJECTION_EVIDENCE.md",
+      "sha256": "4c9cd1260f0755117948f2d7aa86b806bd1d322490c9c7bac4bf1431d2b7ad57",
+      "bytes": 1813
     },
     {
       "path": "development/resource_review_lab/framework/openremaster/__init__.py",
@@ -292,6 +297,11 @@
       "bytes": 2603
     },
     {
+      "path": "development/resource_review_lab/lab/rejection_evidence.py",
+      "sha256": "136f8083870ee1aac5bc3118ab738415d365956c19958862b1ff00b4f9421c44",
+      "bytes": 3830
+    },
+    {
       "path": "development/resource_review_lab/lab/resource_anchor.py",
       "sha256": "acb1bb29c6e79a75ee164c66fb5ef0088b9bb144836739db99c0bbd0aa627d25",
       "bytes": 5683
@@ -343,8 +353,8 @@
     },
     {
       "path": "development/resource_review_lab/run_review.py",
-      "sha256": "dfbf763bffdc7a7b7792882f3bc64c1ad98191561f0d391f975c4b95dd3c0651",
-      "bytes": 3993
+      "sha256": "f5158d89ef1fbe23922d5c902b4f88a61b7123f5789d8262b646216ed8f2d599",
+      "bytes": 4279
     },
     {
       "path": "development/resource_review_lab/schemas/named-dev-build-proposal.schema.json",
@@ -430,6 +440,11 @@
       "path": "development/resource_review_lab/tests/test_proposal_commitment.py",
       "sha256": "0f9770445f8714a311391bffacadb9158a7190402efc284ab872893a9fccc88f",
       "bytes": 4685
+    },
+    {
+      "path": "development/resource_review_lab/tests/test_rejection_evidence.py",
+      "sha256": "3083c3cc2f462ee8ed27f0b44ab435e0084f5c258677e831af15e24b825da004",
+      "bytes": 6001
     },
     {
       "path": "development/resource_review_lab/tests/test_resource_anchor.py",
