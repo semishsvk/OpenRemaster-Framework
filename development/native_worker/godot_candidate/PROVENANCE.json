@@ -1,0 +1,85 @@
+{
+  "schema": "OpenRemaster.GenericGodotSourceCandidate.v1",
+  "status": "ISOLATED_SOURCE_REVIEW",
+  "source_files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "0714fe9d6aff0f05780ff45ec3c830d5aeffc565a62c5fc66517f031df32c007"
+    },
+    {
+      "path": "dev-build.ps1",
+      "sha256": "2c3ce0e93ffb85c72e13950ed05427fcc2eb2982419b8f2120ead395cafdd633"
+    },
+    {
+      "path": "dev_worker.rs",
+      "sha256": "52c18f439843393ed7f54ab089a985d1b723e841ea5227eb6c389da04bad2e38"
+    },
+    {
+      "path": "fixture/export_presets.cfg",
+      "sha256": "43c858d061122d8b32de3acf792903bb17b70d630749b2d93ff761dedadedcf1"
+    },
+    {
+      "path": "fixture/project.godot",
+      "sha256": "d75aec57f98199b3b2c316f85266d5e7474b0876381fe6b1a1d3e913f76566b5"
+    },
+    {
+      "path": "godot_build.py",
+      "sha256": "1be4646f5cfe06835af40bda1386693db51a6b280ffc27341e0d074ed598e6f1"
+    },
+    {
+      "path": "godot_export_child.py",
+      "sha256": "fb44fdeba29521c15fa17cfc8978a04fe9c6a77875a7bf6d793c4a35f5b1956e"
+    },
+    {
+      "path": "pytest.ini",
+      "sha256": "8250d20f42b419af40706490ead78aabab9feba93eab09a3f626e3de5256e1f4"
+    },
+    {
+      "path": "README.md",
+      "sha256": "96ce5cbc894a703197a81886ea09d6caca0a245ef02228010c5954158fe29ad7"
+    },
+    {
+      "path": "test_completion_admission.py",
+      "sha256": "7ffd4d339d6806ce2520b05ebabd6298d5e9c197b4a950c1058f83b79ea60cf4"
+    },
+    {
+      "path": "test_export_child_boundary.py",
+      "sha256": "ca5e05b053967ea54c7af93a2069a4481f8b1e465b9ab1310dbf2c6f10060353"
+    },
+    {
+      "path": "test_godot_audit.py",
+      "sha256": "4913ddc9f594eff32ff3f2c8f5eb79f4f0c2ef72e4f8b8647e0dec80840aab6e"
+    },
+    {
+      "path": "test_godot_build.py",
+      "sha256": "7d6dcdab8a6f9f95663814d7e72d73df9efbff44887a2e43740022da3daea09a"
+    },
+    {
+      "path": "test_godot_v2.py",
+      "sha256": "4fbf1d4c6c539584e16582719ce0bfc442063b7290ca27e6d317b789b8afee5c"
+    },
+    {
+      "path": "test_saved_operation_binding.py",
+      "sha256": "7504259f6690d06df643916914908df125fe8a4a2604674b5f5c9505d976e32d"
+    },
+    {
+      "path": "worker/broker.py",
+      "sha256": "37de09aad41086843a54efb84212e05884545ec5846e31fd3ecaf5013aef40a5"
+    },
+    {
+      "path": "worker/dev-worker.ps1",
+      "sha256": "6eb17764e399b12af63df914f6743a179f3a2124586068cc6dc3cf2f4ab8a971"
+    },
+    {
+      "path": "worker/host.py",
+      "sha256": "a3d6e8f5be9c58b6b991da3aa18b4afe2a5066041f07ff7fda2e71efbe3a52b1"
+    }
+  ],
+  "locally_qualified_cases": 116,
+  "scope": "Synthetic unit tests with process and authority doubles",
+  "ci": "NOT_RUN",
+  "native_compilation": false,
+  "actual_export": false,
+  "independent_authority": false,
+  "production_go": false
+}
