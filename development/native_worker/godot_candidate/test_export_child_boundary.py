@@ -59,7 +59,7 @@ def test_changed_template_is_rejected_before_launch(setup_child):
 
 def test_corrupted_staged_template_is_rejected_before_launch(setup_child,monkeypatch):
  plan,stage,project,output,frozen,argv,calls=setup_child
- monkeypatch.setattr(child.shutil,'copyfile',lambda src,dst:Path(dst).write_bytes(b'BAD_COPY'))
+ monkeypatch.setattr(child.shutil,'copyfileobj',lambda src,dst:dst.write(b'BAD_COPY'))
  with pytest.raises(ValueError,match='COPIED_TEMPLATE_CHANGED'):child.main()
  assert not calls
 
@@ -89,7 +89,10 @@ def test_oversize_recipe_read_is_bounded_before_parsing(tmp_path,monkeypatch,rea
   stream=original(self,*args,**kwargs);return Reader(stream) if self==path else stream
  monkeypatch.setattr(Path,'open',opened)
  with pytest.raises(ValueError,match='PLAN_SIZE_BOUND'):reader(path)
- assert reads==[2*1024*1024+1]
+ if reader is child.read_plan_bytes:
+  assert reads==[],'OVERSIZE_CHILD_RECIPE_MUST_REJECT_BEFORE_OPEN'
+ else:
+  assert reads==[2*1024*1024+1]
 
 def test_oversize_child_cli_plan_is_rejected_before_launch(setup_child):
  plan,stage,project,output,frozen,argv,calls=setup_child;frozen.write_bytes(b' '*(2*1024*1024+1))

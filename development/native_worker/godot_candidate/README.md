@@ -1,13 +1,11 @@
-# Isolated Godot DEV source candidate
+# Isolated Windows Godot DEV source candidate
 
-This review overlay adds a named Godot export adapter to the existing DEV broker and queue. It does not start another worker or replace the preserved worker sources beside this directory.
+This source overlay extends the existing DEV broker and queue. It is not an installed or commissioned worker. Existing consumer HOLD behavior and owner/resource admission, single writer, GAME/LIGHT and maximum three heavy executions remain required.
 
-The adapter pins recipes, source and tool inputs, copies into fresh operation scopes, validates named outputs and rechecks owner/resource admission through the existing callback. That callback remains HOLD until connected to an independently verified existing authority. Ledger ACK/result/commit and saved-result replay retain operation and recipe bindings. Recipe reads are bounded before parsing.
+The Godot adapter and export child include the current reviewed environment, local-drive, source integrity and input read controls. They reject observed network/device/reparse paths, file replacements during verified reads, changed staged sources and oversized recipes. Pre-export checks do not retain Native file pins or prove immutable runtime custody through execution. Missing authority, audit, configuration or admission remains HOLD; there is no fallback or permission grant.
 
-No host configuration, real-project manifests, dependency cache, credentials, signing keys or operational receipts are included. Self-issued DEV custody is not production signing or independent release authority. Existing K003/owner/resource admission, single-writer, GAME/LIGHT and the three-heavy-slot limit remain required before real execution.
+This update changes only those two existing product modules, adapts two tests to current exclusive stream copying and pre-open oversized-file rejection, and updates this README/provenance. Other source and original process/authority doubles are preserved. The complete current private controller/audit/Native review collection is separate and is not included here. The historical Rust/PowerShell/broker/host consumers are not silently upgraded or activated.
 
-Local Windows sandbox qualification: **116 tests PASS**. Process, engine and authority outcomes are explicit test doubles; no real export or native compilation. CI was not run. This is source review, not activation or acceptance.
+Local qualification and exact file integrity are recorded in PROVENANCE.json. Tests use synthetic data and modeled processes/authority; no actual Godot export, Native compilation, installation, live binding or CI is claimed. Existing qualified Python/pytest dependencies are required. No game corpus, real project manifest, operational configuration/receipt, credentials, private identity, signing key or dependency cache is included.
 
-The tests require the existing qualified Python/pytest dependencies and project writer guard. They cover only this generic overlay; no historical launchers or original game corpus belong in test discovery. The runtime/config pin closure and both compiled consumers still require an admitted isolated integration before commissioning.
-
-Production activation, signing, publishing, promotion, fallback and automatic retry are not granted by this source candidate.
+Production signing, publishing, promotion, fallback, automatic retry and activation are not authorized by this source package. Source tests and digests do not establish release trust.

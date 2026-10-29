@@ -1,6 +1,6 @@
 {
-  "schema": "OpenRemaster.GenericGodotSourceCandidate.v1",
-  "status": "ISOLATED_SOURCE_REVIEW",
+  "schema": "OpenRemaster.GenericGodotSourceCandidate.v2",
+  "status": "ISOLATED_SOURCE_REVIEW_NOT_UPLOADED",
   "source_files": [
     {
       "path": ".gitattributes",
@@ -24,11 +24,11 @@
     },
     {
       "path": "godot_build.py",
-      "sha256": "1be4646f5cfe06835af40bda1386693db51a6b280ffc27341e0d074ed598e6f1"
+      "sha256": "4321a7847ef03e31cbe9fd47b076b395861c7d02651f1dbb2e5d832d57805459"
     },
     {
       "path": "godot_export_child.py",
-      "sha256": "fb44fdeba29521c15fa17cfc8978a04fe9c6a77875a7bf6d793c4a35f5b1956e"
+      "sha256": "32d504d0a38430c394c54bc5248a4c2a59289018113f029b642096f5dbd76f93"
     },
     {
       "path": "pytest.ini",
@@ -36,7 +36,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "96ce5cbc894a703197a81886ea09d6caca0a245ef02228010c5954158fe29ad7"
+      "sha256": "2e88602bb3f5c38575561d206c0c467b9d7753c81fb5716ede72e3d64db3dac0"
     },
     {
       "path": "test_completion_admission.py",
@@ -44,7 +44,7 @@
     },
     {
       "path": "test_export_child_boundary.py",
-      "sha256": "ca5e05b053967ea54c7af93a2069a4481f8b1e465b9ab1310dbf2c6f10060353"
+      "sha256": "23f95cfea94007840f1be54d5bd8e5ea0e7dccf92dadabca017e32abc8d45ebb"
     },
     {
       "path": "test_godot_audit.py",
@@ -81,5 +81,12 @@
   "native_compilation": false,
   "actual_export": false,
   "independent_authority": false,
-  "production_go": false
+  "production_go": false,
+  "base_public_commit": "ac52c990e0204020ba0164d3b1ffaf9eaeb9a8b4",
+  "updated_product_files": [
+    "godot_build.py",
+    "godot_export_child.py"
+  ],
+  "expected_qualification_cases": 116,
+  "qualification_scope": "Current Windows sandbox:116passed/0failures/errors/skips; process/authority/engine outcomes modeled; no actual export or Native compile"
 }
