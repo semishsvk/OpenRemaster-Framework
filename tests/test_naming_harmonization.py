@@ -1,6 +1,7 @@
 from pathlib import Path
 from copy import deepcopy
 import json
+import os
 import subprocess
 import sys
 import pytest
@@ -57,8 +58,11 @@ def test_wrong_edition_is_rejected():
 def test_existing_case_conflicts_are_not_merged(project):
     with pytest.raises(ResolutionError):resolve_manifest_component(manifest({"orf_component_ref":project,"orf_project_id":project}),REGISTRY)
 
-def test_package_cli_consumes_the_same_existing_registry():
-    run=subprocess.run([sys.executable,"-B","-m","openremaster.naming",str(REGISTRY),"--resolve","K003"],capture_output=True,text=True,encoding="utf-8",timeout=20)
+def test_package_cli_consumes_the_same_existing_registry(tmp_path):
+    # Match the existing source-checkout subprocess tests; pytest's sys.path is not inherited.
+    env=dict(os.environ)
+    env["PYTHONPATH"]=str(ROOT/"src")
+    run=subprocess.run([sys.executable,"-B","-m","openremaster.naming",str(REGISTRY),"--resolve","K003"],cwd=tmp_path,env=env,capture_output=True,text=True,encoding="utf-8",timeout=20)
     assert run.returncode==0 and json.loads(run.stdout)["display_name"]=="Execution Control"
 
 def test_packaged_contract_keeps_existing_identity_set():
