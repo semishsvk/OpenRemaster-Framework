@@ -1,0 +1,1388 @@
+{
+  "schema": "orf.naming.components.v3",
+  "status": "SOURCE_ONLY_CANDIDATE",
+  "components": [
+    {
+      "component_id": "orf.framework",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Framework",
+      "display_name": "Framework",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.orchestrator",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Orchestrator",
+      "display_name": "Orchestrator",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.studio",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Studio",
+      "display_name": "Studio",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.worker.development",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Development Worker",
+      "display_name": "Development Worker",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.worker.production",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Production Worker",
+      "display_name": "Production Worker",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.execution.control",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Execution Control",
+      "display_name": "Execution Control",
+      "legacy_aliases": [
+        "K003"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.orion.pks",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Project Knowledge",
+      "display_name": "Project Knowledge",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.runtime.dios",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "DOSBox Isolation",
+      "display_name": "DOSBox Isolation",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "SAFE_WITH_ALIAS",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.execution.gateway",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Execution Gateway",
+      "display_name": "Execution Gateway",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "UNKNOWN",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.orion.olip",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "ORION Local Intelligence",
+      "display_name": "ORION Local Intelligence",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "UNKNOWN",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.localization.studio",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Localization Studio",
+      "display_name": "Localization Studio",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "UNKNOWN",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.security.witness",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Security and Witness",
+      "display_name": "Security and Witness",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "UNKNOWN",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.evidence.registry",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "Evidence Registry",
+      "display_name": "Evidence Registry",
+      "legacy_aliases": [],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "UNKNOWN",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Shared component"
+    },
+    {
+      "component_id": "orf.project.openanvil",
+      "project_id": "OpenAnvil",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenAnvil",
+      "display_name": "OpenAnvil",
+      "legacy_aliases": [
+        "OpenAnvil"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openazrael",
+      "project_id": "OpenAzrael",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenAzrael",
+      "display_name": "OpenAzrael",
+      "legacy_aliases": [
+        "OpenAzrael"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openazraeldemo",
+      "project_id": "OpenAzrael-Demo",
+      "edition_id": "demo",
+      "artifact_id": null,
+      "canonical_name": "OpenAzrael Demo",
+      "display_name": "OpenAzrael Demo",
+      "legacy_aliases": [
+        "OpenAzrael-Demo"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openazraelretail",
+      "project_id": "OpenAzrael-Retail",
+      "edition_id": "retail",
+      "artifact_id": null,
+      "canonical_name": "OpenAzrael Retail",
+      "display_name": "OpenAzrael Retail",
+      "legacy_aliases": [
+        "OpenAzrael-Retail"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openbattlespire",
+      "project_id": "OpenBattlespire",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenBattlespire",
+      "display_name": "OpenBattlespire",
+      "legacy_aliases": [
+        "OpenBattlespire"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opencadaver",
+      "project_id": "OpenCadaver",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenCadaver",
+      "display_name": "OpenCadaver",
+      "legacy_aliases": [
+        "OpenCadaver"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opencomanche",
+      "project_id": "OpenComanche",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenComanche",
+      "display_name": "OpenComanche",
+      "legacy_aliases": [
+        "OpenComanche"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opencybermagevarianta",
+      "project_id": "OpenCyberMage",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenCyberMage",
+      "display_name": "OpenCyberMage",
+      "legacy_aliases": [
+        "OpenCyberMage"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "CONFLICT",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opencybermagevariantb",
+      "project_id": "OpenCybermage",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenCybermage",
+      "display_name": "OpenCybermage",
+      "legacy_aliases": [
+        "OpenCybermage"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "CONFLICT",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opendescent",
+      "project_id": "OpenDescent",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenDescent / Descent 1 shareware",
+      "display_name": "OpenDescent / Descent 1 shareware",
+      "legacy_aliases": [
+        "OpenDescent"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openfallout1",
+      "project_id": "OpenFallout1",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenFallout1",
+      "display_name": "OpenFallout1",
+      "legacy_aliases": [
+        "OpenFallout1"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openfallout2",
+      "project_id": "OpenFallout2",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenFallout2",
+      "display_name": "OpenFallout2",
+      "legacy_aliases": [
+        "OpenFallout2"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openkyrawestwoodlab",
+      "project_id": "OpenKyraWestwoodLab",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenKyraWestwoodLab",
+      "display_name": "OpenKyraWestwoodLab",
+      "legacy_aliases": [
+        "OpenKyraWestwoodLab"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openkyrandia1",
+      "project_id": "OpenKyrandia1",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenKyrandia1",
+      "display_name": "OpenKyrandia1",
+      "legacy_aliases": [
+        "OpenKyrandia1"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openkyrandia2",
+      "project_id": "OpenKyrandia2",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenKyrandia2",
+      "display_name": "OpenKyrandia2",
+      "legacy_aliases": [
+        "OpenKyrandia2"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openkyrandia3",
+      "project_id": "OpenKyrandia3",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenKyrandia3",
+      "display_name": "OpenKyrandia3",
+      "legacy_aliases": [
+        "OpenKyrandia3"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openmdk",
+      "project_id": "OpenMDK",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenMDK",
+      "display_name": "OpenMDK",
+      "legacy_aliases": [
+        "OpenMDK"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openmdk1",
+      "project_id": "OpenMDK1",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenMDK1",
+      "display_name": "OpenMDK1",
+      "legacy_aliases": [
+        "OpenMDK1"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openmdk2",
+      "project_id": "OpenMDK2",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenMDK2",
+      "display_name": "OpenMDK2",
+      "legacy_aliases": [
+        "OpenMDK2"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openmaniac",
+      "project_id": "OpenManiac",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenManiac",
+      "display_name": "OpenManiac",
+      "legacy_aliases": [
+        "OpenManiac"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opennfs1",
+      "project_id": "OpenNFS1",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenNFS1 / Need for Speed 1",
+      "display_name": "OpenNFS1 / Need for Speed 1",
+      "legacy_aliases": [
+        "OpenNFS1"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opennolf1",
+      "project_id": "OpenNOLF1",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenNOLF1",
+      "display_name": "OpenNOLF1",
+      "legacy_aliases": [
+        "OpenNOLF1"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opennolf2",
+      "project_id": "OpenNOLF2",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenNOLF2",
+      "display_name": "OpenNOLF2",
+      "legacy_aliases": [
+        "OpenNOLF2"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.opennormality",
+      "project_id": "OpenNormality",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenNormality",
+      "display_name": "OpenNormality",
+      "legacy_aliases": [
+        "OpenNormality"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openroth",
+      "project_id": "OpenROTH",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenROTH",
+      "display_name": "OpenROTH",
+      "legacy_aliases": [
+        "OpenROTH"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openredguard",
+      "project_id": "OpenRedguard",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRedguard",
+      "display_name": "OpenRedguard",
+      "legacy_aliases": [
+        "OpenRedguard"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openremaster",
+      "project_id": "OpenRemaster",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRemaster",
+      "display_name": "OpenRemaster",
+      "legacy_aliases": [
+        "OpenRemaster"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openremastercontrolplane",
+      "project_id": "OpenRemaster-ControlPlane",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRemaster-ControlPlane",
+      "display_name": "OpenRemaster-ControlPlane",
+      "legacy_aliases": [
+        "OpenRemaster-ControlPlane"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openremasterframework",
+      "project_id": "OpenRemasterFramework",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRemaster Framework",
+      "display_name": "OpenRemaster Framework",
+      "legacy_aliases": [
+        "OpenRemasterFramework"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openremasterorchestrator",
+      "project_id": "OpenRemasterOrchestrator",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRemaster Orchestrator",
+      "display_name": "OpenRemaster Orchestrator",
+      "legacy_aliases": [
+        "OpenRemasterOrchestrator"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openriddickbb",
+      "project_id": "OpenRiddick-BB",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRiddick-BB",
+      "display_name": "OpenRiddick-BB",
+      "legacy_aliases": [
+        "OpenRiddick-BB"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openriddickda",
+      "project_id": "OpenRiddick-DA",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenRiddick-DA",
+      "display_name": "OpenRiddick-DA",
+      "legacy_aliases": [
+        "OpenRiddick-DA"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openstonekeep",
+      "project_id": "OpenStonekeep",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenStonekeep",
+      "display_name": "OpenStonekeep",
+      "legacy_aliases": [
+        "OpenStonekeep"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openultima8",
+      "project_id": "OpenUltima8",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenUltima8 / Ultima VIII",
+      "display_name": "OpenUltima8 / Ultima VIII",
+      "legacy_aliases": [
+        "OpenUltima8"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openultima9",
+      "project_id": "OpenUltima9",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenUltima9 / Ultima IX",
+      "display_name": "OpenUltima9 / Ultima IX",
+      "legacy_aliases": [
+        "OpenUltima9"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openunderworld",
+      "project_id": "OpenUnderworld",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenUnderworld / Ultima Underworld I",
+      "display_name": "OpenUnderworld / Ultima Underworld I",
+      "legacy_aliases": [
+        "OpenUnderworld"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openunderworld2",
+      "project_id": "OpenUnderworld2",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenUnderworld2 / Ultima Underworld II",
+      "display_name": "OpenUnderworld2 / Ultima Underworld II",
+      "legacy_aliases": [
+        "OpenUnderworld2"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openzak",
+      "project_id": "OpenZak",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenZak",
+      "display_name": "OpenZak",
+      "legacy_aliases": [
+        "OpenZak"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openzork",
+      "project_id": "OpenZork",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenZork / Zork Nemesis",
+      "display_name": "OpenZork / Zork Nemesis",
+      "legacy_aliases": [
+        "OpenZork"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openzorkgrandinquisitor",
+      "project_id": "OpenZorkGrandInquisitor",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenZork Grand Inquisitor",
+      "display_name": "OpenZork Grand Inquisitor",
+      "legacy_aliases": [
+        "OpenZorkGrandInquisitor"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    },
+    {
+      "component_id": "orf.project.openzorknemesis",
+      "project_id": "OpenZorkNemesis",
+      "edition_id": null,
+      "artifact_id": null,
+      "canonical_name": "OpenZorkNemesis",
+      "display_name": "OpenZorkNemesis",
+      "legacy_aliases": [
+        "OpenZorkNemesis"
+      ],
+      "owner": null,
+      "source_path": null,
+      "manifest_path": null,
+      "version": null,
+      "provenance": [
+        {
+          "path": "docs/naming-harmonization.md",
+          "sha256": "eab7522f84407b68d85c9f8162c8f58c4791d6210275c8d8ff288c2f6e23653c",
+          "role": "PORTABLE_EXAMPLE_ONLY_NOT_SOURCE_OR_OWNER_AUTHORITY"
+        }
+      ],
+      "dependencies": [],
+      "verification_state": "VERIFIED_PARTIAL",
+      "migration_state": "BLOCKED_BY_PROVENANCE",
+      "component_type": "Project"
+    }
+  ],
+  "logical_identity_basis": "PORTABLE_TEST_FIXTURE_ONLY: existing logical naming identities; no authoritative project/source/owner or execution binding.",
+  "owner_admission": false
+}
