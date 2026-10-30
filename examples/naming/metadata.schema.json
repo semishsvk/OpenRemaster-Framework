@@ -23,7 +23,8 @@
         "pattern": "\\S"
       },
       "orf_edition_id": {
-        "type": "string",
+        "description": "Null is equivalent to an omitted edition; edition-specific references still require an explicit nonempty edition.",
+        "type": ["string", "null"],
         "minLength": 1,
         "pattern": "\\S"
       }
