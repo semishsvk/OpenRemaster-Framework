@@ -115,6 +115,11 @@ def main():
     p.add_argument('--edition')
     a = p.parse_args()
     try:
+        for value in (a.resolve, a.project, a.edition):
+            if value is not None and not value.strip():
+                raise ResolutionError('EMPTY_SELECTION_OR_SCOPE')
+        if (a.project is not None or a.edition is not None) and a.resolve is None:
+            raise ResolutionError('PROJECT_EDITION_SCOPE_REQUIRES_RESOLVE')
         records = read_registry(a.registry)['components']
         result = resolve(records, a.resolve, a.project, a.edition) if a.resolve else {'valid': True, 'components': len(records), 'duplicate_names': duplicates(records)}
         print(json.dumps(result, indent=2))

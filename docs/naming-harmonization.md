@@ -15,3 +15,5 @@ This source-only integration is stacked on the existing consolidation draft PR #
 The repository's existing Core and portable development acceptance profiles apply. A Windows symlink-privilege skip remains explicit; simulated tests do not replace the real check. Source-only test success does not grant GitHub writer, live owner, dispatch or release admission.
 
 The portfolio and PKS project namespaces remain separate. No game source, corpus, edition, production worker or historical checkpoint is moved or rebound by these opt-in metadata references. The existing draft owner and remote refs remain unchanged until admitted review.
+
+CLI scope validation: `--project` and `--edition` require an explicit `--resolve` selector. Empty or whitespace-only selectors and scopes return HOLD (exit 75). The standalone observed-location CLI likewise rejects project/edition filters on logical directory queries instead of returning unfiltered shared components. No scope is inferred, trimmed or case-normalized. Existing successful scoped resolutions and no-option summaries are preserved.
