@@ -1,0 +1,31 @@
+{
+  "schema": "openazrael.candidate_acceptance",
+  "candidate": "candidate-v205-iter2",
+  "status": "VERIFY_PASS__FIDELITY_GAPS_DEFERRED",
+  "artifacts": {
+    "OpenAzrael.exe": {
+      "size": 109127680,
+      "sha256": "19bea375ff3e83a774fb468261d23a4fc61547df655ee1b0e40b5e61376ac457"
+    },
+    "OpenAzrael.pck": {
+      "size": 34473104,
+      "sha256": "4bd22516f226bfd3be9a453d6aacca144b036e160743511b4a4a6c9c3fa95855"
+    }
+  },
+  "gates": {
+    "physical_transitions": "OPENAZRAEL_KG001_ALL_TRANSITIONS_V205 {\"checks\":109,\"crossed\":[\"R1:zxcoriR5->R7\",\"R7:zxwell2R6->R1\",\"R1:zxcoriR2->R8\",\"R8:zxorrery->R1\"],\"failed\":[],\"movement\":\"production CharacterBody3D Input via PPPVNavigator; no target teleport\",\"room_sequence\":[\"R1\",\"R7\",\"R1\",\"R8\",\"R1\"],\"runtime_guard_failures\":[],\"schema\":\"openazrael.kg001.all_transition_traversal\",\"state\":\"production pickup/door/key interactions; no direct prerequisite state injection\",\"status\":\"PASS\",\"version\":205}",
+    "full_demo": "OPENAZRAEL_KG001_V200 {\"checks\":34,\"failed\":[],\"logical_audio_events\":[\"979TONGS.WAV\",\"S152V2.WAV\",\"S137.WAV\",\"S121.WAV\",\"799SECDR.WAV\"],\"persistent_hash\":\"e266137c74746996608ffcdd165b6a1072e2c9f55833473546061ccac0e05902\",\"schema\":\"openazrael.kg001.full_demo\",\"scope\":\"synthetic production-interaction R1 -> R7 -> R1 -> R8 demo playthrough\",\"status\":\"PASS\",\"version\":200}",
+    "inventory_hud": "OPENAZRAEL_KG001_INVENTORY_HUD_V194 {\"checks\":40,\"failed\":[],\"font_fidelity\":\"SOURCE_INVFONT_FIXED_CELL_MAP\",\"inventory_rect\":[70,345,103,69],\"schema\":\"openazrael.kg001.inventory_hud_runtime\",\"source_of_truth\":\"DemoState.inventory\",\"status\":\"PASS\",\"version\":194}",
+    "object_visibility": "OPENAZRAEL_KG001_OBJECT_VISIBILITY_V195 {\"checks\":85,\"failed\":[],\"fresh_rooms\":{\"R1\":{\"hidden_count\":7,\"hidden_meshes\":[\"Object03__mesh\",\"textwall__mesh\",\"zxcoriR2__mesh\",\"zxcoriR5__mesh\",\"zxentry__mesh\",\"zyR02__mesh\",\"zyR05__mesh\"],\"mesh_count\":99,\"visible_count\":92},\"R7\":{\"hidden_count\":8,\"hidden_meshes\":[\"death__mesh\",\"well_pzpa1__mesh\",\"well_pzpa2__mesh\",\"zxactghost__mesh\",\"zxdeath__mesh\",\"zxwell2R6__mesh\",\"zyR06__mesh\",\"zydeath__mesh\"],\"mesh_count\":48,\"visible_count\":40},\"R8\":{\"hidden_count\":20,\"hidden_meshes\":[\"Object01__mesh\",\"lenstop01__mesh\",\"lenstop__mesh\",\"mirror03__mesh\",\"mirror2__mesh\",\"r8s1__mesh\",\"tapestry1__mesh\",\"tapestry2a__mesh\",\"tapestry3__mesh\",\"tapestry4__mesh\",\"zxminehd__mesh\",\"zxorrery__mesh\",\"zxplate__mesh\",\"zxsecret__mesh\",\"zxshield__mesh\",\"zxsound1__mesh\",\"zxsound2__mesh\",\"zxsound__mesh\",\"zyR06__mesh\",\"zyR09__mesh\"],\"mesh_count\":87,\"visible_count\":67}},\"lifecycle\":{\"parchment_pickup_checked\":true,\"r8_water_lens_shield_message_checked\":true,\"tapestry_piece_persistence_checked\":true,\"tongs_no_respawn\":true},\"policy\":\"exact source-authored visible/hidden object state; no silent disappearing objects and no consumed-pickup respawn\",\"schema\":\"openazrael.kg001.object_visibility_parity\",\"status\":\"PASS\",\"version\":195}",
+    "save_compat": "OPENAZRAEL_KG001_SAVE_COMPAT_V150 {\"checks\":37,\"failed\":[],\"filename_pattern\":\"SAVE%d.dat\",\"migration_available\":false,\"negative_cases\":[\"older_version\",\"unknown_version\",\"corrupt_json\",\"wrong_schema\",\"incompatible_state_payload\"],\"save_schema\":\"openazrael.demo_save\",\"save_version\":145,\"schema\":\"openazrael.kg001.save_compat_runtime\",\"status\":\"PASS\",\"version\":150}",
+    "interaction_cursor": "OPENAZRAEL_KG001_CURSOR_V197 {\"active_runtime_icons\":[\"POINTER\",\"TAKE\",\"USE\",\"PULL\",\"ROT\",\"CANT\"],\"b_variant_semantics\":\"HOLD_UNRESOLVED\",\"checks\":169,\"failed\":[],\"schema\":\"openazrael.kg001.interaction_cursor_runtime\",\"source_cursor_count\":35,\"status\":\"PASS\",\"version\":197}",
+    "production_flythrough": "OPENAZRAEL_KG001_ALL_TRANSITIONS_V199 {\"checks\":38,\"crossed\":[\"R1:zxcoriR5->R7\",\"R7:zxwell2R6->R1\",\"R1:zxcoriR2->R8\"],\"failed\":[],\"movement\":\"production CharacterBody3D Input via PPPVNavigator; no target teleport\",\"room_sequence\":[\"R1\",\"R7\",\"R1\",\"R8\"],\"runtime_guard_failures\":[],\"schema\":\"openazrael.kg001.flythrough_capture\",\"state\":\"production pickup/door/key interactions; no direct prerequisite state injection\",\"status\":\"PASS\",\"version\":252}",
+    "clean_install_startup": "PASS_EXIT_0"
+  },
+  "deferred_fidelity": [
+    "canonical paired original-runtime visual FidelityBundle",
+    "original MOV cinematics/decode/timing",
+    "exact SERVICE/HUD original-runtime activation/timing"
+  ],
+  "promotion": "NO_RETAIL_SHARED_IMPLEMENTATION_PROMOTION_UNTIL_FIDELITY_GATE"
+}
