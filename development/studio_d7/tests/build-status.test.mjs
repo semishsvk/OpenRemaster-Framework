@@ -152,3 +152,24 @@ test('the existing Projects route shows the review and the existing project card
     await vite.close();
   }
 });
+
+test('Studio shell declares English and keeps Slovak UI strings out of the source', () => {
+  assert.match(readFileSync(new URL('../index.html', import.meta.url), 'utf8'), /<html lang="en-US">/);
+  for (const file of ['App.tsx', 'GateAReviewPanel.tsx', 'DevWorkerPanel.tsx']) {
+    const source = readFileSync(new URL(file, src), 'utf8');
+    assert.doesNotMatch(source, /[áäčďéíĺľňóôŕšťúýž]|sk-SK/i, file);
+  }
+});
+
+test('Settings build identity renders the exact version, commit and UTC timestamp', () => {
+  const {StudioBuildIdentity} = loadSource(new URL('StudioBuildIdentity.tsx', src));
+  globalThis.__STUDIO_BUILD__ = {version: '0.1.0', commit: 'a'.repeat(40), builtAt: '2026-11-14T16:00:00.000Z'};
+  try {
+    const markup = renderToStaticMarkup(createElement(StudioBuildIdentity));
+    assert.match(markup, /Version<\/dt><dd>0\.1\.0/);
+    assert.ok(markup.includes('a'.repeat(40)));
+    assert.match(markup, /dateTime="2026-11-14T16:00:00.000Z"/i);
+  } finally {
+    delete globalThis.__STUDIO_BUILD__;
+  }
+});

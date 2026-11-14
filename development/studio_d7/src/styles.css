@@ -602,3 +602,6 @@ button:disabled { cursor: not-allowed; }
 .openazrael-build-review img {display:block;width:100%;height:auto;border-radius:0.35rem;}
 .openazrael-build-review figcaption {margin-top:0.4rem;color:#c7d9dc;}
 @media (max-width:640px) {.openazrael-build-review .scene-comparison {grid-template-columns:1fr;}}
+
+.studio-build-identity {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:0.5rem 1rem;}
+.studio-build-identity dd {margin:0;overflow-wrap:anywhere;}

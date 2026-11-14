@@ -35,4 +35,6 @@ jobs:
           node (Join-Path $playwright 'cli.js') install chromium
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $env:STUDIO_PLAYWRIGHT = Join-Path $playwright 'index.js'
+          $env:STUDIO_EXPECTED_COMMIT = git rev-parse HEAD
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node tools/check-build-review-browser.mjs

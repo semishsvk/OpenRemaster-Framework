@@ -8,6 +8,8 @@ const require = createRequire(import.meta.url);
 const {chromium} = require(process.env.STUDIO_PLAYWRIGHT || 'playwright');
 const dist = fileURLToPath(new URL('../dist/', import.meta.url));
 const origin = 'http://studio.test';
+const expectedCommit = process.env.STUDIO_EXPECTED_COMMIT;
+assert.match(expectedCommit ?? '', /^[a-f0-9]{40}$/);
 const browser = await chromium.launch({
   executablePath: process.env.STUDIO_BROWSER || undefined,
   chromiumSandbox: true,
@@ -36,7 +38,29 @@ try {
       page.setDefaultTimeout(5000);
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
-      await page.goto(`${origin}/#projects`);
+      page.on('pageerror', error => console.error(error.message));
+      await page.goto(origin + '/#overview');
+      await page.getByText('Review available modules, evidence and release requirements.', {exact: false}).waitFor();
+      assert.equal(await page.locator('html').getAttribute('lang'), 'en-US');
+      await page.goto(origin + '/#modules');
+      await page.getByText('Source and checkpoint references for each module.', {exact: false}).waitFor();
+      await page.goto(origin + '/#trust');
+      await page.getByRole('heading', {name: /^Release & Trust/}).waitFor();
+      await page.getByText('Stages A, B and C remain unapproved', {exact: false}).waitFor();
+      await page.getByText('PRODUCTION NO-GO', {exact: true}).first().waitFor();
+      for (const stage of ['A', 'B', 'C']) {
+        const button = page.locator('.trust-stage-card').filter({hasText: 'STAGE ' + stage});
+        await button.click();
+        assert.equal(await button.getAttribute('aria-pressed'), 'true');
+        await page.getByText('EXTERNAL DECISION MISSING', {exact: true}).waitFor();
+      }
+      assert.doesNotMatch(await page.locator('main').innerText(), /[áäčďéíĺľňóôŕšťúýž]/i);
+      await page.goto(origin + '/#settings');
+      const identity = page.getByRole('region', {name: 'Studio build identity'});
+      await identity.getByText(expectedCommit, {exact: true}).waitFor();
+      await identity.getByText('0.1.0', {exact: true}).waitFor();
+      assert.match(await identity.locator('time').getAttribute('datetime'), /^\d{4}-\d{2}-\d{2}T.*Z$/);
+      await page.goto(origin + '/#projects');
       await page.getByRole('heading', {name: /^Project Workbench/}).waitFor();
       await page.locator('.project-card').filter({has: page.getByRole('heading', {name: 'OpenAzrael', exact: true})}).waitFor();
       const panel = page.getByRole('region', {name: 'Build status', exact: true});
@@ -72,7 +96,7 @@ try {
       await panel.waitFor({state: 'detached'});
       assert.deepEqual(errors, []);
       assert.deepEqual(unexpected, []);
-      console.log(`PASS ${viewport.width}x${viewport.height}: Projects, keyboard, build comparison and R1 captures`);
+      console.log(`PASS ${viewport.width}x${viewport.height}: English Overview and Registry, Release & Trust A/B/C, Settings identity, keyboard and OpenAzrael comparison`);
     } finally {
       await context.close();
     }

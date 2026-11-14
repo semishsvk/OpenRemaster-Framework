@@ -41,7 +41,7 @@ export default function GateAReviewPanel({evidence}:{evidence:unknown}){
       <div>
         <span className="gatea-kicker">ORCHESTRATOR r18a → STUDIO r11 · READ-ONLY</span>
         <h3>Independent Owner / Witness · Gate A</h3>
-        <p className="gatea-explainer">Aktuálnejší zapečatený lokálny handoff pre nezávislé overovanie. Historické údaje, nie živý Host API ani podpísaná autorita.</p>
+        <p className="gatea-explainer">Sealed local handoff of historical evidence for independent review. Live Host and signed authority remain unverified.</p>
       </div>
       <span className="gatea-pill gatea-hold">9 OPEN · NO-GO</span>
     </div>
@@ -51,7 +51,7 @@ export default function GateAReviewPanel({evidence}:{evidence:unknown}){
       <div><strong>00</strong><span>Authenticated signatures</span></div>
       <div><strong>A01</strong><span>First external trust-root step</span></div>
     </div>
-    <div className="gatea-notice" role="note">Nie je pripojený externý Owner, witness ani kryptografická verifikácia. Lokálne SHA a testy neudeľujú právomoc spúšťať úlohy. A, B aj C zostávajú neschválené.</div>
+    <div className="gatea-notice" role="note">Stages A, B and C remain unapproved pending external Owner and Witness evidence and cryptographic verification.</div>
     <div className="gatea-layout">
       <div className="gatea-list" role="group" aria-label="Select external evidence requirement">
         {data.gates.map(g=><button key={g.id} type="button"
@@ -84,7 +84,7 @@ export default function GateAReviewPanel({evidence}:{evidence:unknown}){
         </div>
         <div className="gatea-next">
           <b>Review action only</b>
-          <p>Pripravovať verejné dôkazy môže nezávislý reviewer. Tento panel nekontroluje podpisy, nevytvára účty, nemodifikuje ACL a nemá vykonávacie API.</p>
+          <p>An independent reviewer can prepare public evidence. This panel provides read-only access to the review package.</p>
         </div>
         <button type="button" className="gatea-export" onClick={downloadBrief}>
           Download unsigned reviewer brief ↓
