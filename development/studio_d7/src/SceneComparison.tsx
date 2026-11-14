@@ -8,7 +8,7 @@ const captures = [
   },
   {
     file: "remaster-r1073.png",
-    label: "Remaster · R1073",
+    label: "Remaster · build R1073, capture run R1078",
     alt: "Remastered R1 corridor and door with system startup messages in the HUD.",
     path: "oracle/R1069-DIOS-Standalone/captures/R1078-packaged-fixed.png",
     sha256: "92d6240305c766e1bd96953851d1905c3bfa73f3d3085e7a901564c5a9fd978c",
@@ -26,7 +26,7 @@ export function SceneComparison() {
           <figcaption>{capture.label}</figcaption>
         </figure>)}
       </div>
-      <p>The original shows help text. The remaster shows system startup messages. Camera position and HUD phase were only partially synchronized.</p>
+      <p>Capture run R1078 recorded the fixed-camera image from the packaged R1073 build. The original shows help text and the remaster shows system startup messages. Camera position and HUD phase were only partially synchronized.</p>
       <details>
         <summary>Capture sources</summary>
         <p>Comparison report <code>R1083-NATIVE-DOSBOX-FRAMEBUFFER-R1-ORACLE.md</code></p>

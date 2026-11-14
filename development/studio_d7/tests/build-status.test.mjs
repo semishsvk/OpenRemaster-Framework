@@ -119,6 +119,7 @@ test('R1 scene comparison embeds the two exact captures and keeps their fidelity
     assert.ok(markup.includes(createHash('sha256').update(bytes).digest('hex')));
   }
   assert.match(markup, /FIDELITY HOLD.*?Camera position and HUD phase were only partially synchronized/);
+  assert.match(markup, /Capture run R1078 recorded the fixed-camera image from the packaged R1073 build\./);
   assert.doesNotMatch(render('OpenAzrael-Retail'), /Compare R1 corridor captures/);
 });
 
@@ -154,6 +155,7 @@ test('the existing Projects route shows the review and the existing project card
 });
 
 test('Studio shell declares English and keeps Slovak UI strings out of the source', () => {
+  assert.match(readFileSync(new URL('DevWorkerPanel.tsx', src), 'utf8'), /<h2>Studio DEV build<\/h2>/);
   assert.match(readFileSync(new URL('../index.html', import.meta.url), 'utf8'), /<html lang="en-US">/);
   for (const file of ['App.tsx', 'GateAReviewPanel.tsx', 'DevWorkerPanel.tsx']) {
     const source = readFileSync(new URL(file, src), 'utf8');
