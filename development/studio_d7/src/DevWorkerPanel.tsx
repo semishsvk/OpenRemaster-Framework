@@ -16,7 +16,7 @@ export default function DevWorkerPanel(){
   }catch(e){setError(String(e));}finally{setBusy(false);}
  }
  return <section className="panel" data-testid="dev-worker-panel" style={{padding:24,marginBottom:24}}>
-  <div className="eyebrow">DEV UNSIGNED</div><h2>Zostavenie Studio DEV</h2>
+  <div className="eyebrow">DEV UNSIGNED</div><h2>Studio DEV build</h2>
   <p>The native worker builds the frontend and Studio executable from pinned D7 sources for unsigned development use.</p>
   <p>Native IPC: <strong>{native?"connected":"unavailable"}</strong></p>
   <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
