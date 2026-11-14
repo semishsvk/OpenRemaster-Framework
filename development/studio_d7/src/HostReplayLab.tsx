@@ -82,7 +82,7 @@ export default function HostReplayLab({onTrust,onInspector,onCompatibility,onNat
   <div className="page-intro">
    <div className="eyebrow">HOST INTEGRATION / SOURCE-BOUND WINDOWS INSPECTOR PROTOCOL</div>
    <h1>Host Replay Lab<span className="title-dot">.</span></h1>
-   <p>Historické skutočné odpovede Inspector Hostu z Windows Job-bound pilotu. Môžeš overiť koreláciu request/response, nesprávny snapshot a časovú platnosť bez spúšťania native procesu. Nie je to živé pripojenie ani produkčné rozhodnutie.</p>
+   <p>Archived Inspector Host responses from the Windows Job-bound pilot. Replay checks request and response correlation, snapshot selection and freshness offline.</p>
   </div>
   <div className="section-banner">
    <span className="game-hold">OFFLINE REPLAY · HOLD</span>

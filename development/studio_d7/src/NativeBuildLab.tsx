@@ -74,7 +74,7 @@ export default function NativeBuildLab({onHostReplay,onCompatibility,onTrust}:Pr
    <div className="page-intro">
      <div className="eyebrow">PLATFORM / WINDOWS BUILD TOOLCHAIN · SOURCE-BOUND</div>
      <h1>Native Build Lab<span className="title-dot">.</span></h1>
-     <p>Skutočný úspech MSVC/Windows SDK testovacieho programu z r24. Prechod od statického Windows náhľadu k natívnemu Tauri 2 je stále podmienený Rustom, schválenou ikonou, kompatibilitou komponentov, podpisom a nezávislými bránami A/B/C.</p>
+     <p>The r24 MSVC and Windows SDK test program ran successfully. Native Tauri 2 release still requires Rust qualification, an approved icon, component compatibility, signing and independent approval for stages A, B and C.</p>
    </div>
    <div className="section-banner">
      <Hold>DESKTOP RELEASE NO-GO</Hold>

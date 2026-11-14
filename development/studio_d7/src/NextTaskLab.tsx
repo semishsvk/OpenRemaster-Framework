@@ -21,7 +21,7 @@ export default function NextTaskLab({view,onReload,busy,onCrossplane}:{
     <div className="page-intro">
       <div className="eyebrow">PLATFORM / ORION × K003 × GOVERNOR</div>
       <h1>Next Task Lab<span className="title-dot">.</span></h1>
-      <p>Bounded WorkPackage plánovanie. Toto sú historické syntetické vstupy z izolovaného testu — žiadne aktuálne zadania, aktuálny Governor stav ani živé oprávnenie Owner/Witness.</p>
+      <p>Bounded WorkPackage planning using archived synthetic inputs. Current assignments, the Governor state and live Owner/Witness authorization remain unverified.</p>
     </div>
     <div className="section-banner">
       <span className="tasklab-pill">ARCHIVED / NO EXECUTION</span>

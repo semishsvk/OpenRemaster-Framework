@@ -1,4 +1,6 @@
 import DevWorkerPanel from "./DevWorkerPanel";
+import {OpenAzraelBuildReview} from "./OpenAzraelBuildReview";
+import {StudioBuildIdentity} from "./StudioBuildIdentity";
 import MasterDevelopmentPanel from "./MasterDevelopmentPanel";
 import { loadStoredJson } from "./stored-json";
 import brandMark from "./assets/openremaster-mark.png";
@@ -110,7 +112,7 @@ function stateClass(status: Maturity) {
 function shortHash(value: string | null) { return value ? value.slice(0, 12) + "…" : "—"; }
 function dateDisplay(value: string) {
   const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? "unknown" : parsed.toLocaleString("sk-SK", { dateStyle: "medium", timeStyle: "short" });
+  return Number.isNaN(parsed.getTime()) ? "unknown" : parsed.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
 }
 function validateIncoming(value: unknown): value is Snapshot {
   return validateSnapshot(value, BASE);
@@ -168,7 +170,7 @@ export default function App() {
   const areas = ["All", ...new Set(modules.map(m => m.area))];
   const filtered = useMemo(() => modules.filter(m =>
     (area === "All" || m.area === area) &&
-    (m.title + " " + m.note + " " + m.id).toLocaleLowerCase("sk").includes(search.toLocaleLowerCase("sk"))
+    (m.title + " " + m.note + " " + m.id).toLocaleLowerCase("en-US").includes(search.toLocaleLowerCase("en-US"))
   ), [modules, area, search]);
   const sourceCount = modules.filter(m => m.sourcePresent).length;
   const testCount = new Set(modules.filter(m => m.testsPerPlatform !== null && m.checkpointSha256).map(m => m.checkpointSha256)).size;
@@ -203,7 +205,7 @@ export default function App() {
   const ownerReview = ownerView(archivedOwnerReview);
   const ipc = nativeStatus(nativeEvidence);
   const auditedRuntime = ipc.report?.binaryClosure.binaries[runtimeTab];
-  const missingAdmissionGates = REQUIRED_ADMISSION_GATES.filter(k => ADMISSION_LABELS[k].toLocaleLowerCase("sk").includes(gateSearch.toLocaleLowerCase("sk")));
+  const missingAdmissionGates = REQUIRED_ADMISSION_GATES.filter(k => ADMISSION_LABELS[k].toLocaleLowerCase("en-US").includes(gateSearch.toLocaleLowerCase("en-US")));
   const inspectorView = classifyCapture(inspector, clock);
   const inspectorData = inspectorView.capture;
   const inspectorRows = inspectorData?.records ?? [];
@@ -341,7 +343,7 @@ export default function App() {
         {message && <div className="notice" role="status"><span>{message}</span><button onClick={() => setMessage("")} aria-label="Dismiss">×</button></div>}
         {page === "overview" && <>
           <MasterDevelopmentPanel />
-          <div className="page-intro"><div className="eyebrow">OPENREMASTER / MISSION CONTROL</div><h1>Platform overview<span className="title-dot">.</span></h1><p>Jednotný pohľad na pripravené moduly, dôkazy a produkčné brány. Žiadna činnosť tejto konzoly nespúšťa herné procesy, workerov ani K003.</p></div>
+          <div className="page-intro"><div className="eyebrow">OPENREMASTER / MISSION CONTROL</div><h1>Platform overview<span className="title-dot">.</span></h1><p>Review available modules, evidence and release requirements. This console provides read-only access to game, worker and K003 evidence.</p></div>
           <section className="ux-action-panel" aria-label="Next actions">
             <div className="eyebrow">NEXT ACTIONS · HISTORICAL SOURCE ONLY</div>
             <h2>Continue safely</h2>
@@ -352,17 +354,17 @@ export default function App() {
               <div><strong>Plan the next task</strong><p>Inspect bounded historical plans; no worker is launched from this view.</p><button type="button" className="secondary-button" onClick={()=>setPage("nexttask")}>View plan →</button></div>
             </div>
           </section>
-          <div className="hero-card"><div><div className="hero-eyebrow"><span className="pulse-dot red-bg" /> CONTROL PLANE STATUS</div><h2>Built to integrate.<br/><span>Not authorized to execute.</span></h2><p>Vývojové zdroje sú dostupné, ale nezávislá autorita Owner/Witness, Windows identity a produkčné prijatie zostávajú neoverené.</p><button className="hero-link" onClick={() => setPage("trust")}>Review release readiness <span>↗</span></button></div><div className="hero-status"><span>RUNTIME GATE</span><b>HOLD</b><small>NO AUTO RETRY</small><i>00</i></div></div>
+          <div className="hero-card"><div><div className="hero-eyebrow"><span className="pulse-dot red-bg" /> CONTROL PLANE STATUS</div><h2>Built to integrate.<br/><span>Not authorized to execute.</span></h2><p>Development sources are available. Owner and Witness authority, Windows identities and production acceptance still require independent verification.</p><button className="hero-link" onClick={() => setPage("trust")}>Review release readiness <span>↗</span></button></div><div className="hero-status"><span>RUNTIME GATE</span><b>HOLD</b><small>NO AUTO RETRY</small><i>00</i></div></div>
           <div className="metric-grid"><Metric label="Tracked modules" value={modules.length} desc="Allowlisted source records"/><Metric label="Source pins" value={sourceCount + " / " + modules.length} desc="Local SHA-256 only"/><Metric label="Reported test suites" value={testCount} desc="Distinct checkpoint sources"/><Metric label="Authorized jobs" value="0" desc="Dispatch unavailable" attention /></div>
           <div className="two-col"><Panel eyebrow="ARCHITECTURE" title="Runtime boundaries" extra={<Tag kind="blue">SINGLE-WRITER</Tag>}>
             <div className="pipeline"><div className="pipeline-step"><span>01</span><div><b>Studio UI</b><small>Evidence projection · no executors</small></div></div><div className="pipe-line"/><div className="pipeline-step"><span>02</span><div><b>Inspector Host</b><small>Read-only health & checkpoints; isolated candidate</small></div></div><div className="pipe-line"/><div className="pipeline-step faded"><span>03</span><div><b>Core → K003 → Owner/Witness</b><small>Trust boundary not admitted · no dispatch</small></div><Tag kind="hold">BLOCKED</Tag></div></div>
             </Panel><Panel eyebrow="AVAILABLE EVIDENCE" title="Integrated source modules" extra={<button className="text-action" onClick={() => setPage("modules")}>View all ↗</button>}>
               <div className="mini-list">{["host_api","inspector_controller","native_dependencies","native_loads","orion_studio_bridge","orion","governor","fidelity_evidence","localization_lab"].map(smallModule)}</div>
             </Panel></div>
-          <Panel eyebrow="WHAT IS REAL" title="Readiness is not authorization"><div className="three-notes"><div><b>Software tested</b><p>Lokálne verifikované izolované implementácie a checkpointy.</p></div><div><b>Runtime disconnected</b><p>Žiadne aktuálne owner leases, služby ani GPU vykonávanie sa z UI neoverovali.</p></div><div><b>Fail-closed</b><p>Unknown outcome → HOLD_NO_AUTO_RETRY. Žiadne tiché povýšenie na PASS.</p></div></div></Panel>
+          <Panel eyebrow="WHAT IS REAL" title="Readiness is not authorization"><div className="three-notes"><div><b>Software tested</b><p>Isolated implementations and checkpoints were verified locally.</p></div><div><b>Runtime disconnected</b><p>Current owner leases, services and GPU execution have yet to be verified in Studio.</p></div><div><b>Fail-closed</b><p>Unknown outcome → HOLD_NO_AUTO_RETRY. A PASS requires verified evidence.</p></div></div></Panel>
         </>}
         {page === "modules" && <>
-          <div className="page-intro"><div className="eyebrow">PLATFORM / REGISTRY</div><h1>Module Registry<span className="title-dot">.</span></h1><p>Konkrétne zdrojové a checkpointové väzby. Zelený status označuje izolované testy, nie produkčnú autorizáciu.</p></div>
+          <div className="page-intro"><div className="eyebrow">PLATFORM / REGISTRY</div><h1>Module Registry<span className="title-dot">.</span></h1><p>Source and checkpoint references for each module. Green indicates that isolated tests passed. Production authorization is tracked separately.</p></div>
           <div className="registry-controls"><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search modules, source files and capabilities…" aria-label="Search modules"/><select value={area} onChange={e => setArea(e.target.value)} aria-label="Filter by area">{areas.map(a => <option key={a} value={a}>{a}</option>)}</select><span>{filtered.length} RECORDS</span></div>
           <div className="registry-layout"><div className="registry-list">{filtered.map(m => <button key={m.id} className={"registry-record " + (chosen?.id === m.id ? "selected" : "")} onClick={() => setSelected(m.id)}><div className="record-row"><strong>{m.title}</strong><span>↗</span></div><div className="record-description">{m.note}</div><div className="record-foot"><ModuleBadge module={m}/><span className="mono-muted">{m.testsPerPlatform === null ? "NO TEST COUNT" : m.testsPerPlatform + " TESTS REPORTED"}</span></div></button>)}{filtered.length === 0 && <p className="empty">No matching records.</p>}</div>
           {chosen && <Panel eyebrow={"MODULE / " + chosen.id.toUpperCase()} title={chosen.title} className="detail-panel"><div className="detail-state"><ModuleBadge module={chosen}/><Tag kind="hold">PRODUCTION NOT ADMITTED</Tag></div><p className="detail-note">{chosen.note}</p>
@@ -381,7 +383,7 @@ export default function App() {
         {page === "inspector" && <>
           <div className="page-intro">
             <div className="eyebrow">PLATFORM / INSPECTOR HOST</div><h1>Checkpoint Inspector<span className="title-dot">.</span></h1>
-            <p>Skutočná odpoveď existujúceho Windows Job-bound Inspector Host r1. Zobrazuje iba dva zdrojovo pripnuté frameworkové checkpointy, nie kompletný globálny register. Žiadne UI tlačidlo nespúšťa Host, K003 ani worker.</p>
+            <p>Archived response from Windows Job-bound Inspector Host r1. The response covers two source-pinned Framework checkpoints. All controls on this page are read-only.</p>
           </div>
           <div className="section-banner">
             <Tag kind={inspectorView.phase === "RECENT_READONLY" ? "blue" : "hold"}>{inspectorView.phase === "RECENT_READONLY" ? "RECENT READ-ONLY" : inspectorView.phase === "HISTORICAL_ONLY" ? "EXPIRED / ARCHIVE" : "HOLD / NO OBSERVATION"}</Tag>
@@ -437,7 +439,7 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">PLATFORM / HOST INTEGRATION RESEARCH</div>
             <h1>Portable Host<span className="title-dot">.</span></h1>
-            <p>Skutočné zdrojovo overené NW025-AC a NW025-AD. Prenosný Node/Python Host je overený v izolovanom offline prostredí; reťazec Windows Job → Node bridge → Python používal iba syntetickú službu. Studio zatiaľ nepripája produkčný Inspector Host.</p>
+            <p>NW025-AC and NW025-AD verified the portable Node/Python Host in an isolated offline environment. The Windows Job → Node bridge → Python chain used a synthetic service. The production Inspector Host remains disconnected.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">PRODUCTION HOLD</Tag>
             <span>Signed Owner/Witness, live Inspector RPC, clean-machine acceptance and native Tauri build not admitted.</span>
@@ -466,7 +468,7 @@ export default function App() {
                 <div className="settings-line"><b>Runtime files in original candidate</b><strong>{portableData.host.runtimeManifestFiles}</strong></div>
                 <div className="settings-line"><b>Python files</b><strong>{portableData.host.pythonRuntimeFiles}</strong></div>
                 <div className="settings-line"><b>Node files</b><strong>{portableData.host.nodeRuntimeFiles} (node.exe + LICENSE)</strong></div>
-                <div className="settings-line"><b>Bytes rehashed read-only</b><strong>{portableData.host.runtimeManifestBytesReadOnlyRehashed.toLocaleString("sk-SK")}</strong></div>
+                <div className="settings-line"><b>Bytes rehashed read-only</b><strong>{portableData.host.runtimeManifestBytesReadOnlyRehashed.toLocaleString("en-US")}</strong></div>
                 <div className="settings-line"><b>Missing/tampered preflight</b><Tag kind="tested">7/7 HELD</Tag></div>
                 <div className="settings-line"><b>Empty-executable cases</b><Tag kind="tested">2/2 HELD</Tag></div>
                 <div className="settings-line"><b>Current live Host RPC</b><Tag kind="hold">NOT EXECUTED</Tag></div>
@@ -535,7 +537,7 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">PLATFORM / DEPLOYMENT EVIDENCE</div>
             <h1>Runtime & Packaging<span className="title-dot">.</span></h1>
-            <p>Zdrojovo overené audity NW025-U a NW025-Z. Statický graf a skutočné načítanie DLL sú <strong>dve samostatné výskumné overenia</strong>, nie kompletná produkčná závislostná uzávierka ani inštalačný manifest.</p>
+            <p>Source-verified NW025-U and NW025-Z audits. The static import graph and observed DLL loads come from <strong>two separate research checks</strong>. Production dependencies and an installer manifest still require verification.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">INSTALLER NO-GO</Tag>
             <span>Complete DLL closure, redistribution rights, trusted Owner/Witness and Tauri installer remain unverified · {runtimeEvidenceView.phase}</span>
@@ -558,10 +560,10 @@ export default function App() {
                 <div className="settings-line"><b>Runtime root files examined</b><strong>{runtimeInfo.staticAudit.originalBinaryRootCount}</strong></div>
                 <div className="settings-line"><b>Graph traversal limit</b><Tag kind="pending">256 FILES / STOPPED</Tag></div>
                 <div className="settings-line"><b>Windows files visited</b><strong>{runtimeInfo.staticAudit.boundedGraphWindowsFiles}</strong></div>
-                <div className="settings-line"><b>Observed static import edges</b><strong>{runtimeInfo.staticAudit.boundedGraphImportEdges.toLocaleString("sk-SK")}</strong></div>
-                <div className="settings-line"><b>API-set graph edges</b><strong>{runtimeInfo.staticAudit.boundedGraphApiSetEdges.toLocaleString("sk-SK")}</strong></div>
+                <div className="settings-line"><b>Observed static import edges</b><strong>{runtimeInfo.staticAudit.boundedGraphImportEdges.toLocaleString("en-US")}</strong></div>
+                <div className="settings-line"><b>API-set graph edges</b><strong>{runtimeInfo.staticAudit.boundedGraphApiSetEdges.toLocaleString("en-US")}</strong></div>
                 <div className="settings-line"><b>Deep edges without filename candidate</b><Tag kind="pending">{runtimeInfo.staticAudit.boundedGraphNoFilenameCandidateEdges} · NOT LOADER FAILURES</Tag></div>
-                <div className="soft-warning">Všetkých 36 priamych názvov bolo klasifikovaných; úplná rekurzia, API-set presmerovania a dynamické LoadLibrary stále nie sú overené. Systémové DLL nie sú súčasťou navrhovaného inštalačného balíka.</div>
+                <div className="soft-warning">All 36 direct names were classified. Recursive imports, API-set forwarding and dynamic LoadLibrary calls still require verification. The proposed installer excludes system DLLs.</div>
               </Panel>
               <Panel eyebrow="NW025-Z · ACTUAL WINDOWS LOAD PROBE" title="Scoped runtime observation" extra={<Tag kind="tested">20/20 PASS</Tag>}>
                 <div className="native-release-metrics">
@@ -574,7 +576,7 @@ export default function App() {
                 <div className="settings-line"><b>Transient loader history</b><Tag kind="hold">NOT CAPTURED</Tag></div>
                 <div className="settings-line"><b>Clean-machine relocation</b><Tag kind="hold">NOT TESTED</Tag></div>
                 <div className="settings-line"><b>Host requests launched by evidence test</b><strong>0</strong></div>
-                <div className="soft-warning">Pozorovaných 40 modulov je snímka po obmedzených testoch, nie kompletný zoznam všetkých možných runtime závislostí. Nejde o produkčný test Studio Hostu ani inštalátora.</div>
+                <div className="soft-warning">These 40 modules were observed in bounded tests. Full runtime dependency coverage and production testing of Studio Host and the installer remain pending.</div>
               </Panel>
             </div>
             <div className="two-col">
@@ -583,7 +585,7 @@ export default function App() {
                   onChange={e=>setNativeModuleQuery(e.target.value)} placeholder="Filter runtime module filename…" />
                 <div className="runtime-module-list">
                   {filteredNativeModules.map(entry=><div className="runtime-module" key={entry.fileName}>
-                    <div><b>{entry.fileName}</b><small>{entry.bytes.toLocaleString("sk-SK")} bytes · observed in NW025-Z, not a shipping manifest</small></div>
+                    <div><b>{entry.fileName}</b><small>{entry.bytes.toLocaleString("en-US")} bytes · observed in NW025-Z, not a shipping manifest</small></div>
                     <code title={entry.sha256}>{shortHash(entry.sha256)}</code>
                   </div>)}
                   {filteredNativeModules.length===0 && <p className="empty">No observed runtime module matches the filter.</p>}
@@ -601,13 +603,13 @@ export default function App() {
                 <div className="settings-line"><b>Redistribution acceptance</b><Tag kind="hold">NOT APPROVED</Tag></div>
                 <div className="settings-line"><b>Complete dependency closure</b><Tag kind="hold">UNVERIFIED</Tag></div>
                 <div className="settings-line"><b>Signed setup</b><Tag kind="hold">NOT BUILT</Tag></div>
-                <div className="soft-warning">Uložená Python licencia nie je dôkazom úplného pokrytia tretích strán. Node/npm/Corepack oznámenia nemožno zamieňať za schválený presný runtime notice bundle.</div>
+                <div className="soft-warning">The archived Python license covers only part of the third-party inventory. Approval of the exact runtime notice bundle is still pending.</div>
               </Panel>
             </div>
             {nodeNoticeData && <Panel eyebrow="UI-008 / NEW OFFICIAL SOURCE EVIDENCE" title="Node 24.19.0 · License provenance" extra={<Tag kind="blue">LEGAL REVIEW REQUIRED</Tag>}>
               <div className="native-release-metrics">
                 <div><strong>24.19.0</strong><span>Exact official Node release & local binary match</span></div>
-                <div><strong>{nodeNoticeData.node.licenseBytes.toLocaleString("sk-SK")}</strong><span>LICENSE bytes extracted without installing Node</span></div>
+                <div><strong>{nodeNoticeData.node.licenseBytes.toLocaleString("en-US")}</strong><span>LICENSE bytes extracted without installing Node</span></div>
                 <div><strong>0</strong><span>Production signatures or redistribution approvals granted</span></div>
               </div>
               <div className="two-col">
@@ -647,7 +649,7 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">PLATFORM / WINDOWS IDENTITY RESEARCH</div>
             <h1>Host Security Lab<span className="title-dot">.</span></h1>
-            <p>Overená identita jedného lokálneho Windows klienta. Výsledok pochádza z testov OS impersonácie cez named pipe, nie z podpísaného Owner/Witness kanála. Bez externého trustu zostávajú production gate, inštalátor aj dispatch zamknuté.</p>
+            <p>Named-pipe impersonation tests verified one local Windows client identity. The release gate, installer and dispatch remain blocked pending independent signed Owner/Witness evidence.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">PRODUCTION HOLD</Tag>
             <span>Actual same-user SID comparison passed · distinct role SID and signed installation are NOT verified.</span>
@@ -719,7 +721,7 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">FRAMEWORK / CAPABILITIES · COMPLETION · FIDELITY</div>
             <h1>Architecture & Completion<span className="title-dot">.</span></h1>
-            <p>Zdrojovo overených deväť schopností Frameworku. Väzby na Completion Intelligence a First-Divergence sú pripravené ako samostatné nástroje; na skutočné meranie autentického herného runtime stále potrebujú pôvodnú hru, porovnateľný replay a nezávislý oracle.</p>
+            <p>Source checks cover nine Framework capabilities. Completion Intelligence and First-Divergence are available as separate tools. Runtime fidelity measurement still requires the original game, a comparable replay and an independent reference.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">ARCHIVED / PRODUCTION HOLD</Tag>
             <span>16 pinned original source roles · no current owner, worker or authentic game comparison</span>
@@ -798,7 +800,7 @@ export default function App() {
         {page === "crossplane" && <>
           <CoreOrionPanel/>{new URLSearchParams(window.location.search).get("canonicalTest")==="1" && <CanonicalCorePanel/>}
           <div className="page-intro"><div className="eyebrow">PLATFORM / FRAMEWORK ↔ ORION EVIDENCE</div><h1>Orchestration crossplane<span className="title-dot">.</span></h1>
-            <p>Zdrojovo pripnutý historický audit K003, ORION a Owner/Witness. Záznamy s rôznymi časmi nie sú jednou živou transakciou. ORION nie je druhý scheduler.</p>
+            <p>Source-pinned historical audit of K003, ORION and Owner/Witness. Each observation retains its own timestamp. K003 remains the sole scheduler.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">{crossplaneView.phase==="HOLD"?"CAPTURE UNAVAILABLE":"ARCHIVED / PROD HOLD"}</Tag>
             <span>Model execution: BLOCKED · independent Owner/Witness: NOT ACCEPTED · {crossplaneView.code}</span>
@@ -861,10 +863,10 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">PLATFORM / WINDOWS IPC RESEARCH</div>
             <h1>Native IPC Lab<span className="title-dot">.</span></h1>
-            <p>Skutočne otestovaný jednorazový Windows named-pipe prototyp a read-only audit PE závislostí. Nie je to produkčný Host, Tauri IPC integrácia ani schválený Windows inštalátor.</p>
+            <p>A one-shot Windows named-pipe prototype and read-only PE dependency audit were tested. Production Host, Tauri IPC integration and installer approval remain pending.</p>
           </div>
           <div className="section-banner native-banner">
-            <Tag kind="hold">PRODUCTION HOLD</Tag><span>Role tokens, signed Owner/Witness, protected install root and kompletné runtime závislosti neboli prijaté.</span>
+            <Tag kind="hold">PRODUCTION HOLD</Tag><span>Role tokens, signed Owner/Witness evidence, a protected install root and complete runtime dependencies still require acceptance.</span>
             <button className="top-button" disabled={!ipc.report} onClick={exportNativeReport}>Export audit ↓</button>
           </div>
           {ipc.report ? <>
@@ -907,7 +909,7 @@ export default function App() {
               </Panel>
             </div>
             <Panel eyebrow="RELEASE ADMISSION CROSSWALK" title="Required production gates" extra={<Tag kind="hold">ALL PENDING</Tag>}>
-              <div className="native-gate-intro">Tento prehľad nemožno prepnutím v UI povýšiť na PASS. Každý bod vyžaduje samostatný nezávisle akceptovaný dôkaz.</div>
+              <div className="native-gate-intro">Each requirement stays on hold until its evidence is independently accepted.</div>
               <input className="native-gate-filter" aria-label="Filter native admission requirements" value={gateSearch} onChange={e=>setGateSearch(e.target.value)} placeholder="Filter prerequisites…" />
               <div className="native-gate-grid">
                 {missingAdmissionGates.map(key=><div className="native-gate" key={key}><span className="gate-number">{String(REQUIRED_ADMISSION_GATES.indexOf(key)+1).padStart(2,"0")}</span><span className="native-gate-name">{ADMISSION_LABELS[key]}</span><Tag kind="hold">MISSING</Tag></div>)}
@@ -924,7 +926,7 @@ export default function App() {
                 <div className="settings-line"><b>Existing Studio icon</b><Tag kind="pending">ASSET NOT VERIFIED</Tag></div>
                 <div className="settings-line"><b>Signed native EXE</b><Tag kind="hold">NOT BUILT</Tag></div>
                 <div className="settings-line"><b>Component Manager</b><Tag kind="pending">DESIGN ONLY</Tag></div>
-                <div className="soft-warning">Tento kandidát nevytvára náhradnú značku ani nepreberá autoritu existujúceho K003. Pozorovanie IPC nevytvára povolenie na spustenie Native Worker V2.</div>
+                <div className="soft-warning">K003 retains scheduling authority. Running Native Worker V2 requires explicit admission.</div>
                 <button className="secondary-button" onClick={()=>setPage("components")}>View component plan →</button>
               </Panel>
             </div>
@@ -936,6 +938,7 @@ export default function App() {
         {page === "projects" && <>
           <div className="page-intro"><div className="eyebrow">WORKSPACE / PROJECTS</div><h1>Project Workbench<span className="title-dot">.</span></h1><p>Register known game projects without opening their original media. Project status is deliberately not inferred from folder presence.</p></div>
           <div className="section-banner"><Tag kind="pending">NOT LIVE-BOUND</Tag><span>Per-project checkpoint API and authenticated owner leases are not connected.</span><button className="top-button" onClick={()=>setPage("completion")}>Source-bound game blockers ↗</button></div>
+          <OpenAzraelBuildReview projects={snapshot.projects}/>
           <div className="project-grid">{snapshot.projects.map((p,i) => <div key={p.id} className="project-card"><div className="project-letter">{String(i+1).padStart(2,"0")}</div><h3>{p.id}</h3><small>Source corpus remains immutable</small><div className="project-foot"><Tag>RUNTIME NOT QUERIED</Tag><span>→</span></div></div>)}</div>
         </>}
         {page === "assets" && <>
@@ -998,7 +1001,7 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">MANAGEMENT / VERSION & DEPLOYMENT VALIDATION</div>
             <h1>Compatibility Lab<span className="title-dot">.</span></h1>
-            <p>Zdrojovo overená kontrola povinného Windows x64 balenia. Existujúci plán definuje komponenty a globálne protokoly, nie podpísané verzie jednotlivých binárok. Neznáme väzby automaticky znamenajú HOLD.</p>
+            <p>Source-verified review of required Windows x64 packaging. The plan defines component roles and shared protocols. Unknown binary bindings stay on hold.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">DEPLOYMENT NO-GO</Tag>
             <span>Version catalog missing · no production binaries admitted · {compView.kind}</span>
@@ -1014,7 +1017,7 @@ export default function App() {
             <div className="hero-card hero-short compat-hero"><div>
               <div className="hero-eyebrow">ONE INSTALLER · COMPLETE PLATFORM</div>
               <h2>Source inventory mapped.<br/><span>Compatibility not authenticated.</span></h2>
-              <p>Všetkých deväť komponentových rolí sa zhoduje so zdrojovým plánom. Žiadna nie je schválená na nasadenie, zmenu vlastníka alebo spustenie. Source presence nie je binárna kompatibilita.</p>
+              <p>All nine component roles match the source plan. Deployment, ownership changes, execution and binary compatibility still require independent verification.</p>
             </div><div className="hero-status"><span>INSTALLER</span><b>NO-GO</b><small>ZERO SIGNED CATALOGS</small></div></div>
             <div className="two-col">
               <Panel eyebrow="SOURCE PLANNING CENSUS" title="Nine required component roles" extra={<Tag kind="pending">PLAN ONLY</Tag>}>
@@ -1111,7 +1114,7 @@ export default function App() {
           <div className="page-intro">
             <div className="eyebrow">MANAGEMENT / RELEASE TRUST</div>
             <h1>Release & Trust<span className="title-dot">.</span></h1>
-            <p>Autoritatívny postup pre budúce schválenie je rozdelený na tri nezávislé fázy A → B → C. Táto obrazovka je len zdrojovo overený prehliadač historického návrhu r13; neudeľuje povolenia, neprijíma podpisy a nič nespúšťa.</p>
+            <p>The historical r13 plan defines three independent approval stages in order: A, B and C. This read-only page shows their requirements and recorded evidence.</p>
           </div>
           <div className="section-banner"><Tag kind="hold">PRODUCTION NO-GO</Tag>
             <span>Approval A, B, C: none independently recorded · No active GUI lease · {releaseTrust.phase}</span>
@@ -1156,7 +1159,7 @@ export default function App() {
                     <span>{String(i+1).padStart(2,"0")}</span>
                     <p>{requirement}</p><Tag kind="hold">PENDING</Tag>
                   </div>)}</div>
-                <div className="soft-warning">Výber fázy a čítanie dôkazov nie je schválenie. Externý Owner/Witness, podpisy a Windows identita sú naďalej nezávislé požiadavky.</div>
+                <div className="soft-warning">Each stage still requires independent Owner/Witness evidence, signature verification and verified Windows identity.</div>
               </Panel>
             </div>}
             <Panel eyebrow="SOURCE AND AUTHORITY SEPARATION" title="Historical r13 security posture" extra={<Tag kind="hold">NO AUTHORITY TRANSFER</Tag>}>
@@ -1175,6 +1178,7 @@ export default function App() {
         </>}
         {page === "settings" && <>
           <div className="page-intro"><div className="eyebrow">MANAGEMENT / SETTINGS</div><h1>Settings<span className="title-dot">.</span></h1><p>Local UI preference preview only. Runtime and protected production settings are not writable from this candidate.</p></div>
+          <StudioBuildIdentity/>
           <div className="settings-stack"><Panel eyebrow="GAMING EXPERIENCE" title="Automatic GAME / LIGHT mode"><div className="setting-row"><div><strong>Detect launched games</strong><p>Approved default is enabled; heavy workers should cooperate and release resources during games.</p><Tag kind="pending">LOCAL PREVIEW · NOT APPLIED</Tag></div><button role="switch" aria-checked={gameDraft} className={"toggle " + (gameDraft ? "on":"")} onClick={() => setGameDraft(v => !v)} aria-label="Toggle local preview for automatic gaming mode"><span /></button></div><div className="setting-info">Actual runtime value not queried. This UI-only draft does not change Governor policy.</div></Panel>
           <Panel eyebrow="SECURITY" title="Execution and component policies"><div className="settings-line"><b>Single writer</b><Tag kind="blue">ENFORCED BY DESIGN</Tag></div><div className="settings-line"><b>Maximum concurrent heavy slots</b><strong>{snapshot.policy.maxHeavySlots}</strong></div><div className="settings-line"><b>Unknown result</b><Tag kind="hold">{snapshot.policy.unknownOutcome}</Tag></div><div className="settings-line"><b>Owner / Witness verification</b><Tag kind="hold">DEFERRED</Tag></div><div className="settings-line"><b>Original game resources</b><strong>READ ONLY</strong></div></Panel></div>
         </>}

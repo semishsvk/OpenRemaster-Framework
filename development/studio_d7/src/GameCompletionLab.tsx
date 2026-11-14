@@ -11,7 +11,7 @@ const diagnostics:Record<CompletionGameId,string>={
  OpenStonekeep:"Original framebuffer index vs palette RGB evidence"
 };
 const pretty=(s:string)=>s.replaceAll("_"," ");
-const fmt=(n:number)=>n.toLocaleString("sk-SK");
+const fmt=(n:number)=>n.toLocaleString("en-US");
 function Hold({children,className=""}:{children:React.ReactNode;className?:string}){
  return <span className={"game-hold "+className}>{children}</span>;
 }
@@ -39,7 +39,7 @@ export default function GameCompletionLab({data,onReload,busy,onArchitecture,onF
    <div className="page-intro">
      <div className="eyebrow">GAME-DRIVEN COMPLETION / REAL SOURCE CHECKPOINTS</div>
      <h1>Game Completion<span className="title-dot">.</span></h1>
-     <p>Zdrojovo podložené blokátory z pôvodných OpenMDK1 C285 a OpenStonekeep K306. Každá hra má vlastnú postupnosť práce. Editorové skóre neurčuje percento hotovej hry ani pravdepodobnosť úspechu.</p>
+     <p>Source-backed blockers from OpenMDK1 C285 and OpenStonekeep K306. Each game has its own work sequence. Editor scores describe the review items only.</p>
    </div>
    <div className="section-banner">
      <Hold>GAMEPLAY HOLD</Hold>
