@@ -105,6 +105,11 @@ try {
       await page.screenshot({path:resolve(screenshots,`operation-${viewport.width}.png`),fullPage:true});
       assert.deepEqual(unexpected,[]);assert.deepEqual(errors,[]);
       console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore and single submit`);
+    } catch (error) {
+      console.error('Studio GUI failure', {errors, unexpected, remoteCalls});
+      console.error(await page.locator('main').innerText().catch(()=>page.locator('body').innerText()));
+      await page.screenshot({path:resolve(screenshots,`failure-${viewport.width}.png`),fullPage:true});
+      throw error;
     } finally {await context.close();}
   }
 } finally {await browser.close();}

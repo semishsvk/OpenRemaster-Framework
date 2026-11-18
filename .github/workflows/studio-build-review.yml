@@ -41,6 +41,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node tools/check-studio-dev-browser.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
         with:
           name: studio-dev-gui-${{ github.sha }}
           path: development/studio_d7/.cache/studio-dev-browser/*.png
