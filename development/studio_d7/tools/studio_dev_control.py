@@ -89,21 +89,32 @@ def atomic_new(root, path, value):
     raw = canonical(value)
     if len(raw) > MAX_JSON:
         raise ValueError('RECORD_SIZE')
-    # Exclusive creation; a failure never replaces a previous audit receipt.
-    with path.open('xb') as stream:
-        stream.write(raw)
-        stream.flush()
-        os.fsync(stream.fileno())
+    # Publish only complete bytes. Windows rename refuses an existing target;
+    # POSIX uses an exclusive hard link. A killed writer leaves an unused .tmp.
+    temporary = confined(root, path.parent / ('.' + path.name + '-' + uuid.uuid4().hex + '.tmp'))
+    try:
+        with temporary.open('xb') as stream:
+            stream.write(raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+        if os.name == 'nt':
+            os.rename(temporary, path)
+        else:
+            os.link(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
     return digest(raw)
 
 
 def validate_request(value):
-    if type(value) is not dict or set(value) - {'action', 'operation_id', 'scenario', 'expected_evidence_sha256', 'reason', 'acknowledge'}:
+    if type(value) is not dict or set(value) - {'action', 'operation_id', 'scenario', 'expected_evidence_sha256', 'reason', 'acknowledge', 'dev_receipt_sha256'}:
         raise ValueError('REQUEST_SCHEMA')
     if value.get('action') not in ('status', 'submit', 'archive', 'resolve', 'capabilities'):
         raise ValueError('ACTION_DENIED')
     if value.get('scenario') != SCENARIO or not re.fullmatch('[a-f0-9]{32}', str(value.get('operation_id', ''))):
         raise ValueError('OPERATION_SCOPE')
+    if 'dev_receipt_sha256' in value and (value['action'] != 'submit' or not re.fullmatch('[a-f0-9]{64}', str(value['dev_receipt_sha256']))):
+        raise ValueError('RECEIPT_SCOPE')
     if value['action'] in ('archive', 'resolve'):
         if not re.fullmatch('[a-f0-9]{64}', str(value.get('expected_evidence_sha256', ''))):
             raise ValueError('EXPECTED_EVIDENCE_REQUIRED')
@@ -204,7 +215,7 @@ class Control:
                 result['launch_count'] = row['launch_count']
         return result
 
-    def resolution(self, operation, evidence_sha):
+    def resolution(self, operation, evidence_sha, verify_content=True):
         receipt = read_optional(self.root, self.path(f'state/studio-resolutions/{operation}.json'))
         if receipt is None:
             return None
@@ -212,7 +223,7 @@ class Control:
                 or receipt.get('scope') != self.scope or receipt.get('evidence_sha256') != evidence_sha
                 or receipt.get('disposition') != 'ACKNOWLEDGED_NO_RETRY' or receipt.get('production_go') is not False):
             raise ValueError('RESOLUTION_EVIDENCE_CHANGED')
-        archive = self.archive_receipt(operation, evidence_sha)
+        archive = self.archive_receipt(operation, evidence_sha, verify_content)
         if archive is None or archive['manifest_sha256'] != receipt.get('archive_manifest_sha256'):
             raise ValueError('RESOLUTION_ARCHIVE_CHANGED')
         return dict(receipt, record_sha256=file_hash(self.path(f'state/studio-resolutions/{operation}.json')), new_operation_allowed=True)
@@ -234,7 +245,7 @@ class Control:
                     result['logs'][name] = stream.read(8192).decode('utf-8', errors='replace')
         return result
 
-    def archive_receipt(self, operation, evidence_sha):
+    def archive_receipt(self, operation, evidence_sha, verify_content=True):
         directory = self.path(f'state/studio-archives/{operation}/{evidence_sha}')
         manifest = read_optional(self.root, directory / 'manifest.json')
         if manifest is None:
@@ -249,12 +260,32 @@ class Control:
                 raise ValueError('ARCHIVE_PATH_DENIED')
             names.add(item['name'])
             log = confined(self.root, directory / item['name'])
-            if log.stat().st_size > MAX_LOGS + MAX_JSON or file_hash(log) != item['compressed_sha256']:
+            if log.stat().st_size > MAX_LOGS + MAX_JSON or (verify_content and file_hash(log) != item['compressed_sha256']):
                 raise ValueError('ARCHIVE_CONTENT_CHANGED')
         return {'path': str(directory), 'manifest_sha256': file_hash(directory / 'manifest.json'), 'evidence_sha256': evidence_sha,
                 'operation_id': operation, 'retention': 'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW', 'log_count': len(manifest['logs'])}
 
+    def discard_partial(self, partial):
+        # Only our incomplete compressed copies; original logs are never touched.
+        partial = confined(self.root, partial)
+        if (partial.parent.parent != self.path('state/studio-archives')
+                or not re.fullmatch('[a-f0-9]{32}', partial.parent.name)
+                or not re.fullmatch(r'\.partial-[a-f0-9]{32}', partial.name)):
+            raise ValueError('PARTIAL_PATH_DENIED')
+        files = list(partial.iterdir())
+        for path in files:
+            confined(self.root, path)
+            if not path.is_file() or (path.name not in {'stdout.log.gz', 'stderr.log.gz', 'manifest.json'}
+                    and not re.fullmatch(r'\.manifest\.json-[a-f0-9]{32}\.tmp', path.name)):
+                raise ValueError('PARTIAL_CONTENT_REQUIRES_REVIEW')
+        for path in files:
+            path.unlink()
+        partial.rmdir()
+
     def archive(self, operation, expected):
+        core, _ = self.evidence(operation)
+        if core['files']['intent'] is None and core['ledger'] is None:
+            raise ValueError('KNOWN_OPERATION_REQUIRED_FOR_ARCHIVE')
         result = self.status(operation)
         if result['evidence_sha256'] != expected:
             raise ValueError('STALE_EVIDENCE_REFRESH_REQUIRED')
@@ -263,6 +294,12 @@ class Control:
         if result['archive'] is not None:
             return result['archive']
         archive_root = self.path('state/studio-archives')
+        entries = list(archive_root.glob('*/*')) if archive_root.exists() else []
+        # All archive mutations hold the same Studio and worker locks. Thus no
+        # other archive writer is live here, including after a prior 45s kill.
+        for entry in entries:
+            if entry.name.startswith('.partial-'):
+                self.discard_partial(entry)
         entries = list(archive_root.glob('*/*')) if archive_root.exists() else []
         if len(entries) >= MAX_ARCHIVES:
             raise ValueError('ARCHIVE_CAPACITY_REQUIRES_EXPORT_REVIEW')
@@ -285,34 +322,40 @@ class Control:
         partial.mkdir()
         manifest = {'schema': 'OpenRemaster.DevLogArchive.v1', 'operation_id': operation, 'scope': self.scope,
                     'evidence_sha256': expected, 'created_epoch': time.time(), 'production_go': False, 'logs': []}
-        for name, source, expected_size in logs:
-            before = source.stat()
-            h, count = hashlib.sha256(), 0
-            target = partial / (name + '.gz')
-            with source.open('rb') as stream, target.open('xb') as output:
-                with gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=0) as archive:
-                    for block in iter(lambda: stream.read(65536), b''):
-                        count += len(block)
-                        if count > MAX_LOGS or count > expected_size:
-                            raise ValueError('LOG_CHANGED_DURING_ARCHIVE')
-                        h.update(block)
-                        archive.write(block)
-                output.flush()
-                os.fsync(output.fileno())
-            after = source.stat()
-            if count != expected_size or (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
-                raise ValueError('LOG_CHANGED_DURING_ARCHIVE')
-            row = self.ledger(operation)
-            worker = (row or {}).get('result', {}).get('worker', {}) if row and row['result'] else {}
-            recorded = worker.get('stdout_sha256' if name == 'stdout.log' else 'stderr_sha256')
-            if recorded is not None and h.hexdigest() != recorded:
-                raise ValueError('TERMINAL_LOG_HASH_CHANGED')
-            manifest['logs'].append({'name': target.name, 'original_bytes': count, 'original_sha256': h.hexdigest(), 'compressed_sha256': file_hash(target)})
-        atomic_new(self.root, partial / 'manifest.json', manifest)
-        if self.evidence(operation)[1] != expected:
-            raise ValueError('EVIDENCE_CHANGED_DURING_ARCHIVE')
-        partial.rename(self.path(f'state/studio-archives/{operation}/{expected}'))
-        return self.archive_receipt(operation, expected)
+        try:
+            for name, source, expected_size in logs:
+                before = source.stat()
+                h, count = hashlib.sha256(), 0
+                target = partial / (name + '.gz')
+                with source.open('rb') as stream, target.open('xb') as output:
+                    with gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=0) as archive:
+                        for block in iter(lambda: stream.read(65536), b''):
+                            count += len(block)
+                            if count > MAX_LOGS or count > expected_size:
+                                raise ValueError('LOG_CHANGED_DURING_ARCHIVE')
+                            h.update(block)
+                            archive.write(block)
+                    output.flush()
+                    os.fsync(output.fileno())
+                after = source.stat()
+                if count != expected_size or (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
+                    raise ValueError('LOG_CHANGED_DURING_ARCHIVE')
+                row = self.ledger(operation)
+                worker = (row or {}).get('result', {}).get('worker', {}) if row and row['result'] else {}
+                recorded = worker.get('stdout_sha256' if name == 'stdout.log' else 'stderr_sha256')
+                if recorded is not None and h.hexdigest() != recorded:
+                    raise ValueError('TERMINAL_LOG_HASH_CHANGED')
+                manifest['logs'].append({'name': target.name, 'original_bytes': count, 'original_sha256': h.hexdigest(), 'compressed_sha256': file_hash(target)})
+            atomic_new(self.root, partial / 'manifest.json', manifest)
+            if self.evidence(operation)[1] != expected:
+                raise ValueError('EVIDENCE_CHANGED_DURING_ARCHIVE')
+            partial.rename(self.path(f'state/studio-archives/{operation}/{expected}'))
+            return self.archive_receipt(operation, expected)
+        except BaseException:
+            if partial.exists():
+                self.discard_partial(partial)
+            raise
+
 
     @contextlib.contextmanager
     def mutation(self):
@@ -354,8 +397,18 @@ class Control:
                     raise ValueError('PREVIOUS_INTENT_INVALID')
                 if old == operation:
                     continue
-                observation = self.status(old)
-                if observation['state'] != 'COMMITTED' and observation['resolution'] is None:
+                # Admission needs terminal disposition, not a fresh validation
+                # of every historical artifact/toolchain. Status still performs
+                # the full verification when that operation is inspected.
+                core, sha = self.evidence(old)
+                row = core['ledger']
+                committed = (row is not None and row['state'] == 'COMMITTED'
+                             and isinstance(row['result'], dict) and row['result'].get('state') == 'COMMITTED'
+                             and row['result'].get('production_go') is False
+                             and row['result'].get('worker', {}).get('owned_tree_stopped') is True
+                             and row['launch_count'] == 1 and core['files']['done'] == row['result']
+                             and core['files']['pending'] is None and core['files']['running'] is None)
+                if not committed and self.resolution(old, sha, verify_content=False) is None:
                     raise ValueError('PREVIOUS_STUDIO_OPERATION_UNRESOLVED:' + old)
             for folder in ('pending', 'running'):
                 for path in self.path('host-state/' + folder).glob('*.json'):
@@ -364,7 +417,10 @@ class Control:
                         raise ValueError('STUDIO_WORK_ALREADY_QUEUED')
             intent = self.path(f'state/studio-intents/{operation}.json')
             if not intent.exists():
-                atomic_new(self.root, intent, {'operation_id': operation, 'scenario': SCENARIO, 'scope': self.scope, 'production_go': False})
+                value = {'operation_id': operation, 'scenario': SCENARIO, 'scope': self.scope, 'production_go': False}
+                if 'dev_receipt_sha256' in request:
+                    value['dev_receipt_sha256'] = request['dev_receipt_sha256']
+                atomic_new(self.root, intent, value)
             # Existing host owns admission, durable ACK, the queue and execution.
             self.host.submit(operation, SCENARIO)
             return self.status(operation)

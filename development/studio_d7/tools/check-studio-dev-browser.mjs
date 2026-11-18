@@ -149,6 +149,7 @@ try {
       assert.equal(commands.filter(call=>call.args?.request?.action==='resolve').length,1);
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
       assert.ok(await worker.evaluate(el=>el.scrollWidth<=el.clientWidth),'Resolved hold must fit the viewport');
+      await worker.screenshot({path:resolve(screenshots,`worker-${viewport.width}.png`)});
       await page.screenshot({path:resolve(screenshots,`operation-${viewport.width}.png`),fullPage:true});
       assert.deepEqual(unexpected,[]);assert.deepEqual(errors,[]);
       console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore, rejected status hold and two-window single submit, log archival and explicit hold resolution`);

@@ -2,7 +2,7 @@ name: Studio Windows DEV
 
 on:
   push:
-    branches: [development/studio-windows-dev, development/studio-worker-recovery, consolidation/master-development-20261025, main]
+    branches: [development/studio-windows-dev, consolidation/master-development-20261025, main]
     paths: ['development/studio_d7/**', '.github/workflows/studio-windows-dev.yml']
   pull_request:
     branches: [consolidation/master-development-20261025, main]
@@ -44,7 +44,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cargo check --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          cargo test --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker dev_worker::tests::rejects_recovery_without_current_evidence -- --exact
+          cargo test --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker dev_worker::tests::portable_
       - name: Smoke test native startup
         run: |
           $process = Start-Process -FilePath (Resolve-Path 'src-tauri/target/release/openremaster_studio_shadow.exe') -PassThru -WindowStyle Hidden

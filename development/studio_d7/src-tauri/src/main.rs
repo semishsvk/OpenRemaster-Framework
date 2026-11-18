@@ -3,16 +3,17 @@
 mod dev_worker;
 
 #[tauri::command]
-fn studio_capabilities() -> serde_json::Value {
+async fn studio_capabilities() -> Result<serde_json::Value, String> {
     #[cfg(feature = "dev-worker")]
-    return dev_worker::capabilities();
+    return tauri::async_runtime::spawn_blocking(dev_worker::capabilities)
+        .await.map_err(|_| "DEV_CAPABILITIES_PANIC".to_string());
     #[cfg(not(feature = "dev-worker"))]
-    serde_json::json!({
+    Ok(serde_json::json!({
         "schema": "OpenRemaster.StudioCapabilities.v1",
         "worker_compiled": false, "worker_ready": false,
         "worker_scope": null, "reason": "This portable build contains the Studio UI. DEV worker support requires a commissioned HomePC build.",
         "production_go": false
-    })
+    }))
 }
 
 #[tauri::command]

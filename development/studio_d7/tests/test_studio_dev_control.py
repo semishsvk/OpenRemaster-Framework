@@ -212,6 +212,66 @@ class ClientTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'DUPLICATE_JSON_KEY'):
             control.decode('{"action":"status","action":"submit"}')
 
+    def test_atomic_record_never_publishes_interrupted_or_overwritten_bytes(self):
+        target = self.root / f'state/studio-intents/{OP}.json'
+        with patch.object(control.os, 'fsync', side_effect=OSError('interrupted write')):
+            with self.assertRaises(OSError):
+                control.atomic_new(self.root, target, {'operation_id': OP})
+        self.assertFalse(target.exists())
+        self.assertEqual(list(target.parent.iterdir()), [])
+        control.atomic_new(self.root, target, {'original': True})
+        with self.assertRaises(FileExistsError):
+            control.atomic_new(self.root, target, {'replacement': True})
+        self.assertEqual(json.loads(target.read_text()), {'original': True})
+
+    def test_failed_and_killed_archive_copies_do_not_exhaust_capacity(self):
+        stage = self.terminal()
+        held = self.client.execute(self.request('status'))
+        request = self.request('archive', expected_evidence_sha256=held['evidence_sha256'])
+        with patch.object(control.gzip, 'GzipFile', side_effect=OSError('archive interrupted')):
+            with self.assertRaises(OSError):
+                self.client.execute(request)
+        parent = self.root / f'state/studio-archives/{OP}'
+        self.assertEqual(list(parent.iterdir()), [])
+        orphan = parent / ('.partial-' + 'e' * 32)
+        orphan.mkdir()
+        (orphan / 'stdout.log.gz').write_bytes(b'incomplete compressed copy')
+        with patch.object(control, 'MAX_ARCHIVES', 1):
+            result = self.client.execute(request)
+        self.assertTrue(result['archive'])
+        self.assertFalse(orphan.exists())
+        self.assertTrue((stage / 'stdout.log').exists())
+
+    def test_submit_checks_terminal_metadata_without_revalidating_old_artifacts(self):
+        self.terminal()
+        done = self.root / f'host-state/done/{OP}.json'
+        result = json.loads(done.read_text())
+        result['state'] = 'COMMITTED'
+        done.write_text(json.dumps(result))
+        with contextlib.closing(sqlite3.connect(self.root / 'state/ledger.sqlite')) as db:
+            db.execute('UPDATE operations SET state=?,result=? WHERE id=?', ('COMMITTED', json.dumps(result), OP))
+            db.commit()
+        external_status = self.host.external_status
+        def only_current(operation, scenario):
+            self.assertNotEqual(operation, OP, 'Historical artifacts must not be rehashed for admission')
+            return external_status(operation, scenario)
+        with patch.object(self.host, 'external_status', side_effect=only_current):
+            value = self.client.execute(self.request('submit', 'c' * 32, dev_receipt_sha256='f' * 64))
+        self.assertEqual(value['state'], 'QUEUED')
+        intent = json.loads((self.root / ('state/studio-intents/' + 'c' * 32 + '.json')).read_text())
+        self.assertEqual(intent['dev_receipt_sha256'], 'f' * 64)
+
+    def test_unknown_operation_cannot_consume_archive_capacity(self):
+        held = self.client.execute(self.request('status'))
+        with self.assertRaisesRegex(ValueError, 'KNOWN_OPERATION_REQUIRED'):
+            self.client.execute(self.request('archive', expected_evidence_sha256=held['evidence_sha256']))
+        self.assertFalse((self.root / 'state/studio-archives').exists())
+
+    def test_scope_matches_native_canonical_config(self):
+        config = json.loads((Path(__file__).parents[1] / 'src-tauri/dev-worker-pins.json').read_text())
+        actual = control.digest(json.dumps(config, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode())
+        self.assertEqual(actual, 'c5f58f85ae31f4f9a674ae24a9c3ca9d08b18a01fcee35cb81064c828440d60e')
+
     def test_symlink_log_is_rejected_without_reading_target(self):
         stage = self.terminal()
         log = stage / 'stdout.log'

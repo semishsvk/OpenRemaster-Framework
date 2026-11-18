@@ -15,9 +15,25 @@ const CONFIG: &str = include_str!("../dev-worker-pins.json");
 const CONTROL: &str = include_str!("../../tools/studio_dev_control.py");
 fn control_scope() -> String {
     let pins: serde_json::Value = serde_json::from_str(CONFIG).expect("compiled DEV JSON");
+    // Explicit ordering remains stable if a dependency enables preserve_order.
+    fn ordered(value: &serde_json::Value) -> serde_json::Value {
+        match value {
+            serde_json::Value::Object(map) => {
+                let sorted: std::collections::BTreeMap<_, _> = map
+                    .iter()
+                    .map(|(key, value)| (key.clone(), ordered(value)))
+                    .collect();
+                serde_json::Value::Object(sorted.into_iter().collect())
+            }
+            serde_json::Value::Array(items) => {
+                serde_json::Value::Array(items.iter().map(ordered).collect())
+            }
+            _ => value.clone(),
+        }
+    }
     format!(
         "{:x}",
-        Sha256::digest(serde_json::to_vec(&pins).expect("compiled DEV scope"))
+        Sha256::digest(serde_json::to_vec(&ordered(&pins)).expect("compiled DEV scope"))
     )
 }
 
@@ -40,7 +56,7 @@ pub fn capabilities() -> serde_json::Value {
         "worker_scope":control_scope(),
         "reason":match check { Ok(true)=>"Pinned HomePC worker is healthy. Builds require a DEV receipt.".to_string(),
             Ok(false)=>"The HomePC worker is stopped or holding. Saved operations can still be inspected and resolved.".to_string(),
-            Err(reason)=>format!("DEV control unavailable: {reason}") },
+            Err(reason)=>format!("DEV control unavailable: {}", reason.chars().take(450).collect::<String>()) },
         "production_go":false
     })
 }
@@ -415,6 +431,9 @@ fn execute(request: DevRequest) -> Result<String, String> {
         }
         None
     };
+    if let Some(ref admitted_sha) = receipt {
+        raw["dev_receipt_sha256"] = serde_json::json!(admitted_sha);
+    }
     let mut value = call_control(&pins, &raw)?;
     if value["schema"] != "OpenRemaster.DevWorkflowResult.v2"
         || value["operation_id"] != request.operation_id
@@ -442,7 +461,7 @@ pub async fn dev_worker_call(request: DevRequest) -> Result<String, String> {
 mod tests {
     use super::*;
     #[test]
-    fn rejects_recovery_without_current_evidence() {
+    fn portable_rejects_recovery_without_current_evidence() {
         let request = DevRequest {
             action: "resolve".into(),
             operation_id: "a".repeat(32),
@@ -475,6 +494,13 @@ mod tests {
         assert_eq!(
             execute(unconfirmed).unwrap_err(),
             "DEV_EXPLICIT_ACKNOWLEDGMENT_REQUIRED"
+        );
+    }
+    #[test]
+    fn portable_scope_matches_python_canonical_config() {
+        assert_eq!(
+            control_scope(),
+            "c5f58f85ae31f4f9a674ae24a9c3ca9d08b18a01fcee35cb81064c828440d60e"
         );
     }
     #[test]
