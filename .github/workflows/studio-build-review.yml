@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci --ignore-scripts
-      - run: node --test tests/build-status.test.mjs tests/modelWitnessView.test.cjs
+      - run: node --test tests/build-status.test.mjs tests/modelWitnessView.test.cjs tests/studio-dev.test.mjs
       - run: npm run build
       - name: Check Studio in Chromium
         shell: pwsh
@@ -38,3 +38,11 @@ jobs:
           $env:STUDIO_EXPECTED_COMMIT = git rev-parse HEAD
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node tools/check-build-review-browser.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tools/check-studio-dev-browser.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: studio-dev-gui-${{ github.sha }}
+          path: development/studio_d7/.cache/studio-dev-browser/*.png
+          if-no-files-found: warn

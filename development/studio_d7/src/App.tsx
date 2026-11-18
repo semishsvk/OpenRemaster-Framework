@@ -1,6 +1,7 @@
 import DevWorkerPanel from "./DevWorkerPanel";
 import {OpenAzraelBuildReview} from "./OpenAzraelBuildReview";
 import {StudioBuildIdentity} from "./StudioBuildIdentity";
+import StudioReleases from "./StudioReleases";
 import MasterDevelopmentPanel from "./MasterDevelopmentPanel";
 import { loadStoredJson } from "./stored-json";
 import brandMark from "./assets/openremaster-mark.png";
@@ -1179,6 +1180,7 @@ export default function App() {
         {page === "settings" && <>
           <div className="page-intro"><div className="eyebrow">MANAGEMENT / SETTINGS</div><h1>Settings<span className="title-dot">.</span></h1><p>Local UI preference preview only. Runtime and protected production settings are not writable from this candidate.</p></div>
           <StudioBuildIdentity/>
+          <StudioReleases/>
           <div className="settings-stack"><Panel eyebrow="GAMING EXPERIENCE" title="Automatic GAME / LIGHT mode"><div className="setting-row"><div><strong>Detect launched games</strong><p>Approved default is enabled; heavy workers should cooperate and release resources during games.</p><Tag kind="pending">LOCAL PREVIEW · NOT APPLIED</Tag></div><button role="switch" aria-checked={gameDraft} className={"toggle " + (gameDraft ? "on":"")} onClick={() => setGameDraft(v => !v)} aria-label="Toggle local preview for automatic gaming mode"><span /></button></div><div className="setting-info">Actual runtime value not queried. This UI-only draft does not change Governor policy.</div></Panel>
           <Panel eyebrow="SECURITY" title="Execution and component policies"><div className="settings-line"><b>Single writer</b><Tag kind="blue">ENFORCED BY DESIGN</Tag></div><div className="settings-line"><b>Maximum concurrent heavy slots</b><strong>{snapshot.policy.maxHeavySlots}</strong></div><div className="settings-line"><b>Unknown result</b><Tag kind="hold">{snapshot.policy.unknownOutcome}</Tag></div><div className="settings-line"><b>Owner / Witness verification</b><Tag kind="hold">DEFERRED</Tag></div><div className="settings-line"><b>Original game resources</b><strong>READ ONLY</strong></div></Panel></div>
         </>}

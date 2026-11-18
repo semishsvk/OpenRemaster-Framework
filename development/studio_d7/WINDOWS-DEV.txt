@@ -1,0 +1,72 @@
+OpenRemaster Studio Windows DEV preview
+
+Extract the ZIP into a user-writable folder and run OpenRemaster-Studio-DEV.exe.
+Windows x64 and an installed Microsoft Edge WebView2 Runtime are required.
+The runtime is available from https://developer.microsoft.com/microsoft-edge/webview2/.
+Windows may show an unknown-publisher warning for this unsigned preview.
+
+The archive is a portable development preview. Remove its extracted folder
+to uninstall it. Application webview data may remain in the current user's
+application data directory under dev.openremaster.studio-shadow.
+
+Settings includes a Studio DEV releases panel. Check DEV releases makes an
+explicit public GitHub API request, displays the release's source and CI status,
+and opens release/download links in the default browser. Select a downloaded
+ZIP to compare its local SHA-256 with GitHub metadata. File bytes stay local.
+
+The default desktop target includes the UI and archived observations. Its
+optional HomePC DEV worker integration requires a separate feature and local
+commissioning. Studio queries compiled capabilities before enabling worker
+controls. Worker-enabled builds persist the operation ID before submission,
+restore status after restart, and show bounded stdout/stderr log tails and
+artifact details. Active status refreshes never resubmit a build. Unknown
+outcomes retain their operation ID for review.
+Only a verified completed build allows another submission. Rejected or missing
+status does not prove that nothing launched; unresolved operations require
+maintainer review. There is no automatic reset or retry. Closing Studio does
+not cancel a submitted build: the existing broker owns its execution. Status
+checks currently create local DEV receipts and logs; retention and a dedicated
+read-only status path remain development follow-ups.
+The public preview has production admission disabled.
+
+BUILD-INFO.json records the source commit, build time, feature, toolchain,
+workflow run and executable digest. SHA256SUMS.txt covers every archive file
+except SHA256SUMS.txt itself; the published archive digest covers the whole ZIP.
+THIRD-PARTY-NOTICES.txt and dependency-inventory.json record dependency license
+metadata and copied notice texts. Entries without a notice file are identified
+for review. LICENSING-PROPOSAL.txt records the proposed MIT license.
+
+Archived game comparison images are included from the public source tree.
+Their distribution rights and the complete dependency notices require review
+for SignPath admission. A successful build establishes technical provenance.
+
+Privacy
+
+The UI reads bundled snapshots and can request same-origin review endpoints
+when the user activates the corresponding control. The default native target
+registers no DEV worker command. The selected source has no application
+analytics or crash-reporting integration. WebView2 is a separately installed
+Microsoft runtime with its own behavior and privacy terms.
+The release panel contacts api.github.com after an explicit release check.
+GitHub receives the normal request metadata. Requests use no stored credentials.
+https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement
+
+The application displays paths, project evidence and build status locally.
+The public package includes the snapshots already in its source revision.
+Review the exact shipped data before a production or SignPath release.
+
+Code signing policy
+
+The source repository is maintained under the semishsvk account. The production
+signing provider is pending. The maintainer, reviewer and
+manual signing approver must be named and their repository/SignPath MFA
+confirmed. Code review by Claude is recorded separately from account roles.
+SignPath attribution and signing integration can be finalized after acceptance.
+Every signing request will require manual approval by the named signing
+approver. CI publishes unsigned DEV previews with their source provenance.
+
+Downloads and source
+
+https://github.com/semishsvk/OpenRemaster-Framework/releases
+https://github.com/semishsvk/OpenRemaster-Framework/tree/development/studio-windows-dev
+https://signpath.org/terms

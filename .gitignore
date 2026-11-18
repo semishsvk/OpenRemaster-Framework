@@ -16,6 +16,7 @@ dist/
 .cache/
 node_modules/
 target/
+development/studio_d7/windows-dev-output/
 cache/
 work/
 workspace/
