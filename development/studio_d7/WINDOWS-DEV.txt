@@ -9,9 +9,19 @@ The archive is a portable development preview. Remove its extracted folder
 to uninstall it. Application webview data may remain in the current user's
 application data directory under dev.openremaster.studio-shadow.
 
+Settings includes a Studio DEV releases panel. Check DEV releases makes an
+explicit public GitHub API request, displays the release's source and CI status,
+and opens release/download links in the default browser. Select a downloaded
+ZIP to compare its local SHA-256 with GitHub metadata. File bytes stay local.
+
 The default desktop target includes the UI and archived observations. Its
 optional HomePC DEV worker integration requires a separate feature and local
-commissioning. The public preview has production admission disabled.
+commissioning. Studio queries compiled capabilities before enabling worker
+controls. Worker-enabled builds persist the operation ID before submission,
+restore status after restart, and show bounded stdout/stderr log tails and
+artifact details. Active status refreshes never resubmit a build. Unknown
+outcomes retain their operation ID for review.
+The public preview has production admission disabled.
 
 BUILD-INFO.json records the source commit, build time, feature, toolchain,
 workflow run and executable digest. SHA256SUMS.txt covers every archive file.
@@ -30,6 +40,9 @@ when the user activates the corresponding control. The default native target
 registers no DEV worker command. The selected source has no application
 analytics or crash-reporting integration. WebView2 is a separately installed
 Microsoft runtime with its own behavior and privacy terms.
+The release panel contacts api.github.com after an explicit release check.
+GitHub receives the normal request metadata. Requests use no stored credentials.
+https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement
 
 The application displays paths, project evidence and build status locally.
 The public package includes the snapshots already in its source revision.

@@ -11,6 +11,47 @@ use std::{
 };
 
 const CONFIG: &str = include_str!("../dev-worker-pins.json");
+
+pub fn capabilities() -> serde_json::Value {
+    let ready = (|| -> Result<(), String> {
+        let pins: serde_json::Value = serde_json::from_str(CONFIG).map_err(|_| "Worker configuration is invalid")?;
+        let root = PathBuf::from(pins["root"].as_str().ok_or("Worker root is missing")?);
+        for (path, key) in [
+            (PathBuf::from(pins["python"].as_str().ok_or("Python is missing")?), "python_sha256"),
+            (root.join("broker.py"), "broker_sha256"),
+            (root.join("BROKER-PINS.json"), "manifest_sha256"),
+        ] {
+            if hash(&path)? != pins[key].as_str().ok_or("Worker pin is missing")? {
+                return Err("Worker files differ from their configured pins".into());
+            }
+        }
+        Ok(())
+    })();
+    serde_json::json!({
+        "schema": "OpenRemaster.StudioCapabilities.v1", "worker_compiled": true,
+        "worker_ready": ready.is_ok(), "worker_scope": format!("{:x}", Sha256::digest(CONFIG.as_bytes())),
+        "reason": ready.err().unwrap_or_else(|| "Pinned DEV broker is available; each build still requires its DEV receipt.".into()),
+        "production_go": false
+    })
+}
+
+fn log_tail(root: &PathBuf, operation: &str) -> serde_json::Value {
+    use std::io::{Seek, SeekFrom};
+    let mut logs = serde_json::Map::new();
+    for name in ["stdout.log", "stderr.log"] {
+        let path = root.join("state").join("operations").join(operation).join(name);
+        let text = (|| -> std::io::Result<String> {
+            let mut file = fs::File::open(path)?;
+            let size = file.metadata()?.len();
+            file.seek(SeekFrom::Start(size.saturating_sub(8192)))?;
+            let mut bytes = Vec::new();
+            file.take(8192).read_to_end(&mut bytes)?;
+            Ok(String::from_utf8_lossy(&bytes).into_owned())
+        })();
+        if let Ok(text) = text { logs.insert(name.into(), serde_json::Value::String(text)); }
+    }
+    serde_json::Value::Object(logs)
+}
 #[derive(Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct DevRequest {
@@ -259,6 +300,16 @@ fn execute(request: DevRequest) -> Result<String, String> {
                 return Err("DEV_BROKER_WAIT_FAILED".into());
             }
         }
+        if request.action == "submit" && started.elapsed() > Duration::from_secs(1) {
+            // The existing broker owns the build and its durable operation ledger.
+            drop(child);
+            return Ok(serde_json::json!({
+                "schema": "OpenRemaster.DevWorkflowResult.v1", "state": "REQUESTED",
+                "operation_id": request.operation_id, "production_go": false,
+                "independent_authority": false, "engine": "unsigned-studio-dev-build",
+                "dev_receipt_verified": true, "automatic_retry": false
+            }).to_string());
+        }
         if started.elapsed() > Duration::from_secs(45)
             || fs::metadata(&out).map(|m| m.len()).unwrap_or(0) > 65536
             || fs::metadata(&err).map(|m| m.len()).unwrap_or(0) > 65536
@@ -278,6 +329,17 @@ fn execute(request: DevRequest) -> Result<String, String> {
         return Err("DEV_RESPONSE_SCOPE".into());
     }
     let mut value = value;
+    if let Some(operation) = value.get("operation_id") {
+        if operation != &serde_json::Value::String(request.operation_id.clone()) {
+            return Err("DEV_RESPONSE_OPERATION_MISMATCH".into());
+        }
+    }
+    value["operation_id"] = serde_json::Value::String(request.operation_id.clone());
+    if ["DENIED", "BUSY"].iter().any(|state| value["state"] == *state)
+        && value.get("launch_count").is_none() {
+        value["launch_count"] = serde_json::json!(0);
+    }
+    value["logs"] = log_tail(&root, &request.operation_id);
     value["dev_receipt_verified"] = serde_json::Value::Bool(true);
     value["dev_receipt_scope"] = serde_json::Value::String("DEV_SELF_SIGNED".into());
     value["dev_receipt_sha256"] = serde_json::Value::String(dev_receipt_hash);
