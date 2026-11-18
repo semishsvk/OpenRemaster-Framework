@@ -108,6 +108,7 @@ try {
         peerWorker.getByRole('button',{name:'Build a DEV candidate'}).click({timeout:1500}),
       ]);
       assert.ok(attempts.some(attempt=>attempt.status==='fulfilled'));
+      await page.waitForFunction(key=>JSON.parse(localStorage.getItem(key))?.result?.state==='REQUESTED',`orf-studio-operation-v2-${scope}`);
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
       await peer.close();
       await worker.getByText(operation,{exact:true}).waitFor();
