@@ -58,12 +58,12 @@ export default function StudioReleases() {
     } catch (reason) { if (revision.current === current) setVerification(String(reason)); }
     finally { if (revision.current === current) setCheckingFile(false); }
   }
-  return <section className="panel" aria-label="Studio DEV releases" style={{padding:24,marginBottom:24}}>
+  return <section className="panel" aria-label="Studio DEV releases" style={{padding:24,marginBottom:24,overflowWrap:'anywhere'}}>
     <h2>Studio DEV releases</h2>
     <p>Installed version <strong>{__STUDIO_BUILD__.version}</strong> · source <code>{__STUDIO_BUILD__.commit ?? 'Unavailable'}</code></p>
     <button disabled={busy} onClick={() => void check()}>Check DEV releases</button>
     <p role="status">{status}</p>
-    {releases.length > 0 && <label>Published preview <select value={selected} onChange={event => { revision.current++; setSelected(event.target.value); setVerification(''); setCheckingFile(false); }}>
+    {releases.length > 0 && <label>Published preview <select style={{maxWidth:'100%'}} value={selected} onChange={event => { revision.current++; setSelected(event.target.value); setVerification(''); setCheckingFile(false); }}>
       {releases.map(item => <option key={item.tag} value={item.tag}>{item.published} · {item.commit.slice(0,12)}</option>)}
     </select></label>}
     {release && <>
@@ -72,7 +72,7 @@ export default function StudioReleases() {
       <p><a href={release.page} target="_blank" rel="noopener noreferrer" onClick={event => void open(event, release.page)}>Release notes on GitHub</a> · <a href={release.download} target="_blank" rel="noopener noreferrer" onClick={event => void open(event, release.download)}>Download Windows DEV ZIP</a></p>
       <details><summary>Changes and release notes</summary><pre style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{release.notes || 'No release notes supplied.'}</pre></details>
       <p>GitHub archive SHA-256 <code>{release.digest ?? 'Unavailable for this release'}</code></p>
-      {release.digest && <label>Verify downloaded ZIP <input type="file" accept=".zip" disabled={checkingFile} onChange={event => { void verify(event.target.files?.[0]); event.target.value = ''; }}/></label>}
+      {release.digest && <label>Verify downloaded ZIP <input style={{maxWidth:'100%'}} type="file" accept=".zip" disabled={checkingFile} onChange={event => { void verify(event.target.files?.[0]); event.target.value = ''; }}/></label>}
       <p role="status" aria-live="polite">{verification}</p>
       <small>File verification runs locally. These previews are unsigned; the checksum binds the file to GitHub metadata.</small>
     </>}

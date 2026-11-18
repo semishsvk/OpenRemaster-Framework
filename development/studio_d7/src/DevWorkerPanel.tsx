@@ -100,7 +100,7 @@ export default function DevWorkerPanel() {
 
   const ready = capabilities?.worker_ready === true;
   const artifact = result?.state === 'COMMITTED' ? result.worker?.artifacts : undefined;
-  return <section className="panel" aria-label="Studio DEV operation" data-testid="dev-worker-panel" style={{padding:24,marginBottom:24}}>
+  return <section className="panel" aria-label="Studio DEV operation" data-testid="dev-worker-panel" style={{padding:24,marginBottom:24,overflowWrap:'anywhere'}}>
     <div className="eyebrow">DEV UNSIGNED</div><h2>Studio DEV build</h2>
     <p>{capabilities?.reason ?? (capabilityError || 'Checking native capabilities…')}</p>
     {capabilities && capabilityError && <p role="alert">{capabilityError}</p>}

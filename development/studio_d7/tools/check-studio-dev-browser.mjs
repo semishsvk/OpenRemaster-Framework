@@ -69,6 +69,7 @@ try {
       assert.equal(await releases.getByRole('link',{name:'Download Windows DEV ZIP'}).getAttribute('href'),preview.assets[0].browser_download_url);
       await releases.getByLabel('Verify downloaded ZIP').setInputFiles({name:filename,mimeType:'application/zip',buffer:bytes});
       await releases.getByText('Checksum matches GitHub release metadata.',{exact:false}).waitFor();
+      assert.ok(await releases.evaluate(el=>el.scrollWidth<=el.clientWidth),'Release details must fit the viewport');
       await page.screenshot({path:resolve(screenshots,`releases-${viewport.width}.png`),fullPage:true});
       await releases.getByLabel('Verify downloaded ZIP').setInputFiles({name:filename,mimeType:'application/zip',buffer:Buffer.from('tampered')});
       await releases.getByText('Checksum mismatch.',{exact:false}).waitFor();
@@ -121,6 +122,7 @@ try {
       await worker.getByRole('button',{name:'Refresh build status'}).click();
       await worker.getByText('Held for review',{exact:true}).waitFor();
       await worker.getByText('Reason: Fixture failure needs review',{exact:true}).waitFor();
+      assert.ok(await worker.evaluate(el=>el.scrollWidth<=el.clientWidth),'Operation details must fit the viewport');
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       await page.screenshot({path:resolve(screenshots,`operation-${viewport.width}.png`),fullPage:true});
       assert.deepEqual(unexpected,[]);assert.deepEqual(errors,[]);
