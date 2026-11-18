@@ -1,0 +1,47 @@
+OpenRemaster Studio Windows DEV preview
+
+Extract the ZIP into a user-writable folder and run OpenRemaster-Studio-DEV.exe.
+Windows x64 and an installed Microsoft Edge WebView2 Runtime are required.
+The runtime is available from https://developer.microsoft.com/microsoft-edge/webview2/.
+Windows may show an unknown-publisher warning for this unsigned preview.
+
+The archive is a portable development preview. Remove its extracted folder
+to uninstall it. Application webview data may remain in the current user's
+application data directory under dev.openremaster.studio-shadow.
+
+The default desktop target includes the UI and archived observations. Its
+optional HomePC DEV worker integration requires a separate feature and local
+commissioning. The public preview has production admission disabled.
+
+BUILD-INFO.json records the source commit, build time, feature, toolchain,
+workflow run and executable digest. SHA256SUMS.txt covers every archive file.
+THIRD-PARTY-NOTICES.txt and dependency-inventory.json record dependency license
+metadata and copied notice texts. Entries without a notice file are identified
+for review. LICENSING-PROPOSAL.txt records the proposed MIT license.
+
+Archived game comparison images are included from the public source tree.
+Their distribution rights and the complete dependency notices require review
+for SignPath admission. A successful build establishes technical provenance.
+
+Privacy and signing preparation
+
+The UI reads bundled snapshots and can request same-origin review endpoints
+when the user activates the corresponding control. The default native target
+registers no DEV worker command. The selected source has no application
+analytics or crash-reporting integration. WebView2 is a separately installed
+Microsoft runtime with its own behavior and privacy terms.
+
+The application displays paths, project evidence and build status locally.
+The public package includes the snapshots already in its source revision.
+Review the exact shipped data before a production or SignPath release.
+
+The production signing provider is pending. The maintainer, reviewer and
+manual signing approver must be named and their repository/SignPath MFA
+confirmed. Code review by Claude is recorded separately from account roles.
+SignPath attribution and signing integration can be finalized after acceptance.
+
+Downloads and source
+
+https://github.com/semishsvk/OpenRemaster-Framework/releases
+https://github.com/semishsvk/OpenRemaster-Framework/tree/development/studio-windows-dev
+https://signpath.org/terms
