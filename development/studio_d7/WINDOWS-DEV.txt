@@ -23,7 +23,7 @@ Archived game comparison images are included from the public source tree.
 Their distribution rights and the complete dependency notices require review
 for SignPath admission. A successful build establishes technical provenance.
 
-Privacy and signing preparation
+Privacy
 
 The UI reads bundled snapshots and can request same-origin review endpoints
 when the user activates the corresponding control. The default native target
@@ -35,10 +35,15 @@ The application displays paths, project evidence and build status locally.
 The public package includes the snapshots already in its source revision.
 Review the exact shipped data before a production or SignPath release.
 
-The production signing provider is pending. The maintainer, reviewer and
+Code signing policy
+
+The source repository is maintained under the semishsvk account. The production
+signing provider is pending. The maintainer, reviewer and
 manual signing approver must be named and their repository/SignPath MFA
 confirmed. Code review by Claude is recorded separately from account roles.
 SignPath attribution and signing integration can be finalized after acceptance.
+Every signing request will require manual approval by the named signing
+approver. CI publishes unsigned DEV previews with their source provenance.
 
 Downloads and source
 

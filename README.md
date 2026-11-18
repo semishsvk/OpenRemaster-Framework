@@ -4,7 +4,7 @@ Evidence-driven sidecar framework for deterministic reverse engineering, reconst
 
 OpenRemaster Studio Windows DEV previews are available on the repository's
 [releases page](https://github.com/semishsvk/OpenRemaster-Framework/releases).
-Read the [preview instructions and signing preparation](development/studio_d7/WINDOWS-DEV.txt)
+Read the [Code signing policy, privacy and preview instructions](development/studio_d7/WINDOWS-DEV.txt)
 and the [proposed Studio license](development/studio_d7/LICENSING-PROPOSAL.txt).
 
 ## Authority and safety
