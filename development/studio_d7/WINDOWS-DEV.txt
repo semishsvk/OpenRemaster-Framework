@@ -21,12 +21,24 @@ controls. Worker-enabled builds persist the operation ID before submission,
 restore status after restart, and show bounded stdout/stderr log tails and
 artifact details. Active status refreshes never resubmit a build. Unknown
 outcomes retain their operation ID for review.
-Only a verified completed build allows another submission. Rejected or missing
-status does not prove that nothing launched; unresolved operations require
-maintainer review. There is no automatic reset or retry. Closing Studio does
-not cancel a submitted build: the existing broker owns its execution. Status
-checks currently create local DEV receipts and logs; retention and a dedicated
-read-only status path remain development follow-ups.
+A verified completed build or an explicitly acknowledged, diagnosed hold allows
+a separate new submission. Review held operation requires a diagnostic note
+and confirmation. The client compares the current evidence digest under the
+existing queue/writer locks, preserves the logs and records a local resolution.
+It never retries the acknowledged operation ID. Queued work, unknown imported
+IDs and missing stopped-process evidence remain on hold.
+Closing Studio does not cancel a submitted build: the existing worker owns it.
+Worker integration uses the pinned active HomePC worker 06 and understands its
+QUEUED/RUNNING states. Status reads do not issue execution receipts or produce
+per-query IPC logs. Only submit performs native DEV receipt admission.
+Archive build logs preserves compressed complete stdout/stderr, a checksum
+manifest and an evidence digest. Originals and ledger records are retained.
+Archives are limited to 64 entries and a 256 MiB storage budget; one operation's
+logs are limited to 64 MiB. Capacity exhaustion requires an explicit export and
+review; there is no automatic deletion of historical or unresolved evidence.
+The HomePC queue builds its existing pinned Studio source snapshot. A checkout
+is not silently substituted for that input. The portable CI build is compiled
+from the Git source identified in its build metadata.
 The public preview has production admission disabled.
 
 BUILD-INFO.json records the source commit, build time, feature, toolchain,

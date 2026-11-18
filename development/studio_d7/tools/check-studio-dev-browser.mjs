@@ -21,24 +21,27 @@ try {
   for (const viewport of [{width:1280,height:800},{width:390,height:844}]) {
     const context = await browser.newContext({viewport,offline:true,serviceWorkers:'block'});
     const page = await context.newPage(), errors = [], unexpected = [], commands = [];
-    let available = false, state = 'STARTED', operation = oldId, failNetwork = false, remoteCalls = 0;
+    let available = false, state = 'STARTED', operation = oldId, failNetwork = false, remoteCalls = 0, archived = false, resolved = false;
     page.setDefaultTimeout(10000);
     page.on('pageerror',error=>errors.push(error.message));
     await context.exposeFunction('testNative',async(command,args)=>{
       commands.push({command,args});
-      if(command==='studio_capabilities') return {schema:'OpenRemaster.StudioCapabilities.v1',worker_compiled:available,worker_ready:available,worker_scope:available?scope:null,reason:available?'Pinned DEV broker available':portableReason,production_go:false};
+      if(command==='studio_capabilities') return {schema:'OpenRemaster.StudioCapabilities.v1',worker_compiled:available,worker_ready:available,control_ready:available,recovery_supported:available,log_archive_supported:available,worker_scope:available?scope:null,reason:available?'Pinned DEV broker available':portableReason,production_go:false};
       if(command==='studio_open_release') return;
       assert.equal(command,'dev_worker_call');
       const request=args.request;
       assert.equal(request.scenario,'build_studio_dev');
+      const metadata=()=>({schema:'OpenRemaster.DevWorkflowResult.v2',control_scope:scope,control_verified:true,dev_receipt_verified:false,evidence_sha256:digest,recovery:{allowed:state==='HOLD',reason:'Terminal fixture confirms the owned build stopped.'},archive:archived?{path:'C:/DEV/archives/'+operation,operation_id:operation,evidence_sha256:digest,manifest_sha256:'f'.repeat(64),log_count:2,retention:'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW'}:null,resolution:resolved?{disposition:'ACKNOWLEDGED_NO_RETRY',operation_id:operation,scope,evidence_sha256:digest,archive_manifest_sha256:'f'.repeat(64),record_sha256:'e'.repeat(64),reason:'Reviewed stopped fixture; preserve evidence.',new_operation_allowed:true,production_go:false}:null});
       if(request.action==='submit') {
-        operation=request.operation_id;
+        operation=request.operation_id;archived=false;resolved=false;
         const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),`orf-studio-operation-v2-${scope}`);
         assert.equal(saved.operation,operation);
         return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state:'REQUESTED',operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false});
       }
-      assert.equal(request.action,'status');assert.equal(request.operation_id,operation);
-      return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false,launch_count:['BUSY','DENIED'].includes(state)?undefined:1,reason:state==='HOLD'?'Fixture failure needs review':undefined,ack:{operation_id:operation},commit:state==='COMMITTED'?{operation_id:operation}:null,worker:state==='COMMITTED'?{success:true,owned_tree_stopped:true,wrapper_exit:0,artifacts:{studio_exe:'C:/DEV/Studio.exe',studio_exe_sha256:digest}}:undefined,logs:{'stdout.log':'Compiling Studio fixture','stderr.log':''}});
+      assert.ok(['status','archive','resolve'].includes(request.action));assert.equal(request.operation_id,operation);
+      if(request.action!=='status') {assert.equal(request.recovery.expected_evidence_sha256,digest);archived=true;}
+      if(request.action==='resolve') {assert.equal(request.recovery.acknowledge,true);assert.ok(request.recovery.reason.length>=10);resolved=true;}
+      return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false,launch_count:['BUSY','DENIED'].includes(state)?undefined:1,reason:state==='HOLD'?'Fixture failure needs review':undefined,ack:{operation_id:operation},commit:state==='COMMITTED'?{operation_id:operation}:null,worker:state==='COMMITTED'?{success:true,owned_tree_stopped:true,wrapper_exit:0,artifacts:{studio_exe:'C:/DEV/Studio.exe',studio_exe_sha256:digest}}:undefined,logs:{'stdout.log':'Compiling Studio fixture','stderr.log':''},...metadata()});
     });
     await context.addInitScript(()=>{window.__TAURI_INTERNALS__={invoke:(command,args)=>window.testNative(command,args)};});
     await context.route('**/*',async route=>{
@@ -88,6 +91,12 @@ try {
       await worker.getByText('Building',{exact:true}).waitFor();
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,0);
       assert.ok(commands.filter(call=>call.args?.request?.action==='status').length>=2);
+      state='QUEUED';
+      await worker.getByRole('button',{name:'Refresh build status'}).click();
+      await worker.getByText('Queued by HomePC worker',{exact:true}).waitFor();
+      state='RUNNING';
+      await worker.getByRole('button',{name:'Refresh build status'}).click();
+      await worker.getByText('Building on HomePC',{exact:true}).waitFor();
       state='BUSY';
       await worker.getByRole('button',{name:'Refresh build status'}).click();
       await worker.getByText('Worker busy',{exact:true}).waitFor();
@@ -100,6 +109,9 @@ try {
       await worker.getByRole('button',{name:'Refresh build status'}).click();
       await worker.getByText('Build complete',{exact:true}).waitFor();
       await worker.getByText('C:/DEV/Studio.exe',{exact:true}).waitFor();
+      await worker.getByRole('button',{name:'Archive build logs'}).click();
+      await worker.getByText('C:/DEV/archives/'+operation,{exact:true}).waitFor();
+      assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,0);
       const peer=await context.newPage();
       await peer.goto(origin+'/#buildlab');
       const peerWorker=peer.getByRole('region',{name:'Studio DEV operation'});
@@ -124,9 +136,22 @@ try {
       await worker.getByText('Reason: Fixture failure needs review',{exact:true}).waitFor();
       assert.ok(await worker.evaluate(el=>el.scrollWidth<=el.clientWidth),'Operation details must fit the viewport');
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
+      const resolveHold=worker.getByRole('button',{name:'Archive evidence and acknowledge hold'});
+      assert.equal(await resolveHold.isDisabled(),true);
+      await worker.getByLabel('Resolution note').fill('Reviewed stopped fixture; preserve evidence.');
+      await worker.getByRole('checkbox',{name:'I acknowledge this hold.',exact:false}).check();
+      await resolveHold.click();
+      await worker.getByText('Hold acknowledged.',{exact:false}).waitFor();
+      assert.equal(await worker.getByTestId('dev-run').isEnabled(),true);
+      assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
+      await page.reload();
+      await worker.getByText('Hold acknowledged.',{exact:false}).waitFor();
+      assert.equal(commands.filter(call=>call.args?.request?.action==='resolve').length,1);
+      assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
+      assert.ok(await worker.evaluate(el=>el.scrollWidth<=el.clientWidth),'Resolved hold must fit the viewport');
       await page.screenshot({path:resolve(screenshots,`operation-${viewport.width}.png`),fullPage:true});
       assert.deepEqual(unexpected,[]);assert.deepEqual(errors,[]);
-      console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore, rejected status hold and two-window single submit`);
+      console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore, rejected status hold and two-window single submit, log archival and explicit hold resolution`);
     } catch (error) {
       console.error('Studio GUI failure', {errors, unexpected, remoteCalls});
       console.error(await page.locator('main').innerText().catch(()=>page.locator('body').innerText()));
