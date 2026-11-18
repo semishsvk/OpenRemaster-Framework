@@ -32,6 +32,7 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts
       - run: node --test tests/build-status.test.mjs tests/modelWitnessView.test.cjs tests/studio-dev.test.mjs
+      - run: python -B -m unittest discover -s tests -p test_studio_dev_control.py -v
       - run: npm run build
       - name: Build native Windows executable
         run: |
@@ -42,6 +43,8 @@ jobs:
           cargo build --manifest-path src-tauri/Cargo.toml --locked --release --features custom-protocol
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cargo check --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo test --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker dev_worker::tests::portable_
       - name: Smoke test native startup
         run: |
           $process = Start-Process -FilePath (Resolve-Path 'src-tauri/target/release/openremaster_studio_shadow.exe') -PassThru -WindowStyle Hidden

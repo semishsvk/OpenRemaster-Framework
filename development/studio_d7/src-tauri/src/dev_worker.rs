@@ -12,45 +12,187 @@ use std::{
 
 const CONFIG: &str = include_str!("../dev-worker-pins.json");
 
-pub fn capabilities() -> serde_json::Value {
-    let ready = (|| -> Result<(), String> {
-        let pins: serde_json::Value = serde_json::from_str(CONFIG).map_err(|_| "Worker configuration is invalid")?;
-        let root = PathBuf::from(pins["root"].as_str().ok_or("Worker root is missing")?);
-        for (path, key) in [
-            (PathBuf::from(pins["python"].as_str().ok_or("Python is missing")?), "python_sha256"),
-            (root.join("broker.py"), "broker_sha256"),
-            (root.join("BROKER-PINS.json"), "manifest_sha256"),
-        ] {
-            if hash(&path)? != pins[key].as_str().ok_or("Worker pin is missing")? {
-                return Err("Worker files differ from their configured pins".into());
+const CONTROL: &str = include_str!("../../tools/studio_dev_control.py");
+fn control_scope() -> String {
+    let pins: serde_json::Value = serde_json::from_str(CONFIG).expect("compiled DEV JSON");
+    // Explicit ordering remains stable if a dependency enables preserve_order.
+    fn ordered(value: &serde_json::Value) -> serde_json::Value {
+        match value {
+            serde_json::Value::Object(map) => {
+                let sorted: std::collections::BTreeMap<_, _> = map
+                    .iter()
+                    .map(|(key, value)| (key.clone(), ordered(value)))
+                    .collect();
+                serde_json::Value::Object(sorted.into_iter().collect())
             }
+            serde_json::Value::Array(items) => {
+                serde_json::Value::Array(items.iter().map(ordered).collect())
+            }
+            _ => value.clone(),
         }
-        Ok(())
+    }
+    format!(
+        "{:x}",
+        Sha256::digest(serde_json::to_vec(&ordered(&pins)).expect("compiled DEV scope"))
+    )
+}
+
+pub fn capabilities() -> serde_json::Value {
+    let check = (|| -> Result<bool, String> {
+        let pins: serde_json::Value =
+            serde_json::from_str(CONFIG).map_err(|_| "DEV_CONFIG_INVALID")?;
+        verify_pins(&pins)?;
+        let raw = serde_json::json!({"action":"capabilities","operation_id":"0".repeat(32),"scenario":"build_studio_dev"});
+        let value = call_control(&pins, &raw)?;
+        if value["production_go"] != false {
+            return Err("DEV_CAPABILITY_SCOPE".into());
+        }
+        Ok(value["healthy"] == true)
     })();
     serde_json::json!({
-        "schema": "OpenRemaster.StudioCapabilities.v1", "worker_compiled": true,
-        "worker_ready": ready.is_ok(), "worker_scope": format!("{:x}", Sha256::digest(CONFIG.as_bytes())),
-        "reason": ready.err().unwrap_or_else(|| "Pinned DEV broker is available; each build still requires its DEV receipt.".into()),
-        "production_go": false
+        "schema":"OpenRemaster.StudioCapabilities.v1", "worker_compiled":true,
+        "control_ready":check.is_ok(), "worker_ready":matches!(&check, Ok(true)),
+        "recovery_supported":check.is_ok(), "log_archive_supported":check.is_ok(),
+        "worker_scope":control_scope(),
+        "reason":match check { Ok(true)=>"Pinned HomePC worker is healthy. Builds require a DEV receipt.".to_string(),
+            Ok(false)=>"The HomePC worker is stopped or holding. Saved operations can still be inspected and resolved.".to_string(),
+            Err(reason)=>format!("DEV control unavailable: {}", reason.chars().take(450).collect::<String>()) },
+        "production_go":false
     })
 }
 
-fn log_tail(root: &PathBuf, operation: &str) -> serde_json::Value {
-    use std::io::{Seek, SeekFrom};
-    let mut logs = serde_json::Map::new();
-    for name in ["stdout.log", "stderr.log"] {
-        let path = root.join("state").join("operations").join(operation).join(name);
-        let text = (|| -> std::io::Result<String> {
-            let mut file = fs::File::open(path)?;
-            let size = file.metadata()?.len();
-            file.seek(SeekFrom::Start(size.saturating_sub(8192)))?;
-            let mut bytes = Vec::new();
-            file.take(8192).read_to_end(&mut bytes)?;
-            Ok(String::from_utf8_lossy(&bytes).into_owned())
-        })();
-        if let Ok(text) = text { logs.insert(name.into(), serde_json::Value::String(text)); }
+fn verify_pins(pins: &serde_json::Value) -> Result<(), String> {
+    let root = PathBuf::from(pins["root"].as_str().ok_or("DEV_ROOT_REQUIRED")?);
+    if !root.is_absolute() {
+        return Err("DEV_ROOT_NOT_ABSOLUTE".into());
     }
-    serde_json::Value::Object(logs)
+    for (path, key) in [
+        (
+            PathBuf::from(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?),
+            "python_sha256",
+        ),
+        (root.join("broker.py"), "broker_sha256"),
+        (root.join("host.py"), "host_sha256"),
+        (root.join("BROKER-PINS.json"), "manifest_sha256"),
+        (root.join("WORKER-CONFIG.json"), "worker_config_sha256"),
+    ] {
+        if hash(&path)? != pins[key].as_str().ok_or("DEV_PIN_REQUIRED")? {
+            return Err("DEV_PIN_CHANGED".into());
+        }
+    }
+    Ok(())
+}
+
+fn call_control(
+    pins: &serde_json::Value,
+    request: &serde_json::Value,
+) -> Result<serde_json::Value, String> {
+    use std::io::Write;
+    use std::sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    };
+    const LIMIT: u64 = 131072;
+    let mut child = Command::new(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?)
+        .args([
+            "-B",
+            "-I",
+            "-",
+            "--config",
+            CONFIG,
+            "--request",
+            &request.to_string(),
+        ])
+        .current_dir(pins["root"].as_str().ok_or("DEV_ROOT_REQUIRED")?)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .creation_flags(0x08000000)
+        .spawn()
+        .map_err(|_| "DEV_CONTROL_START_FAILED")?;
+    let overflow = Arc::new(AtomicBool::new(false));
+    fn reader<R: Read + Send + 'static>(
+        stream: R,
+        flag: Arc<AtomicBool>,
+    ) -> thread::JoinHandle<std::io::Result<Vec<u8>>> {
+        thread::spawn(move || {
+            let mut bytes = Vec::new();
+            stream.take(LIMIT + 1).read_to_end(&mut bytes)?;
+            if bytes.len() as u64 > LIMIT {
+                flag.store(true, Ordering::SeqCst);
+            }
+            Ok(bytes)
+        })
+    }
+    let stdout = reader(
+        child.stdout.take().ok_or("DEV_CONTROL_STDOUT")?,
+        overflow.clone(),
+    );
+    let stderr = reader(
+        child.stderr.take().ok_or("DEV_CONTROL_STDERR")?,
+        overflow.clone(),
+    );
+    if child
+        .stdin
+        .take()
+        .ok_or("DEV_CONTROL_STDIN")?
+        .write_all(CONTROL.as_bytes())
+        .is_err()
+    {
+        let _ = child.kill();
+        let _ = child.wait();
+        return Err("DEV_CONTROL_INPUT_FAILED".into());
+    }
+    let started = Instant::now();
+    let status = loop {
+        match child.try_wait() {
+            Ok(Some(status)) => break status,
+            Ok(None) => {}
+            Err(_) => {
+                let _ = child.kill();
+                let _ = child.wait();
+                return Err("DEV_CONTROL_WAIT_FAILED".into());
+            }
+        }
+        if started.elapsed() > Duration::from_secs(45) || overflow.load(Ordering::SeqCst) {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err("DEV_CONTROL_BOUND_HOLD".into());
+        }
+        thread::sleep(Duration::from_millis(20));
+    };
+    let bytes = stdout
+        .join()
+        .map_err(|_| "DEV_CONTROL_READER")?
+        .map_err(|_| "DEV_CONTROL_READ")?;
+    let _ = stderr
+        .join()
+        .map_err(|_| "DEV_CONTROL_READER")?
+        .map_err(|_| "DEV_CONTROL_READ")?;
+    if overflow.load(Ordering::SeqCst) {
+        return Err("DEV_CONTROL_RESPONSE_SIZE".into());
+    }
+    let value: serde_json::Value =
+        serde_json::from_slice(&bytes).map_err(|_| "DEV_CONTROL_JSON")?;
+    if !status.success() {
+        return Err(value["error"]
+            .as_str()
+            .unwrap_or("DEV_CONTROL_HOLD")
+            .chars()
+            .take(2048)
+            .collect());
+    }
+    Ok(value)
+}
+
+#[derive(Deserialize, Clone)]
+#[serde(deny_unknown_fields)]
+pub struct RecoveryRequest {
+    expected_evidence_sha256: String,
+    #[serde(default)]
+    reason: Option<String>,
+    #[serde(default)]
+    acknowledge: Option<bool>,
 }
 #[derive(Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
@@ -58,6 +200,8 @@ pub struct DevRequest {
     action: String,
     operation_id: String,
     scenario: String,
+    #[serde(default)]
+    recovery: Option<RecoveryRequest>,
     #[serde(default)]
     dev_packet_path: Option<String>,
     #[serde(default)]
@@ -225,9 +369,8 @@ fn issue_ephemeral_receipt(
     Ok(generated)
 }
 fn execute(request: DevRequest) -> Result<String, String> {
-    if !["submit", "status"].contains(&request.action.as_str())
-        || !["build_studio_dev"]
-            .contains(&request.scenario.as_str())
+    if !["submit", "status", "archive", "resolve"].contains(&request.action.as_str())
+        || request.scenario != "build_studio_dev"
         || request.operation_id.len() != 32
         || !request
             .operation_id
@@ -236,109 +379,75 @@ fn execute(request: DevRequest) -> Result<String, String> {
     {
         return Err("DEV_REQUEST_DENIED".into());
     }
-    let pins: serde_json::Value = serde_json::from_str(CONFIG).map_err(|_| "DEV_CONFIG_INVALID")?;
-    let string = |name: &str| pins[name].as_str().ok_or("DEV_CONFIG_FIELD_MISSING");
-    let root = PathBuf::from(string("root")?);
-    if !root.is_absolute() {
-        return Err("DEV_ROOT_NOT_ABSOLUTE".into());
-    }
-    let python = PathBuf::from(string("python")?);
-    let broker = root.join("broker.py");
-    let manifest = root.join("BROKER-PINS.json");
-    for (path, key) in [
-        (&python, "python_sha256"),
-        (&broker, "broker_sha256"),
-        (&manifest, "manifest_sha256"),
-    ] {
-        if hash(path)? != string(key)? {
-            return Err("DEV_PIN_CHANGED".into());
-        }
-    }
-    let request = if request.dev_receipt_path.is_none() && request.dev_receipt_sha256.is_none() {
-        issue_ephemeral_receipt(&root, &python, &pins, &request)?
-    } else {
-        request
-    };
-    let dev_receipt_hash = verify_dev_receipt(&root, &python, &pins, &request)?;
-    let folder = root.join("ipc-logs");
-    fs::create_dir_all(&folder).map_err(|_| "DEV_LOG_DIRECTORY")?;
-    let stamp = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map_err(|_| "DEV_CLOCK")?
-        .as_nanos();
-    let out = folder.join(format!("{}-{}.stdout", request.operation_id, stamp));
-    let err = folder.join(format!("{}-{}.stderr", request.operation_id, stamp));
-    let create = |path: &PathBuf| {
-        fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(path)
-            .map_err(|_| "DEV_LOG_CREATE")
-    };
-    let raw=serde_json::json!({"action":request.action,"operation_id":request.operation_id,"scenario":request.scenario}).to_string();
-    let mut child = Command::new(&python)
-        .arg("-B")
-        .arg("-I")
-        .arg(&broker)
-        .arg("--request")
-        .arg(raw)
-        .current_dir(&root)
-        .stdin(Stdio::null())
-        .stdout(Stdio::from(create(&out)?))
-        .stderr(Stdio::from(create(&err)?))
-        .creation_flags(0x08000000)
-        .spawn()
-        .map_err(|_| "DEV_BROKER_START_FAILED")?;
-    let started = Instant::now();
-    let status = loop {
-        match child.try_wait() {
-            Ok(Some(status)) => break status,
-            Ok(None) => {}
-            Err(_) => {
-                let _ = child.kill();
-                let _ = child.wait();
-                return Err("DEV_BROKER_WAIT_FAILED".into());
-            }
-        }
-        if request.action == "submit" && started.elapsed() > Duration::from_secs(1) {
-            // The existing broker owns the build and its durable operation ledger.
-            drop(child);
-            return Ok(serde_json::json!({
-                "schema": "OpenRemaster.DevWorkflowResult.v1", "state": "REQUESTED",
-                "operation_id": request.operation_id, "production_go": false,
-                "independent_authority": false, "engine": "unsigned-studio-dev-build",
-                "dev_receipt_verified": true, "automatic_retry": false
-            }).to_string());
-        }
-        if started.elapsed() > Duration::from_secs(45)
-            || fs::metadata(&out).map(|m| m.len()).unwrap_or(0) > 65536
-            || fs::metadata(&err).map(|m| m.len()).unwrap_or(0) > 65536
+    let mut raw = serde_json::json!({"action":request.action,"operation_id":request.operation_id,"scenario":request.scenario});
+    if ["archive", "resolve"].contains(&request.action.as_str()) {
+        let recovery = request
+            .recovery
+            .as_ref()
+            .ok_or("DEV_RECOVERY_DETAILS_REQUIRED")?;
+        if recovery.expected_evidence_sha256.len() != 64
+            || !recovery
+                .expected_evidence_sha256
+                .bytes()
+                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
         {
-            let _ = child.kill();
-            let _ = child.wait();
-            return Err("DEV_BROKER_BOUND_HOLD".into());
+            return Err("DEV_RECOVERY_EVIDENCE_REQUIRED".into());
         }
-        thread::sleep(Duration::from_millis(30));
+        raw["expected_evidence_sha256"] = serde_json::json!(recovery.expected_evidence_sha256);
+        if request.action == "resolve"
+            && (recovery.acknowledge != Some(true)
+                || recovery
+                    .reason
+                    .as_ref()
+                    .map(|s| s.trim().len() < 10 || s.len() > 1024)
+                    .unwrap_or(true))
+        {
+            return Err("DEV_EXPLICIT_ACKNOWLEDGMENT_REQUIRED".into());
+        }
+        raw["reason"] = serde_json::json!(recovery.reason);
+        raw["acknowledge"] = serde_json::json!(recovery.acknowledge);
+    } else if request.recovery.is_some() {
+        return Err("DEV_UNEXPECTED_RECOVERY_DETAILS".into());
+    }
+    let pins: serde_json::Value = serde_json::from_str(CONFIG).map_err(|_| "DEV_CONFIG_INVALID")?;
+    verify_pins(&pins)?;
+    let root = PathBuf::from(pins["root"].as_str().ok_or("DEV_ROOT_REQUIRED")?);
+    let python = PathBuf::from(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?);
+    // Only execution admission issues/verifies a DEV receipt. Status/recovery do not.
+    let receipt = if request.action == "submit" {
+        let admitted = if request.dev_receipt_path.is_none() && request.dev_receipt_sha256.is_none()
+        {
+            issue_ephemeral_receipt(&root, &python, &pins, &request)?
+        } else {
+            request.clone()
+        };
+        Some(verify_dev_receipt(&root, &python, &pins, &admitted)?)
+    } else {
+        if request.dev_packet_path.is_some()
+            || request.dev_receipt_path.is_some()
+            || request.dev_receipt_sha256.is_some()
+        {
+            return Err("DEV_OBSERVATION_RECEIPT_NOT_ACCEPTED".into());
+        }
+        None
     };
-    if !status.success() {
-        return Err("DEV_BROKER_EXITED_QUERY_SAVED_OPERATION".into());
+    if let Some(ref admitted_sha) = receipt {
+        raw["dev_receipt_sha256"] = serde_json::json!(admitted_sha);
     }
-    let raw = fs::read_to_string(out).map_err(|_| "DEV_RESPONSE_READ")?;
-    let value: serde_json::Value = serde_json::from_str(&raw).map_err(|_| "DEV_RESPONSE_JSON")?;
-    if value["production_go"] != false || value["schema"] != "OpenRemaster.DevWorkflowResult.v1" {
-        return Err("DEV_RESPONSE_SCOPE".into());
+    let mut value = call_control(&pins, &raw)?;
+    if value["schema"] != "OpenRemaster.DevWorkflowResult.v2"
+        || value["operation_id"] != request.operation_id
+        || value["production_go"] != false
+        || value["independent_authority"] != false
+        || value["control_verified"] != true
+        || value["control_scope"] != control_scope()
+    {
+        return Err("DEV_CONTROL_RESPONSE_SCOPE".into());
     }
-    let mut value = value;
-    if let Some(operation) = value.get("operation_id") {
-        if operation != &serde_json::Value::String(request.operation_id.clone()) {
-            return Err("DEV_RESPONSE_OPERATION_MISMATCH".into());
-        }
+    value["dev_receipt_verified"] = serde_json::json!(receipt.is_some());
+    if let Some(receipt) = receipt {
+        value["dev_receipt_sha256"] = serde_json::json!(receipt);
     }
-    value["operation_id"] = serde_json::Value::String(request.operation_id.clone());
-    value["logs"] = log_tail(&root, &request.operation_id);
-    value["dev_receipt_verified"] = serde_json::Value::Bool(true);
-    value["dev_receipt_scope"] = serde_json::Value::String("DEV_SELF_SIGNED".into());
-    value["dev_receipt_sha256"] = serde_json::Value::String(dev_receipt_hash);
     Ok(value.to_string())
 }
 #[tauri::command]
@@ -352,11 +461,55 @@ pub async fn dev_worker_call(request: DevRequest) -> Result<String, String> {
 mod tests {
     use super::*;
     #[test]
+    fn portable_rejects_recovery_without_current_evidence() {
+        let request = DevRequest {
+            action: "resolve".into(),
+            operation_id: "a".repeat(32),
+            scenario: "build_studio_dev".into(),
+            recovery: None,
+            dev_packet_path: None,
+            dev_receipt_path: None,
+            dev_receipt_sha256: None,
+        };
+        assert_eq!(
+            execute(request.clone()).unwrap_err(),
+            "DEV_RECOVERY_DETAILS_REQUIRED"
+        );
+        let mut invalid = request.clone();
+        invalid.recovery = Some(RecoveryRequest {
+            expected_evidence_sha256: "../escape".into(),
+            reason: None,
+            acknowledge: None,
+        });
+        assert_eq!(
+            execute(invalid).unwrap_err(),
+            "DEV_RECOVERY_EVIDENCE_REQUIRED"
+        );
+        let mut unconfirmed = request;
+        unconfirmed.recovery = Some(RecoveryRequest {
+            expected_evidence_sha256: "b".repeat(64),
+            reason: Some("Diagnostic note provided".into()),
+            acknowledge: Some(false),
+        });
+        assert_eq!(
+            execute(unconfirmed).unwrap_err(),
+            "DEV_EXPLICIT_ACKNOWLEDGMENT_REQUIRED"
+        );
+    }
+    #[test]
+    fn portable_scope_matches_python_canonical_config() {
+        assert_eq!(
+            control_scope(),
+            "c5f58f85ae31f4f9a674ae24a9c3ca9d08b18a01fcee35cb81064c828440d60e"
+        );
+    }
+    #[test]
     fn rejects_request_before_spawn() {
         assert!(execute(DevRequest {
             action: "submit".into(),
             operation_id: "../escape".into(),
             scenario: "normal".into(),
+            recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
             dev_receipt_sha256: None
@@ -366,6 +519,7 @@ mod tests {
             action: "submit".into(),
             operation_id: "a".repeat(32),
             scenario: "shell".into(),
+            recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
             dev_receipt_sha256: None
@@ -386,6 +540,7 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            recovery: None,
             dev_packet_path: Some(pins["dev_packet"].as_str().expect("packet").into()),
             dev_receipt_path: None,
             dev_receipt_sha256: Some(
@@ -407,6 +562,7 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
             dev_receipt_sha256: Some("0".repeat(64)),
@@ -426,6 +582,7 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            recovery: None,
             dev_packet_path: None,
             dev_receipt_path: Some(
                 root.join("dev-evidence/missing-receipt.json")
@@ -455,6 +612,7 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            recovery: None,
             dev_packet_path: None,
             dev_receipt_path: Some(tampered.display().to_string()),
             dev_receipt_sha256: Some(hash(&tampered).expect("tampered hash")),
@@ -471,14 +629,16 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "build_studio_dev".into(),
+            recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
             dev_receipt_sha256: None,
         })
         .expect("D7 dev broker response");
         let value: serde_json::Value = serde_json::from_str(&result).expect("response JSON");
-        assert_eq!(value["dev_receipt_verified"], true);
-        assert_eq!(value["dev_receipt_scope"], "DEV_SELF_SIGNED");
+        assert_eq!(value["dev_receipt_verified"], false);
+        assert_eq!(value["control_verified"], true);
+        assert_eq!(value["schema"], "OpenRemaster.DevWorkflowResult.v2");
         assert_eq!(value["production_go"], false);
     }
 }

@@ -77,6 +77,29 @@ test('durable operation metadata omits transient logs and refuses oversized writ
   assert.throws(()=>worker.saveOperation(store,scope,id,{...response('STARTED'),extra:'x'.repeat(131072)}),/too large/);
   assert.equal(store.getItem(worker.operationKey(scope)),saved);
 });
+
+test('read-only worker observations require a verified control scope', () => {
+  const raw={...response('QUEUED'),schema:'OpenRemaster.DevWorkflowResult.v2',control_scope:scope,control_verified:true,dev_receipt_verified:false,evidence_sha256:'d'.repeat(64),recovery:{allowed:false,reason:'Queued work cannot be resolved'},archive:null,resolution:null};
+  assert.equal(worker.parseDevResult(JSON.stringify(raw),id,scope).state,'QUEUED');
+  assert.equal(worker.parseDevResult(JSON.stringify({...raw,state:'RUNNING'}),id,scope).dev_receipt_verified,false);
+  assert.throws(()=>worker.parseDevResult(JSON.stringify(raw),id));
+  assert.throws(()=>worker.parseDevResult(JSON.stringify(raw),id,'e'.repeat(64)));
+  assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,control_verified:false}),id,scope));
+});
+
+test('a resolved hold requires matching operation, snapshot, scope and archive evidence', () => {
+  const archive={path:'C:/DEV/archive',operation_id:id,evidence_sha256:'d'.repeat(64),manifest_sha256:'e'.repeat(64),log_count:2,retention:'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW'};
+  const resolution={disposition:'ACKNOWLEDGED_NO_RETRY',operation_id:id,scope,evidence_sha256:archive.evidence_sha256,archive_manifest_sha256:archive.manifest_sha256,record_sha256:'f'.repeat(64),reason:'Reviewed a stopped owned build.',new_operation_allowed:true,production_go:false};
+  const raw={...response('HOLD'),schema:'OpenRemaster.DevWorkflowResult.v2',control_scope:scope,control_verified:true,dev_receipt_verified:false,evidence_sha256:archive.evidence_sha256,recovery:{allowed:true,reason:'Stopped owned tree'},archive,resolution};
+  const parsed=worker.parseDevResult(JSON.stringify(raw),id,scope);
+  assert.equal(parsed.state,'HOLD');assert.equal(worker.canStartAnother(parsed),true);
+  for(const change of [{scope:'1'.repeat(64)},{operation_id:'2'.repeat(32)},{evidence_sha256:'3'.repeat(64)},{archive_manifest_sha256:'4'.repeat(64)},{production_go:true}]) {
+    assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,resolution:{...resolution,...change}}),id,scope));
+  }
+  assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,archive:null}),id,scope));
+  const store=storage();worker.saveOperation(store,scope,id,parsed);
+  assert.equal(worker.readOperation(store,scope).result.resolution.record_sha256,resolution.record_sha256);
+});
 test('release selection uses publication time and retains old tag support', () => {
   const older=release('2026-11-17T07:51:39Z');older.tag_name=`studio-dev-${commit}`;older.html_url=`${releases.repository}/releases/tag/${older.tag_name}`;
   older.assets[0].browser_download_url=`${releases.repository}/releases/download/${older.tag_name}/${older.assets[0].name}`;
