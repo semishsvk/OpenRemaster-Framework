@@ -335,10 +335,6 @@ fn execute(request: DevRequest) -> Result<String, String> {
         }
     }
     value["operation_id"] = serde_json::Value::String(request.operation_id.clone());
-    if ["DENIED", "BUSY"].iter().any(|state| value["state"] == *state)
-        && value.get("launch_count").is_none() {
-        value["launch_count"] = serde_json::json!(0);
-    }
     value["logs"] = log_tail(&root, &request.operation_id);
     value["dev_receipt_verified"] = serde_json::Value::Bool(true);
     value["dev_receipt_scope"] = serde_json::Value::String("DEV_SELF_SIGNED".into());

@@ -11,6 +11,7 @@ const dist = fileURLToPath(new URL('../dist/', import.meta.url));
 const screenshots = fileURLToPath(new URL('../.cache/studio-dev-browser/', import.meta.url));
 mkdirSync(screenshots,{recursive:true});
 const origin = 'https://studio.test', repo = 'https://github.com/semishsvk/OpenRemaster-Framework';
+const portableReason = 'This portable build contains the Studio UI. DEV worker support requires a commissioned HomePC build.';
 const oldId = 'a'.repeat(32), scope = 'b'.repeat(64), commit = 'c'.repeat(40);
 const bytes = Buffer.from('DEV ZIP browser fixture'), digest = createHash('sha256').update(bytes).digest('hex');
 const tag = `studio-dev-${commit.slice(0,12)}-123-1`, filename = `OpenRemaster-Studio-DEV-windows-x64-${commit.slice(0,12)}.zip`;
@@ -23,9 +24,9 @@ try {
     let available = false, state = 'STARTED', operation = oldId, failNetwork = false, remoteCalls = 0;
     page.setDefaultTimeout(10000);
     page.on('pageerror',error=>errors.push(error.message));
-    await page.exposeFunction('testNative',async(command,args)=>{
+    await context.exposeFunction('testNative',async(command,args)=>{
       commands.push({command,args});
-      if(command==='studio_capabilities') return {schema:'OpenRemaster.StudioCapabilities.v1',worker_compiled:available,worker_ready:available,worker_scope:available?scope:null,reason:available?'Pinned DEV broker available':'Portable UI build; DEV worker support requires a commissioned HomePC build.',production_go:false};
+      if(command==='studio_capabilities') return {schema:'OpenRemaster.StudioCapabilities.v1',worker_compiled:available,worker_ready:available,worker_scope:available?scope:null,reason:available?'Pinned DEV broker available':portableReason,production_go:false};
       if(command==='studio_open_release') return;
       assert.equal(command,'dev_worker_call');
       const request=args.request;
@@ -37,9 +38,9 @@ try {
         return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state:'REQUESTED',operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false});
       }
       assert.equal(request.action,'status');assert.equal(request.operation_id,operation);
-      return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false,launch_count:1,reason:state==='HOLD'?'Fixture failure needs review':undefined,ack:{operation_id:operation},commit:state==='COMMITTED'?{operation_id:operation}:null,worker:state==='COMMITTED'?{success:true,owned_tree_stopped:true,wrapper_exit:0,artifacts:{studio_exe:'C:/DEV/Studio.exe',studio_exe_sha256:digest}}:undefined,logs:{'stdout.log':'Compiling Studio fixture','stderr.log':''}});
+      return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false,launch_count:['BUSY','DENIED'].includes(state)?undefined:1,reason:state==='HOLD'?'Fixture failure needs review':undefined,ack:{operation_id:operation},commit:state==='COMMITTED'?{operation_id:operation}:null,worker:state==='COMMITTED'?{success:true,owned_tree_stopped:true,wrapper_exit:0,artifacts:{studio_exe:'C:/DEV/Studio.exe',studio_exe_sha256:digest}}:undefined,logs:{'stdout.log':'Compiling Studio fixture','stderr.log':''}});
     });
-    await page.addInitScript(()=>{window.__TAURI_INTERNALS__={invoke:(command,args)=>window.testNative(command,args)};});
+    await context.addInitScript(()=>{window.__TAURI_INTERNALS__={invoke:(command,args)=>window.testNative(command,args)};});
     await context.route('**/*',async route=>{
       const url=new URL(route.request().url());
       if(url.origin==='https://api.github.com') {
@@ -56,7 +57,7 @@ try {
     try {
       await page.goto(origin+'/#buildlab');
       const worker=page.getByRole('region',{name:'Studio DEV operation'});
-      await worker.getByText('Portable UI build; DEV worker support requires a commissioned HomePC build.',{exact:true}).waitFor();
+      await worker.getByText(portableReason,{exact:true}).waitFor();
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       assert.equal(commands.some(call=>call.command==='dev_worker_call'),false);
       assert.equal(remoteCalls,0);
@@ -86,12 +87,30 @@ try {
       await worker.getByText('Building',{exact:true}).waitFor();
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,0);
       assert.ok(commands.filter(call=>call.args?.request?.action==='status').length>=2);
+      state='BUSY';
+      await worker.getByRole('button',{name:'Refresh build status'}).click();
+      await worker.getByText('Worker busy',{exact:true}).waitFor();
+      assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
+      state='DENIED';
+      await worker.getByRole('button',{name:'Refresh build status'}).click();
+      await worker.getByText('Request denied',{exact:true}).waitFor();
+      assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       state='COMMITTED';
       await worker.getByRole('button',{name:'Refresh build status'}).click();
       await worker.getByText('Build complete',{exact:true}).waitFor();
       await worker.getByText('C:/DEV/Studio.exe',{exact:true}).waitFor();
-      await worker.getByRole('button',{name:'Build a DEV candidate'}).click();
-      await worker.getByText('Request sent · waiting for saved acknowledgment',{exact:true}).waitFor();
+      const peer=await context.newPage();
+      await peer.goto(origin+'/#buildlab');
+      const peerWorker=peer.getByRole('region',{name:'Studio DEV operation'});
+      await peerWorker.getByText('Build complete',{exact:true}).waitFor();
+      const attempts=await Promise.allSettled([
+        worker.getByRole('button',{name:'Build a DEV candidate'}).click({timeout:1500}),
+        peerWorker.getByRole('button',{name:'Build a DEV candidate'}).click({timeout:1500}),
+      ]);
+      assert.ok(attempts.some(attempt=>attempt.status==='fulfilled'));
+      assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
+      await peer.close();
+      await worker.getByText(operation,{exact:true}).waitFor();
       assert.notEqual(operation,oldId);
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       await page.reload();
@@ -104,7 +123,7 @@ try {
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       await page.screenshot({path:resolve(screenshots,`operation-${viewport.width}.png`),fullPage:true});
       assert.deepEqual(unexpected,[]);assert.deepEqual(errors,[]);
-      console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore and single submit`);
+      console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore, rejected status hold and two-window single submit`);
     } catch (error) {
       console.error('Studio GUI failure', {errors, unexpected, remoteCalls});
       console.error(await page.locator('main').innerText().catch(()=>page.locator('body').innerText()));

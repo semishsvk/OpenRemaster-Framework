@@ -22,6 +22,7 @@ fn studio_open_release(url: String) -> Result<(), String> {
     if parsed.scheme() != "https" || parsed.host_str() != Some("github.com")
         || parsed.port().is_some() || !parsed.username().is_empty() || parsed.password().is_some()
         || parsed.query().is_some() || parsed.fragment().is_some()
+        || !parsed.path().bytes().all(|b| b.is_ascii_alphanumeric() || b"._/-".contains(&b))
         || !(parsed.path() == format!("{prefix}releases") || ["releases/tag/", "releases/download/", "actions/runs/"]
             .iter().any(|suffix| parsed.path().starts_with(&format!("{prefix}{suffix}")))
         )

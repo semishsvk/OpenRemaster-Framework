@@ -23,6 +23,7 @@ export default function DevWorkerPanel() {
       const raw = await invoke('dev_worker_call', {request: {action: 'status', operation_id: id, scenario: 'build_studio_dev'}});
       const value = parseDevResult(raw, id);
       if (!mounted.current || currentOperation.current !== id) return;
+      if (readOperation(localStorage, workerScope)?.operation !== id) return;
       saveOperation(localStorage, workerScope, id, value);
       setResult(value);
     } catch (reason) {

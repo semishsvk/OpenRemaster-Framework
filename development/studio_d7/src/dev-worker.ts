@@ -81,10 +81,15 @@ export function readOperation(storage: Storage, scope: string): OperationRecord 
   return {schema: 'OpenRemaster.StudioOperation.v2', scope, operation: legacy, result: null};
 }
 export function saveOperation(storage: Storage, scope: string, operation: string, result: DevResult | null) {
-  const record: OperationRecord = {schema: 'OpenRemaster.StudioOperation.v2', scope, operation, result};
-  storage.setItem(operationKey(scope), JSON.stringify(record));
+  // Logs are a transient observation; keep the durable record small across restarts.
+  const durable = result ? {...result, logs: undefined} : null;
+  const record: OperationRecord = {schema: 'OpenRemaster.StudioOperation.v2', scope, operation, result: durable};
+  const raw = JSON.stringify(record);
+  if (raw.length > 131072) throw Error('Saved operation metadata is too large');
+  storage.setItem(operationKey(scope), raw);
   if (result && storage.getItem(legacyOperationKey) === operation) storage.removeItem(legacyOperationKey);
 }
 export function canStartAnother(result: DevResult | null) {
-  return result?.state === 'COMMITTED' || (['DENIED', 'BUSY'].includes(result?.state ?? '') && result?.launch_count === 0);
+  // A status rejection says nothing about whether a previous submission launched.
+  return result?.state === 'COMMITTED';
 }

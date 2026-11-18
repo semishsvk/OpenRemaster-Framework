@@ -87,6 +87,7 @@ jobs:
           tag="studio-dev-${DEV_COMMIT:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           printf '%s\n' 'Unsigned portable Windows x64 DEV preview.' "Source commit ${DEV_COMMIT}" "Build and startup check ${RUN_URL}" 'Requires Microsoft Edge WebView2 Runtime.' 'MIT licensing proposal, media rights, complete notices and SignPath acceptance remain pending.' 'Production admission remains HOLD.' > release-notes.txt
           if ! gh release view "$tag" >/dev/null 2>&1; then
-            gh release create "$tag" --target "$DEV_COMMIT" --prerelease --title "Studio Windows DEV ${DEV_COMMIT:0:12}" --notes-file release-notes.txt
+            gh release create "$tag" --target "$DEV_COMMIT" --draft --prerelease --title "Studio Windows DEV ${DEV_COMMIT:0:12}" --notes-file release-notes.txt
           fi
           gh release upload "$tag" preview/*.zip preview/*.sha256
+          gh release edit "$tag" --draft=false --prerelease

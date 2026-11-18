@@ -58,6 +58,25 @@ test('mismatched, production, replay and oversized log responses are rejected', 
   assert.equal(worker.parseDevResult(JSON.stringify({...raw,logs:{'stdout.log':'compiling'}}),id).logs['stdout.log'],'compiling');
   assert.throws(()=>worker.parseDevResult(JSON.stringify(response('COMMITTED')),id));
 });
+
+test('BUSY and DENIED status observations never authorize a new submission', () => {
+  for (const state of ['BUSY','DENIED']) {
+    for (const count of [undefined,0,1]) {
+      const value=worker.parseDevResult(JSON.stringify({...response(state),launch_count:count}),id);
+      assert.equal(value.launch_count,count);
+      assert.equal(worker.canStartAnother(value),false);
+    }
+  }
+});
+
+test('durable operation metadata omits transient logs and refuses oversized writes', () => {
+  const store=storage();
+  worker.saveOperation(store,scope,id,{...response('STARTED'),logs:{'stdout.log':'x'.repeat(8192)}});
+  assert.equal(worker.readOperation(store,scope).result.logs,undefined);
+  const saved=store.getItem(worker.operationKey(scope));
+  assert.throws(()=>worker.saveOperation(store,scope,id,{...response('STARTED'),extra:'x'.repeat(131072)}),/too large/);
+  assert.equal(store.getItem(worker.operationKey(scope)),saved);
+});
 test('release selection uses publication time and retains old tag support', () => {
   const older=release('2026-11-17T07:51:39Z');older.tag_name=`studio-dev-${commit}`;older.html_url=`${releases.repository}/releases/tag/${older.tag_name}`;
   older.assets[0].browser_download_url=`${releases.repository}/releases/download/${older.tag_name}/${older.assets[0].name}`;

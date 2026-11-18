@@ -21,10 +21,17 @@ controls. Worker-enabled builds persist the operation ID before submission,
 restore status after restart, and show bounded stdout/stderr log tails and
 artifact details. Active status refreshes never resubmit a build. Unknown
 outcomes retain their operation ID for review.
+Only a verified completed build allows another submission. Rejected or missing
+status does not prove that nothing launched; unresolved operations require
+maintainer review. There is no automatic reset or retry. Closing Studio does
+not cancel a submitted build: the existing broker owns its execution. Status
+checks currently create local DEV receipts and logs; retention and a dedicated
+read-only status path remain development follow-ups.
 The public preview has production admission disabled.
 
 BUILD-INFO.json records the source commit, build time, feature, toolchain,
-workflow run and executable digest. SHA256SUMS.txt covers every archive file.
+workflow run and executable digest. SHA256SUMS.txt covers every archive file
+except SHA256SUMS.txt itself; the published archive digest covers the whole ZIP.
 THIRD-PARTY-NOTICES.txt and dependency-inventory.json record dependency license
 metadata and copied notice texts. Entries without a notice file are identified
 for review. LICENSING-PROPOSAL.txt records the proposed MIT license.

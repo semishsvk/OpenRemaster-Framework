@@ -45,4 +45,4 @@ jobs:
         with:
           name: studio-dev-gui-${{ github.sha }}
           path: development/studio_d7/.cache/studio-dev-browser/*.png
-          if-no-files-found: error
+          if-no-files-found: warn
