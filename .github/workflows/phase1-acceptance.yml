@@ -8,15 +8,19 @@ on:
       - "scripts/**"
       - "portfolio/**"
       - "pyproject.toml"
+      - "examples/naming/**"
+      - "docs/naming-harmonization.md"
       - ".github/workflows/phase1-acceptance.yml"
   pull_request:
-    branches: [main]
+    branches: [main, consolidation/master-development-20261025]
     paths:
       - "src/**"
       - "tests/**"
       - "scripts/**"
       - "portfolio/**"
       - "pyproject.toml"
+      - "examples/naming/**"
+      - "docs/naming-harmonization.md"
       - ".github/workflows/phase1-acceptance.yml"
   workflow_dispatch:
 

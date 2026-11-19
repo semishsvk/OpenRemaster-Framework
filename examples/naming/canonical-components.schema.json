@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpenRemaster canonical registry v3 SOURCE_ONLY contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "status",
+    "owner_admission",
+    "components",
+    "logical_identity_basis"
+  ],
+  "properties": {
+    "schema": {
+      "const": "orf.naming.components.v3"
+    },
+    "status": {
+      "const": "SOURCE_ONLY_CANDIDATE"
+    },
+    "owner_admission": {
+      "const": false
+    },
+    "logical_identity_basis": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "components": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_id",
+          "canonical_name",
+          "component_id",
+          "dependencies",
+          "display_name",
+          "edition_id",
+          "legacy_aliases",
+          "manifest_path",
+          "migration_state",
+          "owner",
+          "project_id",
+          "provenance",
+          "source_path",
+          "verification_state",
+          "version"
+        ],
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "maxLength": 512
+          },
+          "canonical_name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "maxLength": 512
+          },
+          "display_name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "maxLength": 512
+          },
+          "component_type": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "maxLength": 512
+          },
+          "edition_id": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "artifact_id": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "source_path": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "manifest_path": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            ]
+          },
+          "component_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$(?![\\s\\S])"
+          },
+          "verification_state": {
+            "enum": [
+              "CONFLICT",
+              "PLANNED",
+              "STALE",
+              "UNKNOWN",
+              "VERIFIED_COMPLETE",
+              "VERIFIED_PARTIAL"
+            ]
+          },
+          "migration_state": {
+            "enum": [
+              "BLOCKED_BY_DEPENDENCY",
+              "BLOCKED_BY_PROVENANCE",
+              "REQUIRES_REGRESSION",
+              "SAFE_WITH_ALIAS",
+              "UNKNOWN"
+            ]
+          },
+          "legacy_aliases": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "dependencies": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)+$(?![\\s\\S])"
+            }
+          },
+          "provenance": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "sha256",
+                "role"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "role": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$(?![\\s\\S])"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
