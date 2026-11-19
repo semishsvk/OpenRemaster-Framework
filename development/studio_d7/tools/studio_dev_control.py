@@ -5,6 +5,7 @@ Recovery acknowledges a diagnosed terminal hold; it never retries that ID.
 Original queue, ledger and operation files are never deleted or rewritten.
 """
 import argparse
+import base64
 import contextlib
 import gzip
 import hashlib
@@ -17,6 +18,7 @@ import sqlite3
 import sys
 import time
 import uuid
+import zipfile
 
 SCENARIO = 'build_studio_dev'
 MAX_JSON = 131072
@@ -107,17 +109,29 @@ def atomic_new(root, path, value):
 
 
 def validate_request(value):
-    if type(value) is not dict or set(value) - {'action', 'operation_id', 'scenario', 'expected_evidence_sha256', 'reason', 'acknowledge', 'dev_receipt_sha256'}:
+    if type(value) is not dict or set(value) - {'action', 'operation_id', 'scenario', 'expected_evidence_sha256', 'reason', 'acknowledge', 'dev_receipt_sha256', 'attempt_id', 'source', 'name', 'offset', 'limit', 'manifest_sha256'}:
         raise ValueError('REQUEST_SCHEMA')
-    if value.get('action') not in ('status', 'submit', 'archive', 'resolve', 'capabilities'):
+    if value.get('action') not in ('status', 'submit', 'archive', 'resolve', 'capabilities', 'reject', 'logs', 'export'):
         raise ValueError('ACTION_DENIED')
     if value.get('scenario') != SCENARIO or not re.fullmatch('[a-f0-9]{32}', str(value.get('operation_id', ''))):
         raise ValueError('OPERATION_SCOPE')
     if 'dev_receipt_sha256' in value and (value['action'] != 'submit' or not re.fullmatch('[a-f0-9]{64}', str(value['dev_receipt_sha256']))):
         raise ValueError('RECEIPT_SCOPE')
-    if value['action'] in ('archive', 'resolve'):
+    if 'attempt_id' in value and (value['action'] not in ('submit', 'reject') or not re.fullmatch('[a-f0-9]{32}', str(value['attempt_id']))):
+        raise ValueError('ATTEMPT_ID_REQUIRED')
+    if value['action'] == 'reject' and ('attempt_id' not in value or not isinstance(value.get('reason'), str) or not 1 <= len(value['reason']) <= 2048):
+        raise ValueError('REJECTION_DETAILS_REQUIRED')
+    if value['action'] in ('archive', 'resolve', 'logs', 'export'):
         if not re.fullmatch('[a-f0-9]{64}', str(value.get('expected_evidence_sha256', ''))):
             raise ValueError('EXPECTED_EVIDENCE_REQUIRED')
+    if value['action'] == 'logs':
+        if (value.get('source') not in ('live', 'archive', 'bundle')
+                or value.get('name') not in (('diagnostics.zip',) if value.get('source') == 'bundle' else ('stdout.log', 'stderr.log'))
+                or type(value.get('offset')) is not int or not 0 <= value['offset'] <= MAX_LOGS + MAX_JSON
+                or type(value.get('limit')) is not int or not 1 <= value['limit'] <= 1024 * 1024):
+            raise ValueError('LOG_PAGE_SCOPE')
+        if value['source'] != 'live' and not re.fullmatch('[a-f0-9]{64}', str(value.get('manifest_sha256', ''))):
+            raise ValueError('ARCHIVE_MANIFEST_REQUIRED')
     if value['action'] == 'resolve':
         reason = value.get('reason')
         if value.get('acknowledge') is not True or not isinstance(reason, str) or not 10 <= len(reason.strip()) <= 1024:
@@ -164,6 +178,14 @@ class Control:
                 raise ValueError('OPERATION_FILE_AUTHORITY')
         if files['intent'] is not None and files['intent'].get('scope') != self.scope:
             raise ValueError('INTENT_SCOPE_CHANGED')
+        rejection = read_optional(self.root, self.path(f'state/studio-rejections/{operation}.json'))
+        if rejection is not None:
+            if (rejection.get('schema') != 'OpenRemaster.NotAdmitted.v1' or rejection.get('operation_id') != operation
+                    or rejection.get('scope') != self.scope or rejection.get('production_go') is not False
+                    or not re.fullmatch('[a-f0-9]{32}', str(rejection.get('attempt_id', '')))):
+                raise ValueError('REJECTION_SCOPE_CHANGED')
+            # Do not change the evidence digest of pre-existing operations.
+            files['rejection'] = rejection
         core = {'operation_id': operation, 'scenario': SCENARIO, 'scope': self.scope, 'files': files, 'ledger': self.ledger(operation)}
         return core, digest(canonical(core))
 
@@ -174,6 +196,8 @@ class Control:
             return False, 'Queued or running work must be reconciled by its worker owner.'
         if result['state'] not in {'HOLD', 'DENIED', 'NOT_FOUND'}:
             return False, 'Only a diagnosed held or unlaunched operation can be acknowledged.'
+        if files.get('rejection') is not None and row is None and all(value is None for key, value in files.items() if key != 'rejection'):
+            return True, 'This attempt was rejected before admission; no intent, queue, ledger or launch exists.'
         if row is not None:
             if row['state'] != 'HOLD' or row['result'] is None:
                 return False, 'The ledger has no terminal held result.'
@@ -231,6 +255,9 @@ class Control:
     def status(self, operation):
         result = self.base_result(operation)
         core, sha = self.evidence(operation)
+        rejection = core['files'].get('rejection')
+        if rejection is not None and core['ledger'] is None and all(value is None for key, value in core['files'].items() if key != 'rejection'):
+            result.update(state='DENIED', launch_count=0, reason=rejection['reason'], not_admitted=dict(rejection, record_sha256=file_hash(self.path(f'state/studio-rejections/{operation}.json'))))
         allowed, reason = self.eligible(core, result)
         result['evidence_sha256'] = sha
         result['recovery'] = {'allowed': allowed, 'reason': reason}
@@ -284,7 +311,7 @@ class Control:
 
     def archive(self, operation, expected):
         core, _ = self.evidence(operation)
-        if core['files']['intent'] is None and core['ledger'] is None:
+        if core['files']['intent'] is None and core['ledger'] is None and core['files'].get('rejection') is None:
             raise ValueError('KNOWN_OPERATION_REQUIRED_FOR_ARCHIVE')
         result = self.status(operation)
         if result['evidence_sha256'] != expected:
@@ -356,6 +383,128 @@ class Control:
                 self.discard_partial(partial)
             raise
 
+    def reject(self, request):
+        operation = request['operation_id']
+        core, _ = self.evidence(operation)
+        health = self.host.health()
+        if (core['ledger'] is not None or any(value is not None for key, value in core['files'].items() if key != 'rejection')
+                or health.get('operation_id') == operation):
+            raise ValueError('NOT_ADMITTED_PROOF_UNAVAILABLE')
+        old = core['files'].get('rejection')
+        if old is not None:
+            if old['attempt_id'] != request['attempt_id']:
+                raise ValueError('REJECTED_OPERATION_CANNOT_BE_REUSED')
+        else:
+            if len(list(self.path('state/studio-rejections').glob('*.json'))) >= 4096:
+                raise ValueError('REJECTION_CAPACITY_REQUIRES_REVIEW')
+            atomic_new(self.root, self.path(f'state/studio-rejections/{operation}.json'), {
+                'schema': 'OpenRemaster.NotAdmitted.v1', 'operation_id': operation, 'scope': self.scope,
+                'attempt_id': request['attempt_id'], 'reason': request['reason'], 'production_go': False,
+            })
+        return self.status(operation)
+
+    def export_logs(self, operation, expected):
+        receipt = self.archive(operation, expected)
+        directory = Path(receipt['path'])
+        manifest = read_optional(self.root, directory / 'manifest.json')
+        target = confined(self.root, directory / 'diagnostics.zip')
+        if not target.exists():
+            # The ZIP is another retained copy and counts against the existing quota.
+            retained = sum(confined(self.root, p).stat().st_size for p in self.path('state/studio-archives').glob('*/*/*') if p.is_file())
+            estimate = sum((directory / item['name']).stat().st_size for item in manifest['logs']) + MAX_JSON
+            if retained + estimate > MAX_RETAINED_BYTES:
+                raise ValueError('EXPORT_CAPACITY_REQUIRES_REVIEW')
+            temporary = confined(self.root, directory / ('.export-' + uuid.uuid4().hex + '.tmp'))
+            try:
+                with zipfile.ZipFile(temporary, 'x', compression=zipfile.ZIP_STORED) as bundle:
+                    bundle.write(directory / 'manifest.json', 'manifest.json')
+                    for item in manifest['logs']:
+                        bundle.write(directory / item['name'], item['name'])
+                if temporary.stat().st_size > MAX_LOGS + MAX_JSON:
+                    raise ValueError('EXPORT_SIZE')
+                os.rename(temporary, target)
+            finally:
+                temporary.unlink(missing_ok=True)
+        # An existing export must still contain exactly the retained manifest
+        # and compressed logs, including on a later retry after interruption.
+        expected_members = {'manifest.json': (file_hash(directory / 'manifest.json'), (directory / 'manifest.json').stat().st_size)}
+        expected_members.update({item['name']: (item['compressed_sha256'], (directory / item['name']).stat().st_size) for item in manifest['logs']})
+        with zipfile.ZipFile(target) as bundle:
+            if len(bundle.infolist()) != len(expected_members) or set(bundle.namelist()) != set(expected_members):
+                raise ValueError('EXPORT_MEMBERS_CHANGED')
+            for info in bundle.infolist():
+                expected_sha, expected_size = expected_members[info.filename]
+                if info.compress_type != zipfile.ZIP_STORED or info.file_size != expected_size or info.file_size > MAX_LOGS:
+                    raise ValueError('EXPORT_MEMBER_SIZE')
+                with bundle.open(info) as stream:
+                    h = hashlib.sha256()
+                    for block in iter(lambda: stream.read(65536), b''):
+                        h.update(block)
+                if h.hexdigest() != expected_sha:
+                    raise ValueError('EXPORT_MEMBER_CHANGED')
+        return {'schema': 'OpenRemaster.DevLogExport.v1', 'operation_id': operation, 'scope': self.scope,
+                'evidence_sha256': expected, 'manifest_sha256': receipt['manifest_sha256'],
+                'bytes': target.stat().st_size, 'sha256': file_hash(target), 'production_go': False}
+
+    def log_page(self, request):
+        operation, expected = request['operation_id'], request['expected_evidence_sha256']
+        if self.evidence(operation)[1] != expected:
+            raise ValueError('STALE_EVIDENCE_REFRESH_REQUIRED')
+        source, name = request['source'], request['name']
+        offset, limit = request['offset'], request['limit']
+        verified, full_sha, manifest_sha = False, None, None
+        if source == 'live':
+            path = self.path(f'state/operations/{operation}/{name}')
+            with path.open('rb') as stream:
+                total = os.fstat(stream.fileno()).st_size
+                if total > MAX_LOGS:
+                    raise ValueError('LOG_SIZE')
+                stream.seek(offset)
+                data = stream.read(min(limit, max(0, total - offset)))
+        else:
+            receipt = self.archive_receipt(operation, expected)
+            if receipt is None or receipt['manifest_sha256'] != request['manifest_sha256']:
+                raise ValueError('ARCHIVE_MANIFEST_CHANGED')
+            directory = Path(receipt['path'])
+            manifest_sha = receipt['manifest_sha256']
+            if source == 'bundle':
+                path = confined(self.root, directory / 'diagnostics.zip')
+                total = path.stat().st_size
+                if total > MAX_LOGS + MAX_JSON:
+                    raise ValueError('EXPORT_SIZE')
+                full_sha = file_hash(path)
+                with path.open('rb') as stream:
+                    stream.seek(offset)
+                    data = stream.read(limit)
+                if file_hash(path) != full_sha:
+                    raise ValueError('EXPORT_CHANGED')
+            else:
+                manifest = read_optional(self.root, directory / 'manifest.json')
+                item = next((item for item in manifest['logs'] if item['name'] == name + '.gz'), None)
+                if item is None:
+                    raise ValueError('LOG_NOT_ARCHIVED')
+                total, h, data = 0, hashlib.sha256(), bytearray()
+                with gzip.open(confined(self.root, directory / item['name']), 'rb') as stream:
+                    for block in iter(lambda: stream.read(65536), b''):
+                        end = total + len(block)
+                        if end > MAX_LOGS:
+                            raise ValueError('ARCHIVE_EXPANSION_LIMIT')
+                        if end > offset and total < offset + limit:
+                            data.extend(block[max(0, offset-total):min(len(block), offset+limit-total)])
+                        h.update(block)
+                        total = end
+                full_sha = h.hexdigest()
+                if total != item['original_bytes'] or full_sha != item['original_sha256']:
+                    raise ValueError('ARCHIVE_ORIGINAL_HASH_CHANGED')
+            verified = True
+        if offset > total or self.evidence(operation)[1] != expected:
+            raise ValueError('LOG_PAGE_CHANGED')
+        return {'schema': 'OpenRemaster.DevLogPage.v1', 'operation_id': operation, 'scope': self.scope,
+                'evidence_sha256': expected, 'manifest_sha256': manifest_sha, 'source': source, 'name': name,
+                'offset': offset, 'next_offset': offset + len(data), 'total_bytes': total,
+                'bytes_base64': base64.b64encode(data).decode('ascii'), 'chunk_sha256': digest(data),
+                'file_sha256': full_sha, 'verified': verified, 'eof': offset + len(data) == total, 'production_go': False}
+
 
     @contextlib.contextmanager
     def mutation(self):
@@ -370,13 +519,21 @@ class Control:
 
     def execute(self, request):
         request = validate_request(request)
-        if request['action'] in ('capabilities', 'status'):
+        if request['action'] in ('capabilities', 'status', 'logs'):
             return self._execute(request)
         # Serialize Studio's intent/resolution decisions as well as queue publication.
         with self.host.lock('studio-control.lock') as owned:
             if not owned:
                 raise ValueError('STUDIO_CONTROL_BUSY')
-            return self._execute(request)
+            try:
+                return self._execute(request)
+            except ValueError as error:
+                if request['action'] == 'submit' and 'attempt_id' in request:
+                    with self.mutation():
+                        core, _ = self.evidence(request['operation_id'])
+                        if core['ledger'] is None and all(value is None for value in core['files'].values()):
+                            return self.reject(dict(request, reason=str(error)[:2048]))
+                raise
 
     def _execute(self, request):
         request = validate_request(request)
@@ -385,6 +542,8 @@ class Control:
             health = self.host.health()
             return {'healthy': health.get('healthy') is True, 'state': health.get('state', 'UNKNOWN'), 'production_go': False}
         if action == 'submit':
+            if self.path(f'state/studio-rejections/{operation}.json').exists():
+                raise ValueError('REJECTED_OPERATION_CANNOT_BE_RESUBMITTED')
             if self.path(f'state/studio-resolutions/{operation}.json').exists():
                 raise ValueError('RESOLVED_OPERATION_CANNOT_BE_RESUBMITTED')
             intents = list(self.path('state/studio-intents').glob('*.json'))
@@ -426,7 +585,13 @@ class Control:
             return self.status(operation)
         if action == 'status':
             return self.status(operation)
+        if action == 'logs':
+            return self.log_page(request)
         with self.mutation():
+            if action == 'reject':
+                return self.reject(request)
+            if action == 'export':
+                return self.export_logs(operation, request['expected_evidence_sha256'])
             if action == 'archive':
                 self.archive(operation, request['expected_evidence_sha256'])
             else:

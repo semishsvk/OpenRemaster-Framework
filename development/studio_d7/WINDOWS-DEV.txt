@@ -44,6 +44,25 @@ inspecting an operation still performs the full worker evidence validation.
 The HomePC queue builds its existing pinned Studio source snapshot. A checkout
 is not silently substituted for that input. The portable CI build is compiled
 from the Git source identified in its build metadata.
+Before you build shows native support, worker health, Owner/writer admission,
+Resource Governor reservation, GAME/LIGHT mode, Windows worker account and
+source binding. Read-only diagnostics expire after 30 seconds. A healthy
+worker alone cannot enable submission. The current worker 06 route has no
+accepted adapter to the original ControlPlane grants, so its native submission
+gate remains closed until that integration is independently commissioned.
+
+Fresh attempts have their own saved identity. A typed not-admitted record can
+be acknowledged only when it matches that saved attempt and confirms absence
+of intent, queue, ledger and launch under the existing locks. Missing or
+contradictory proof preserves HOLD. This never retries the rejected ID.
+
+Build logs includes paged full-file access, page search, error/warning filters
+and optional live following every 10 seconds. Live output is labeled partial;
+archived reads verify compressed and complete decompressed bytes. Export
+complete diagnostic ZIP includes the retained manifest and compressed logs;
+Studio verifies the complete downloaded ZIP before saving it. Exports count
+against the existing archive storage budget. Diagnostic files may contain
+local paths and compiler output; review them before sharing with anyone.
 The public preview has production admission disabled.
 
 BUILD-INFO.json records the source commit, build time, feature, toolchain,

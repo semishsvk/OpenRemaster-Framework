@@ -44,7 +44,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cargo check --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          cargo test --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker dev_worker::tests::portable_
+          cargo test --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker portable_
       - name: Smoke test native startup
         run: |
           $process = Start-Process -FilePath (Resolve-Path 'src-tauri/target/release/openremaster_studio_shadow.exe') -PassThru -WindowStyle Hidden

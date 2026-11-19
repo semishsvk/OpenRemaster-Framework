@@ -1,5 +1,6 @@
 """Behavioral client tests; never discover or launch historical workers."""
 import contextlib
+import base64
 import gzip
 import importlib.util
 import json
@@ -8,6 +9,8 @@ import sqlite3
 import tempfile
 import threading
 import unittest
+import io
+import zipfile
 from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('studio_dev_control', Path(__file__).parents[1] / 'tools/studio_dev_control.py')
@@ -101,6 +104,84 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(before, {str(p): control.file_hash(p) for p in self.root.rglob('*') if p.is_file()})
         self.assertFalse((self.root / 'state/dev-receipts').exists())
         self.assertFalse((self.root / 'ipc-logs').exists())
+
+    def test_pre_intent_rejection_is_attempt_bound_and_never_replayed(self):
+        self.intent('c' * 32)
+        request = self.request('submit', attempt_id='d' * 32)
+        value = self.client.execute(request)
+        self.assertEqual(value['state'], 'DENIED')
+        self.assertEqual(value['not_admitted']['attempt_id'], 'd' * 32)
+        self.assertEqual(value['launch_count'], 0)
+        self.assertIsNone(self.client.evidence(OP)[0]['files']['intent'])
+        self.assertEqual(self.host.launches, 0)
+        restarted = control.Control(self.root, self.api, self.host, SCOPE)
+        self.assertEqual(restarted.execute(self.request('status'))['not_admitted'], value['not_admitted'])
+        resolved = restarted.execute(self.request('resolve', expected_evidence_sha256=value['evidence_sha256'], acknowledge=True, reason='Reviewed the rejected fresh attempt.'))
+        self.assertTrue(resolved['resolution']['new_operation_allowed'])
+        with self.assertRaisesRegex(ValueError, 'CANNOT_BE_RESUBMITTED'):
+            restarted.execute(request)
+
+    def test_rejection_proof_requires_absent_intent_queue_and_ledger(self):
+        request = self.request('reject', attempt_id='d' * 32, reason='Native receipt rejected before control admission.')
+        self.intent()
+        with self.assertRaisesRegex(ValueError, 'PROOF_UNAVAILABLE'):
+            self.client.execute(request)
+        self.assertFalse(self.client.path(f'state/studio-rejections/{OP}.json').exists())
+        with patch.object(self.host, 'submit', side_effect=ValueError('host failed after intent')):
+            with self.assertRaisesRegex(ValueError, 'after intent'):
+                self.client.execute(self.request('submit', attempt_id='d' * 32))
+        self.assertNotIn('not_admitted', self.client.execute(self.request('status')))
+
+    def test_native_rejection_rejects_changed_attempt_and_preserves_unknown_ids(self):
+        value = self.client.execute(self.request('reject', attempt_id='d' * 32, reason='Native admission unavailable.'))
+        self.assertTrue(value['recovery']['allowed'])
+        with self.assertRaisesRegex(ValueError, 'CANNOT_BE_REUSED'):
+            self.client.execute(self.request('reject', attempt_id='e' * 32, reason='A different attempted reuse.'))
+        unknown = self.client.execute(self.request('status', 'f' * 32))
+        self.assertFalse(unknown['recovery']['allowed'])
+
+    def test_archive_pages_and_complete_export_preserve_exact_log_bytes(self):
+        stage = self.terminal()
+        status = self.client.execute(self.request('status'))
+        archived = self.client.execute(self.request('archive', expected_evidence_sha256=status['evidence_sha256']))
+        manifest = archived['archive']['manifest_sha256']
+        before = {str(p): control.file_hash(p) for p in self.root.rglob('*') if p.is_file()}
+        page = self.client.execute(self.request('logs', expected_evidence_sha256=status['evidence_sha256'], source='archive', name='stdout.log', offset=65530, limit=65536, manifest_sha256=manifest))
+        self.assertEqual(base64.b64decode(page['bytes_base64']), (stage / 'stdout.log').read_bytes()[65530:131066])
+        self.assertTrue(page['verified'])
+        self.assertEqual(page['file_sha256'], control.file_hash(stage / 'stdout.log'))
+        self.assertEqual(before, {str(p): control.file_hash(p) for p in self.root.rglob('*') if p.is_file()})
+        exported = self.client.execute(self.request('export', expected_evidence_sha256=status['evidence_sha256']))
+        pieces, offset = [], 0
+        while offset < exported['bytes']:
+            page = self.client.execute(self.request('logs', expected_evidence_sha256=status['evidence_sha256'], source='bundle', name='diagnostics.zip', offset=offset, limit=100, manifest_sha256=manifest))
+            pieces.append(base64.b64decode(page['bytes_base64']))
+            offset = page['next_offset']
+        raw = b''.join(pieces)
+        self.assertEqual(control.digest(raw), exported['sha256'])
+        with zipfile.ZipFile(io.BytesIO(raw)) as bundle:
+            self.assertEqual(set(bundle.namelist()), {'manifest.json', 'stdout.log.gz', 'stderr.log.gz'})
+            self.assertEqual(gzip.decompress(bundle.read('stdout.log.gz')), (stage / 'stdout.log').read_bytes())
+        self.assertEqual(self.client.execute(self.request('export', expected_evidence_sha256=status['evidence_sha256'])), exported)
+        bundle_path = Path(archived['archive']['path']) / 'diagnostics.zip'
+        with zipfile.ZipFile(bundle_path, 'a') as bundle:
+            bundle.writestr('unexpected.txt', 'injected')
+        with self.assertRaisesRegex(ValueError, 'EXPORT_MEMBERS_CHANGED'):
+            self.client.execute(self.request('export', expected_evidence_sha256=status['evidence_sha256']))
+
+    def test_live_log_pages_are_partial_and_never_claim_archive_verification(self):
+        stage = self.terminal()
+        status = self.client.execute(self.request('status'))
+        page = self.client.execute(self.request('logs', expected_evidence_sha256=status['evidence_sha256'], source='live', name='stdout.log', offset=0, limit=12))
+        self.assertEqual(base64.b64decode(page['bytes_base64']), (stage / 'stdout.log').read_bytes()[:12])
+        self.assertFalse(page['verified'])
+        self.assertFalse(page['eof'])
+        self.assertIsNone(page['file_sha256'])
+        for fields in ({'name':'../ledger.sqlite'}, {'offset':-1}, {'limit':1048577}, {'source':'archive','manifest_sha256':'0'*64}):
+            request = self.request('logs', expected_evidence_sha256=status['evidence_sha256'], source='live', name='stdout.log', offset=0, limit=12)
+            request.update(fields)
+            with self.assertRaises(ValueError):
+                self.client.execute(request)
 
     def test_queued_and_running_do_not_invent_launch_evidence(self):
         value = self.client.execute(self.request('submit'))
