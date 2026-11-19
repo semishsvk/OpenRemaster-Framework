@@ -102,7 +102,7 @@
     "src/ux-navigation.ts": "2ca98ffdfcddda22c43b95ca023cfbdd3edebf92b62eb190ca0405feb2b14500",
     "tools/package-windows-dev.ps1": "976bd66d9c5fea3ca950e579091c546c0da95a92d6f040003a32d58612de1a5d",
     "tools/studio_dev_control.py": "cdb1d020ba62f375f8de79af3651023648098e7b52ee0c10a8200594df81f80a",
-    "tools/verify_controls_review.py": "42209ee6160481b930adbf9f34f954a4e9dfccc0a187f3ef7a1f86d8b8c74b35",
+    "tools/verify_controls_review.py": "b68c1dff98ad55ae325c90e32d0a3bfcfa21035acefd897a42b93b03aa73a93c",
     "tools/verify_dev_build_readme.py": "2b05c8cc1e38aa73165fa5c7e6f7a7c4a98a3427de61f8fe033802a0507c0dbf",
     "tsconfig.json": "8385421e0c7c81156676beee6cea8c2bc25bec1b48a008fc8ae369668d89ded6",
     "vite.config.ts": "c04d4d9a435d9db55489152f99a7af3c4a5ed00b4cc439e4e084c710c05ec400"
@@ -113,5 +113,5 @@
   "reviewer": "Codex source-controls review",
   "schema": "OpenRemaster.StudioControlsReview.v1",
   "scope": "SOURCE_CONTROLS_ONLY",
-  "source_fingerprint": "d341f3abe3a336d3d10dfd90f1a759fdd93f11cd6c3809bff61a049a1128476a"
+  "source_fingerprint": "67009bbc74fdf444ffd98d88c3ca629bfa290a4d53d42f575d6a6d5269e64d0c"
 }

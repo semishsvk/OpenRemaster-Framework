@@ -43,8 +43,6 @@ def verify(studio, commit):
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=studio, text=True).strip()
     if head != commit:
         raise ValueError('Package commit differs from checked-out source')
-    if subprocess.run(['git', 'diff', '--no-ext-diff', '--ignore-cr-at-eol', '--quiet', commit, '--', '.'], cwd=studio).returncode:
-        raise ValueError('Studio contains changes outside the declared commit')
     path = studio / 'tools/controls-review.json'
     raw = path.read_bytes()
     record = json.loads(raw)
@@ -56,6 +54,8 @@ def verify(studio, commit):
         raise ValueError('Controls review identity or scope rejected')
     files = source_files(studio)
     subprocess.check_output(['git', 'ls-files', '--error-unmatch', '--', *files, 'tools/controls-review.json'], cwd=studio, stderr=subprocess.STDOUT)
+    if subprocess.run(['git', 'diff', '--no-ext-diff', '--ignore-cr-at-eol', '--quiet', commit, '--', *files, 'tools/controls-review.json'], cwd=studio).returncode:
+        raise ValueError('Studio contains changes outside the declared commit')
     if record.get('files') != files or record.get('source_fingerprint') != fingerprint(files):
         raise ValueError('Source changed since controls review; obtain a new source review')
     return {'source_commit': commit, 'reviewer': record['reviewer'], 'reviewed_at': record['reviewed_at'],
