@@ -120,7 +120,7 @@ export default function DevWorkerPanel() {
     finally { pending.current = false; if (mounted.current) setBusy(false); }
   }
 
-  async function manage(action: 'archive' | 'resolve') {
+  async function manage(action: 'archive' | 'resolve' | 'prove_not_admitted') {
     if (pending.current || !result?.evidence_sha256 || !operation || !navigator.locks) return;
     if (action === 'resolve' && (!acknowledged || resolutionReason.trim().length < 10)) return;
     const id=operation, expected=result.evidence_sha256;
@@ -129,9 +129,12 @@ export default function DevWorkerPanel() {
       await navigator.locks.request(`orf-studio-submit-${scope}`,{ifAvailable:true},async lock=>{
         const saved=readOperation(localStorage,scope);
         if (!lock || saved?.operation !== id || (result.not_admitted&&saved.attempt_id!==result.not_admitted.attempt_id)) throw Error('Operation or attempt changed in another Studio window. Refresh status.');
+        if(action==='prove_not_admitted'&&!saved.attempt_id)throw Error('Only a fresh saved attempt can request not-admitted verification.');
         const invoke=window.__TAURI_INTERNALS__?.invoke;
         if (!invoke) throw Error('Native worker connection is unavailable');
-        const raw=await invoke('dev_worker_call',{request:{action,operation_id:id,scenario:'build_studio_dev',recovery:{expected_evidence_sha256:expected,...(action==='resolve'?{reason:resolutionReason.trim(),acknowledge:true}:{})}}});
+        const raw=await invoke('dev_worker_call',{request:{action,operation_id:id,scenario:'build_studio_dev',
+          ...((action==='prove_not_admitted'||(action==='resolve'&&result.not_admitted))?{attempt_id:saved.attempt_id}:{}),
+          recovery:{expected_evidence_sha256:expected,...(action==='resolve'?{reason:resolutionReason.trim(),acknowledge:true}:{})}}});
         const value=parseDevResult(raw,id,scope);
         if (readOperation(localStorage,scope)?.operation !== id) return;
         saveOperation(localStorage,scope,id,value);
@@ -167,6 +170,10 @@ export default function DevWorkerPanel() {
     {error && <p role="alert">{error}</p>}
     {result?.reason && <p>Reason: {result.reason}</p>}
     {result?.not_admitted&&<p>Attempt rejected before admission · no queue or launch was recorded. {proofMatches?'The proof matches this saved attempt.':'The proof does not match a fresh saved attempt; the operation stays on hold.'}</p>}
+    {result?.state==='NOT_FOUND'&&!result.not_admitted&&attemptId&&connected&&<p>
+      <button disabled={busy} onClick={()=>void manage('prove_not_admitted')}>Verify this attempt was not admitted</button>{' '}
+      Checks absence under the existing worker locks and records proof. It never resubmits a build. If evidence is unknown or busy, the operation stays on hold.
+    </p>}
     {result && <p>Launches: {result.launch_count ?? 'unconfirmed'} · ACK: {result.ack ? 'recorded' : 'pending'} · Commit: {result.commit ? 'recorded' : 'pending'}</p>}
     {result?.recovery && !result.resolution && ['HOLD','DENIED','NOT_FOUND'].includes(result.state) && <div>
       <h3>Review held operation</h3><p>{result.recovery.reason}</p>

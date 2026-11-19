@@ -62,7 +62,8 @@ export function parseDevResult(raw: unknown, operation: string, scope?: string):
     if(value.not_admitted!==undefined) {
       const proof=object(value.not_admitted);
       if(value.state!=='DENIED'||value.launch_count!==0||proof.schema!=='OpenRemaster.NotAdmitted.v1'||proof.operation_id!==operation||proof.scope!==scope
-          ||!hex(proof.attempt_id,32)||!hex(proof.record_sha256,64)||!text(proof.reason,2048)||proof.production_go!==false)throw Error('Invalid not-admitted proof');
+          ||!hex(proof.attempt_id,32)||!hex(proof.record_sha256,64)||!text(proof.reason,2048)||proof.production_go!==false
+          ||value.ack!=null||value.commit!=null||value.worker!=null)throw Error('Invalid not-admitted proof');
     }
     if (!hex(value.evidence_sha256,64)) throw Error('DEV observation evidence is missing');
     const recovery = object(value.recovery);

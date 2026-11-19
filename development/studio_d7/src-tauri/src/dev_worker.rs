@@ -390,8 +390,16 @@ fn issue_ephemeral_receipt(
     Ok(generated)
 }
 fn execute(request: DevRequest) -> Result<String, String> {
-    if !["submit", "status", "archive", "resolve", "logs", "export"]
-        .contains(&request.action.as_str())
+    if ![
+        "submit",
+        "status",
+        "archive",
+        "resolve",
+        "logs",
+        "export",
+        "prove_not_admitted",
+    ]
+    .contains(&request.action.as_str())
         || request.scenario != "build_studio_dev"
         || request.operation_id.len() != 32
         || !request
@@ -403,7 +411,7 @@ fn execute(request: DevRequest) -> Result<String, String> {
     }
     let mut raw = serde_json::json!({"action":request.action,"operation_id":request.operation_id,"scenario":request.scenario});
     if let Some(attempt) = &request.attempt_id {
-        if request.action != "submit"
+        if !["submit", "resolve", "prove_not_admitted"].contains(&request.action.as_str())
             || attempt.len() != 32
             || !attempt
                 .bytes()
@@ -413,7 +421,12 @@ fn execute(request: DevRequest) -> Result<String, String> {
         }
         raw["attempt_id"] = serde_json::json!(attempt);
     }
-    if ["archive", "resolve", "logs", "export"].contains(&request.action.as_str()) {
+    if request.action == "prove_not_admitted" && request.attempt_id.is_none() {
+        return Err("DEV_ATTEMPT_SCOPE".into());
+    }
+    if ["archive", "resolve", "logs", "export", "prove_not_admitted"]
+        .contains(&request.action.as_str())
+    {
         let recovery = request
             .recovery
             .as_ref()
@@ -486,6 +499,9 @@ fn execute(request: DevRequest) -> Result<String, String> {
                 || rejected["control_verified"] != true
                 || rejected["production_go"] != false
                 || rejected["independent_authority"] != false
+                || rejected["state"] != "DENIED"
+                || rejected["launch_count"] != 0
+                || rejected["not_admitted"]["attempt_id"].as_str() != request.attempt_id.as_deref()
             {
                 return Err("DEV_REJECTION_SCOPE".into());
             }
@@ -515,6 +531,13 @@ fn execute(request: DevRequest) -> Result<String, String> {
         raw["dev_receipt_sha256"] = serde_json::json!(admitted_sha);
     }
     let mut value = call_control(&pins, &raw)?;
+    if request.action == "prove_not_admitted"
+        && (value["state"] != "DENIED"
+            || value["launch_count"] != 0
+            || value["not_admitted"]["attempt_id"].as_str() != request.attempt_id.as_deref())
+    {
+        return Err("DEV_REJECTION_SCOPE".into());
+    }
     if ["logs", "export"].contains(&request.action.as_str()) {
         let schema = if request.action == "logs" {
             "OpenRemaster.DevLogPage.v1"
@@ -561,7 +584,8 @@ mod tests {
             "action":"logs","operation_id":"a".repeat(32),"scenario":"build_studio_dev",
             "recovery":{"expected_evidence_sha256":"b".repeat(64)},
             "log":{"source":"archive","name":"../ledger.sqlite","offset":0,"limit":65536}
-        })).unwrap();
+        }))
+        .unwrap();
         assert_eq!(execute(request).unwrap_err(), "DEV_LOG_PAGE_SCOPE");
     }
     #[test]

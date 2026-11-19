@@ -116,7 +116,7 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(self.host.launches, 0)
         restarted = control.Control(self.root, self.api, self.host, SCOPE)
         self.assertEqual(restarted.execute(self.request('status'))['not_admitted'], value['not_admitted'])
-        resolved = restarted.execute(self.request('resolve', expected_evidence_sha256=value['evidence_sha256'], acknowledge=True, reason='Reviewed the rejected fresh attempt.'))
+        resolved = restarted.execute(self.request('resolve', expected_evidence_sha256=value['evidence_sha256'], attempt_id='d'*32, acknowledge=True, reason='Reviewed the rejected fresh attempt.'))
         self.assertTrue(resolved['resolution']['new_operation_allowed'])
         with self.assertRaisesRegex(ValueError, 'CANNOT_BE_RESUBMITTED'):
             restarted.execute(request)
@@ -139,6 +139,65 @@ class ClientTests(unittest.TestCase):
             self.client.execute(self.request('reject', attempt_id='e' * 32, reason='A different attempted reuse.'))
         unknown = self.client.execute(self.request('status', 'f' * 32))
         self.assertFalse(unknown['recovery']['allowed'])
+
+    def test_busy_proof_can_be_verified_later_without_resubmitting(self):
+        request = self.request('reject', attempt_id='d'*32, reason='Native admission unavailable.')
+        with self.host.lock('writer.lock'):
+            with self.assertRaisesRegex(ValueError, 'BUILD_WRITER_BUSY'):
+                self.client.execute(request)
+        unknown = self.client.execute(self.request('status'))
+        self.assertEqual(unknown['state'], 'NOT_FOUND')
+        proof_request = self.request('prove_not_admitted', attempt_id='d'*32, expected_evidence_sha256=unknown['evidence_sha256'])
+        with self.host.lock('writer.lock'):
+            with self.assertRaisesRegex(ValueError, 'BUILD_WRITER_BUSY'):
+                self.client.execute(proof_request)
+        value = self.client.execute(proof_request)
+        self.assertEqual(value['state'], 'DENIED')
+        self.assertEqual(self.host.launches, 0)
+        for attempt in (None, 'e'*32):
+            fields = {'attempt_id': attempt} if attempt else {}
+            with self.assertRaisesRegex(ValueError, 'REJECTION_ATTEMPT_MISMATCH'):
+                self.client.execute(self.request('resolve', expected_evidence_sha256=value['evidence_sha256'], reason='Reviewed this rejected attempt.', acknowledge=True, **fields))
+        with self.assertRaisesRegex(ValueError, 'ATTEMPT_ID_REQUIRED'):
+            self.client.execute(self.request('prove_not_admitted', expected_evidence_sha256=unknown['evidence_sha256']))
+        self.assertFalse(self.client.path(f'state/studio-resolutions/{OP}.json').exists())
+
+    def test_operation_output_directory_prevents_absence_proof_and_invalidates_old_proof(self):
+        value = self.client.execute(self.request('reject', attempt_id='d'*32, reason='Native admission unavailable.'))
+        directory = self.client.path(f'state/operations/{OP}')
+        directory.mkdir()
+        (directory / 'stdout.log').write_text('Unreconciled prior output')
+        with self.assertRaisesRegex(ValueError, 'PROOF_UNAVAILABLE'):
+            self.client.execute(self.request('reject', attempt_id='d'*32, reason='Do not discard unknown output.'))
+        changed = self.client.execute(self.request('status'))
+        self.assertNotIn('not_admitted', changed)
+        self.assertFalse(changed['recovery']['allowed'])
+        self.assertNotEqual(changed['evidence_sha256'], value['evidence_sha256'])
+
+    def test_manifest_and_rejection_receipt_hashes_cover_the_bytes_actually_parsed(self):
+        self.terminal()
+        value = self.client.execute(self.request('status'))
+        archived = self.client.execute(self.request('archive', expected_evidence_sha256=value['evidence_sha256']))
+        path = Path(archived['archive']['path']) / 'manifest.json'
+        raw = path.read_bytes()
+        real_hash = control.file_hash
+        def reject_second_manifest_read(file):
+            if Path(file) == path:
+                raise AssertionError('Manifest checksum must use the parsed snapshot bytes')
+            return real_hash(file)
+        with patch.object(control, 'file_hash', side_effect=reject_second_manifest_read):
+            receipt = self.client.archive_receipt(OP, value['evidence_sha256'])
+        self.assertEqual(receipt['manifest_sha256'], control.digest(raw))
+        malicious = json.loads(raw)
+        malicious['logs'][0]['name'] = '../outside.txt'
+        old_receipt = archived['archive']
+        def swap_manifest(*args):
+            path.write_text(json.dumps(malicious))
+            return old_receipt
+        with patch.object(self.client, 'archive', side_effect=swap_manifest):
+            with self.assertRaisesRegex(ValueError, 'ARCHIVE_PATH_DENIED'):
+                self.client.export_logs(OP, value['evidence_sha256'])
+        self.assertFalse((path.parent / 'diagnostics.zip').exists())
 
     def test_archive_pages_and_complete_export_preserve_exact_log_bytes(self):
         stage = self.terminal()

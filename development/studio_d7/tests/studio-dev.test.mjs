@@ -48,6 +48,7 @@ test('a not-admitted proof releases only its matching saved attempt after explic
   const store=storage();worker.saveOperation(store,scope,id,null,attempt);worker.saveOperation(store,scope,id,parsed);
   assert.equal(worker.readOperation(store,scope).attempt_id,attempt);
   assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,launch_count:1}),id,scope));
+  assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,ack:{operation_id:id}}),id,scope));
 });
 test('log pages verify bytes, scope, progress and archive identity',async()=>{
   const bytes=Buffer.from('error: žltý fixture\r\nwarning: retained\n');

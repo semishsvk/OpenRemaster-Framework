@@ -55,6 +55,12 @@ Fresh attempts have their own saved identity. A typed not-admitted record can
 be acknowledged only when it matches that saved attempt and confirms absence
 of intent, queue, ledger and launch under the existing locks. Missing or
 contradictory proof preserves HOLD. This never retries the rejected ID.
+If recording proof was blocked by a busy writer or an interrupted client,
+Refresh build status can expose Verify this attempt was not admitted for a
+fresh saved attempt. This dedicated check never invokes submit or issues an
+execution receipt. It requires fresh evidence and the original locks; imported
+IDs without an attempt identity remain held. The backend also enforces the
+matching attempt when acknowledging a not-admitted record.
 
 Build logs includes paged full-file access, page search, error/warning filters
 and optional live following every 10 seconds. Live output is labeled partial;

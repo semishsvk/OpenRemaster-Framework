@@ -74,7 +74,7 @@ def file_hash(path):
     return h.hexdigest()
 
 
-def read_optional(root, path):
+def read_record(root, path):
     path = confined(root, path)
     if not path.exists():
         return None
@@ -82,7 +82,12 @@ def read_optional(root, path):
         raw = stream.read(MAX_JSON + 1)
     if len(raw) > MAX_JSON:
         raise ValueError('JSON_SIZE')
-    return decode(raw.decode('utf-8-sig'))
+    return decode(raw.decode('utf-8-sig')), digest(raw), raw
+
+
+def read_optional(root, path):
+    record = read_record(root, path)
+    return record[0] if record is not None else None
 
 
 def atomic_new(root, path, value):
@@ -111,17 +116,19 @@ def atomic_new(root, path, value):
 def validate_request(value):
     if type(value) is not dict or set(value) - {'action', 'operation_id', 'scenario', 'expected_evidence_sha256', 'reason', 'acknowledge', 'dev_receipt_sha256', 'attempt_id', 'source', 'name', 'offset', 'limit', 'manifest_sha256'}:
         raise ValueError('REQUEST_SCHEMA')
-    if value.get('action') not in ('status', 'submit', 'archive', 'resolve', 'capabilities', 'reject', 'logs', 'export'):
+    if value.get('action') not in ('status', 'submit', 'archive', 'resolve', 'capabilities', 'reject', 'prove_not_admitted', 'logs', 'export'):
         raise ValueError('ACTION_DENIED')
     if value.get('scenario') != SCENARIO or not re.fullmatch('[a-f0-9]{32}', str(value.get('operation_id', ''))):
         raise ValueError('OPERATION_SCOPE')
     if 'dev_receipt_sha256' in value and (value['action'] != 'submit' or not re.fullmatch('[a-f0-9]{64}', str(value['dev_receipt_sha256']))):
         raise ValueError('RECEIPT_SCOPE')
-    if 'attempt_id' in value and (value['action'] not in ('submit', 'reject') or not re.fullmatch('[a-f0-9]{32}', str(value['attempt_id']))):
+    if 'attempt_id' in value and (value['action'] not in ('submit', 'reject', 'resolve', 'prove_not_admitted') or not re.fullmatch('[a-f0-9]{32}', str(value['attempt_id']))):
         raise ValueError('ATTEMPT_ID_REQUIRED')
-    if value['action'] == 'reject' and ('attempt_id' not in value or not isinstance(value.get('reason'), str) or not 1 <= len(value['reason']) <= 2048):
+    if value['action'] in ('reject', 'prove_not_admitted') and 'attempt_id' not in value:
+        raise ValueError('ATTEMPT_ID_REQUIRED')
+    if value['action'] == 'reject' and (not isinstance(value.get('reason'), str) or not 1 <= len(value['reason']) <= 2048):
         raise ValueError('REJECTION_DETAILS_REQUIRED')
-    if value['action'] in ('archive', 'resolve', 'logs', 'export'):
+    if value['action'] in ('archive', 'resolve', 'logs', 'export', 'prove_not_admitted'):
         if not re.fullmatch('[a-f0-9]{64}', str(value.get('expected_evidence_sha256', ''))):
             raise ValueError('EXPECTED_EVIDENCE_REQUIRED')
     if value['action'] == 'logs':
@@ -178,8 +185,9 @@ class Control:
                 raise ValueError('OPERATION_FILE_AUTHORITY')
         if files['intent'] is not None and files['intent'].get('scope') != self.scope:
             raise ValueError('INTENT_SCOPE_CHANGED')
-        rejection = read_optional(self.root, self.path(f'state/studio-rejections/{operation}.json'))
-        if rejection is not None:
+        rejection_record = read_record(self.root, self.path(f'state/studio-rejections/{operation}.json'))
+        if rejection_record is not None:
+            rejection = rejection_record[0]
             if (rejection.get('schema') != 'OpenRemaster.NotAdmitted.v1' or rejection.get('operation_id') != operation
                     or rejection.get('scope') != self.scope or rejection.get('production_go') is not False
                     or not re.fullmatch('[a-f0-9]{32}', str(rejection.get('attempt_id', '')))):
@@ -187,7 +195,14 @@ class Control:
             # Do not change the evidence digest of pre-existing operations.
             files['rejection'] = rejection
         core = {'operation_id': operation, 'scenario': SCENARIO, 'scope': self.scope, 'files': files, 'ledger': self.ledger(operation)}
+        if rejection_record is not None:
+            core['rejection_record_sha256'] = rejection_record[1]
+            core['rejection_directory_present'] = self.path(f'state/operations/{operation}').exists()
         return core, digest(canonical(core))
+
+    def no_admission_evidence(self, core):
+        return (core['ledger'] is None and all(value is None for key, value in core['files'].items() if key != 'rejection')
+                and not self.path(f"state/operations/{core['operation_id']}").exists())
 
     def eligible(self, core, result):
         files, row = core['files'], core['ledger']
@@ -196,7 +211,7 @@ class Control:
             return False, 'Queued or running work must be reconciled by its worker owner.'
         if result['state'] not in {'HOLD', 'DENIED', 'NOT_FOUND'}:
             return False, 'Only a diagnosed held or unlaunched operation can be acknowledged.'
-        if files.get('rejection') is not None and row is None and all(value is None for key, value in files.items() if key != 'rejection'):
+        if files.get('rejection') is not None and self.no_admission_evidence(core):
             return True, 'This attempt was rejected before admission; no intent, queue, ledger or launch exists.'
         if row is not None:
             if row['state'] != 'HOLD' or row['result'] is None:
@@ -240,9 +255,10 @@ class Control:
         return result
 
     def resolution(self, operation, evidence_sha, verify_content=True):
-        receipt = read_optional(self.root, self.path(f'state/studio-resolutions/{operation}.json'))
-        if receipt is None:
+        record = read_record(self.root, self.path(f'state/studio-resolutions/{operation}.json'))
+        if record is None:
             return None
+        receipt, record_sha, _ = record
         if (receipt.get('schema') != 'OpenRemaster.DevHoldResolution.v1' or receipt.get('operation_id') != operation
                 or receipt.get('scope') != self.scope or receipt.get('evidence_sha256') != evidence_sha
                 or receipt.get('disposition') != 'ACKNOWLEDGED_NO_RETRY' or receipt.get('production_go') is not False):
@@ -250,14 +266,14 @@ class Control:
         archive = self.archive_receipt(operation, evidence_sha, verify_content)
         if archive is None or archive['manifest_sha256'] != receipt.get('archive_manifest_sha256'):
             raise ValueError('RESOLUTION_ARCHIVE_CHANGED')
-        return dict(receipt, record_sha256=file_hash(self.path(f'state/studio-resolutions/{operation}.json')), new_operation_allowed=True)
+        return dict(receipt, record_sha256=record_sha, new_operation_allowed=True)
 
     def status(self, operation):
         result = self.base_result(operation)
         core, sha = self.evidence(operation)
         rejection = core['files'].get('rejection')
-        if rejection is not None and core['ledger'] is None and all(value is None for key, value in core['files'].items() if key != 'rejection'):
-            result.update(state='DENIED', launch_count=0, reason=rejection['reason'], not_admitted=dict(rejection, record_sha256=file_hash(self.path(f'state/studio-rejections/{operation}.json'))))
+        if rejection is not None and self.no_admission_evidence(core):
+            result.update(state='DENIED', launch_count=0, reason=rejection['reason'], not_admitted=dict(rejection, record_sha256=core['rejection_record_sha256']))
         allowed, reason = self.eligible(core, result)
         result['evidence_sha256'] = sha
         result['recovery'] = {'allowed': allowed, 'reason': reason}
@@ -272,11 +288,12 @@ class Control:
                     result['logs'][name] = stream.read(8192).decode('utf-8', errors='replace')
         return result
 
-    def archive_receipt(self, operation, evidence_sha, verify_content=True):
+    def archive_snapshot(self, operation, evidence_sha, verify_content=True):
         directory = self.path(f'state/studio-archives/{operation}/{evidence_sha}')
-        manifest = read_optional(self.root, directory / 'manifest.json')
-        if manifest is None:
+        record = read_record(self.root, directory / 'manifest.json')
+        if record is None:
             return None
+        manifest, manifest_sha, raw = record
         if (manifest.get('schema') != 'OpenRemaster.DevLogArchive.v1' or manifest.get('production_go') is not False
                 or manifest.get('operation_id') != operation or manifest.get('evidence_sha256') != evidence_sha or manifest.get('scope') != self.scope
                 or not isinstance(manifest.get('logs'), list) or len(manifest['logs']) > 2):
@@ -289,8 +306,13 @@ class Control:
             log = confined(self.root, directory / item['name'])
             if log.stat().st_size > MAX_LOGS + MAX_JSON or (verify_content and file_hash(log) != item['compressed_sha256']):
                 raise ValueError('ARCHIVE_CONTENT_CHANGED')
-        return {'path': str(directory), 'manifest_sha256': file_hash(directory / 'manifest.json'), 'evidence_sha256': evidence_sha,
-                'operation_id': operation, 'retention': 'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW', 'log_count': len(manifest['logs'])}
+        receipt = {'path': str(directory), 'manifest_sha256': manifest_sha, 'evidence_sha256': evidence_sha,
+                   'operation_id': operation, 'retention': 'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW', 'log_count': len(manifest['logs'])}
+        return receipt, manifest, raw
+
+    def archive_receipt(self, operation, evidence_sha, verify_content=True):
+        snapshot = self.archive_snapshot(operation, evidence_sha, verify_content)
+        return snapshot[0] if snapshot is not None else None
 
     def discard_partial(self, partial):
         # Only our incomplete compressed copies; original logs are never touched.
@@ -387,7 +409,7 @@ class Control:
         operation = request['operation_id']
         core, _ = self.evidence(operation)
         health = self.host.health()
-        if (core['ledger'] is not None or any(value is not None for key, value in core['files'].items() if key != 'rejection')
+        if (not self.no_admission_evidence(core)
                 or health.get('operation_id') == operation):
             raise ValueError('NOT_ADMITTED_PROOF_UNAVAILABLE')
         old = core['files'].get('rejection')
@@ -406,20 +428,28 @@ class Control:
     def export_logs(self, operation, expected):
         receipt = self.archive(operation, expected)
         directory = Path(receipt['path'])
-        manifest = read_optional(self.root, directory / 'manifest.json')
+        snapshot = self.archive_snapshot(operation, expected)
+        if snapshot is None or snapshot[0]['manifest_sha256'] != receipt['manifest_sha256']:
+            raise ValueError('ARCHIVE_MANIFEST_CHANGED')
+        _, manifest, manifest_raw = snapshot
+        def member(name):
+            path = confined(self.root, directory / name)
+            if path.parent != directory:
+                raise ValueError('ARCHIVE_MEMBER_PATH')
+            return path
         target = confined(self.root, directory / 'diagnostics.zip')
         if not target.exists():
             # The ZIP is another retained copy and counts against the existing quota.
             retained = sum(confined(self.root, p).stat().st_size for p in self.path('state/studio-archives').glob('*/*/*') if p.is_file())
-            estimate = sum((directory / item['name']).stat().st_size for item in manifest['logs']) + MAX_JSON
+            estimate = sum(member(item['name']).stat().st_size for item in manifest['logs']) + MAX_JSON
             if retained + estimate > MAX_RETAINED_BYTES:
                 raise ValueError('EXPORT_CAPACITY_REQUIRES_REVIEW')
             temporary = confined(self.root, directory / ('.export-' + uuid.uuid4().hex + '.tmp'))
             try:
                 with zipfile.ZipFile(temporary, 'x', compression=zipfile.ZIP_STORED) as bundle:
-                    bundle.write(directory / 'manifest.json', 'manifest.json')
+                    bundle.writestr('manifest.json', manifest_raw)
                     for item in manifest['logs']:
-                        bundle.write(directory / item['name'], item['name'])
+                        bundle.write(member(item['name']), item['name'])
                 if temporary.stat().st_size > MAX_LOGS + MAX_JSON:
                     raise ValueError('EXPORT_SIZE')
                 os.rename(temporary, target)
@@ -427,8 +457,11 @@ class Control:
                 temporary.unlink(missing_ok=True)
         # An existing export must still contain exactly the retained manifest
         # and compressed logs, including on a later retry after interruption.
-        expected_members = {'manifest.json': (file_hash(directory / 'manifest.json'), (directory / 'manifest.json').stat().st_size)}
-        expected_members.update({item['name']: (item['compressed_sha256'], (directory / item['name']).stat().st_size) for item in manifest['logs']})
+        bound_sha, bound_size = file_hash(target), target.stat().st_size
+        expected_members = {'manifest.json': (digest(manifest_raw), len(manifest_raw))}
+        if expected_members['manifest.json'][0] != receipt['manifest_sha256']:
+            raise ValueError('EXPORT_MANIFEST_BINDING')
+        expected_members.update({item['name']: (item['compressed_sha256'], member(item['name']).stat().st_size) for item in manifest['logs']})
         with zipfile.ZipFile(target) as bundle:
             if len(bundle.infolist()) != len(expected_members) or set(bundle.namelist()) != set(expected_members):
                 raise ValueError('EXPORT_MEMBERS_CHANGED')
@@ -442,9 +475,11 @@ class Control:
                         h.update(block)
                 if h.hexdigest() != expected_sha:
                     raise ValueError('EXPORT_MEMBER_CHANGED')
+        if file_hash(target) != bound_sha or target.stat().st_size != bound_size:
+            raise ValueError('EXPORT_CHANGED')
         return {'schema': 'OpenRemaster.DevLogExport.v1', 'operation_id': operation, 'scope': self.scope,
                 'evidence_sha256': expected, 'manifest_sha256': receipt['manifest_sha256'],
-                'bytes': target.stat().st_size, 'sha256': file_hash(target), 'production_go': False}
+                'bytes': bound_size, 'sha256': bound_sha, 'production_go': False}
 
     def log_page(self, request):
         operation, expected = request['operation_id'], request['expected_evidence_sha256']
@@ -462,9 +497,10 @@ class Control:
                 stream.seek(offset)
                 data = stream.read(min(limit, max(0, total - offset)))
         else:
-            receipt = self.archive_receipt(operation, expected)
-            if receipt is None or receipt['manifest_sha256'] != request['manifest_sha256']:
+            snapshot = self.archive_snapshot(operation, expected)
+            if snapshot is None or snapshot[0]['manifest_sha256'] != request['manifest_sha256']:
                 raise ValueError('ARCHIVE_MANIFEST_CHANGED')
+            receipt, manifest, _ = snapshot
             directory = Path(receipt['path'])
             manifest_sha = receipt['manifest_sha256']
             if source == 'bundle':
@@ -479,7 +515,6 @@ class Control:
                 if file_hash(path) != full_sha:
                     raise ValueError('EXPORT_CHANGED')
             else:
-                manifest = read_optional(self.root, directory / 'manifest.json')
                 item = next((item for item in manifest['logs'] if item['name'] == name + '.gz'), None)
                 if item is None:
                     raise ValueError('LOG_NOT_ARCHIVED')
@@ -588,6 +623,10 @@ class Control:
         if action == 'logs':
             return self.log_page(request)
         with self.mutation():
+            if action == 'prove_not_admitted':
+                if self.evidence(operation)[1] != request['expected_evidence_sha256']:
+                    raise ValueError('STALE_EVIDENCE_REFRESH_REQUIRED')
+                return self.reject(dict(request, reason='Explicit verification found no intent, queue, ledger or operation output.'))
             if action == 'reject':
                 return self.reject(request)
             if action == 'export':
@@ -598,6 +637,9 @@ class Control:
                 result = self.status(operation)
                 if result['evidence_sha256'] != request['expected_evidence_sha256']:
                     raise ValueError('STALE_EVIDENCE_REFRESH_REQUIRED')
+                core, _ = self.evidence(operation)
+                if core['files'].get('rejection') is not None and request.get('attempt_id') != core['files']['rejection']['attempt_id']:
+                    raise ValueError('REJECTION_ATTEMPT_MISMATCH')
                 if result['resolution'] is None:
                     if not result['recovery']['allowed']:
                         raise ValueError('RECOVERY_NOT_PROVEN_SAFE')
@@ -614,8 +656,16 @@ def load_control(config, scope):
     if not root.is_absolute() or root.resolve() != root:
         raise ValueError('CANONICAL_WORKER_ROOT_REQUIRED')
     confined(root, root)
+    modules = {}
     for name, key in [('broker.py', 'broker_sha256'), ('host.py', 'host_sha256'), ('BROKER-PINS.json', 'manifest_sha256'), ('WORKER-CONFIG.json', 'worker_config_sha256')]:
-        if file_hash(confined(root, root / name)) != config[key]:
+        path = confined(root, root / name)
+        if name in ('broker.py', 'host.py'):
+            with path.open('rb') as stream:
+                raw = stream.read(1024 * 1024 + 1)
+            if len(raw) > 1024 * 1024 or digest(raw) != config[key]:
+                raise ValueError('CONTROL_PIN_CHANGED:' + name)
+            modules[name] = raw
+        elif file_hash(path) != config[key]:
             raise ValueError('CONTROL_PIN_CHANGED:' + name)
     worker = read_optional(root, root / 'WORKER-CONFIG.json')
     if worker.get('profile') != 'DEV_UNSIGNED' or worker.get('production_go') is not False or Path(worker.get('root', '')).resolve() != root:
@@ -625,7 +675,7 @@ def load_control(config, scope):
     def load(name):
         spec = importlib.util.spec_from_file_location('studio_pinned_' + name, root / (name + '.py'))
         module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        exec(compile(modules[name + '.py'], str(root / (name + '.py')), 'exec'), module.__dict__)
         return module
     api = load('broker')
     api.verify_runtime()
@@ -643,7 +693,14 @@ def main():
     scope = digest(json.dumps(config, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode())
     control = load_control(config, scope)
     result = control.execute(request)
-    print(json.dumps(result, separators=(',', ':')))
+    raw = json.dumps(result, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
+    if request['action'] != 'logs' and len(raw) > MAX_JSON and isinstance(result.get('logs'), dict):
+        result['logs'] = {}
+        result['log_tail_notice'] = 'Log tails exceed the response budget; use the paged log viewer.'
+        raw = json.dumps(result, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
+    if len(raw) > (2 * 1024 * 1024 if request['action'] == 'logs' else MAX_JSON):
+        raise ValueError('RESPONSE_SIZE')
+    sys.stdout.buffer.write(raw + b'\n')
 
 
 if __name__ == '__main__':

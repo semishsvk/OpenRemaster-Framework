@@ -24,7 +24,7 @@ jobs:
           node-version: '22'
       - run: npm ci --ignore-scripts
       - run: node --test tests/build-status.test.mjs tests/modelWitnessView.test.cjs tests/studio-dev.test.mjs
-      - run: python -B -m unittest discover -s tests -p test_studio_dev_control.py -v
+      - run: python -B -m unittest discover -s tests -p 'test_*.py' -v
       - run: npm run build
       - name: Check Studio in Chromium
         shell: pwsh

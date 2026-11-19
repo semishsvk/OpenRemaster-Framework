@@ -25,7 +25,7 @@ try {
     const context = await browser.newContext({viewport,offline:true,serviceWorkers:'block'});
     const page = await context.newPage(), errors = [], unexpected = [], commands = [];
     let available = false, state = 'STARTED', operation = oldId, failNetwork = false, remoteCalls = 0, archived = false, resolved = false;
-    let admissionReady=false,corruptLog=false,preIntentReject=false,rejectedAttempt=null;
+    let admissionReady=false,corruptLog=false,preIntentReject=false,rejectedAttempt=null,proofWriteBusy=true;
     page.setDefaultTimeout(10000);
     page.on('pageerror',error=>errors.push(error.message));
     await context.exposeFunction('testNative',async(command,args)=>{
@@ -38,7 +38,7 @@ try {
       const request=args.request;
       assert.equal(request.scenario,'build_studio_dev');
       const metadata=()=>({schema:'OpenRemaster.DevWorkflowResult.v2',control_scope:scope,control_verified:true,dev_receipt_verified:false,evidence_sha256:digest,recovery:{allowed:state==='HOLD'||!!rejectedAttempt,reason:'Terminal fixture confirms the owned build stopped.'},
-        ...(rejectedAttempt?{launch_count:0,not_admitted:{schema:'OpenRemaster.NotAdmitted.v1',operation_id:operation,scope,attempt_id:rejectedAttempt,reason:'Fixture rejected before intent',record_sha256:'e'.repeat(64),production_go:false}}:{}),
+        ...(rejectedAttempt?{launch_count:0,ack:null,commit:null,worker:undefined,not_admitted:{schema:'OpenRemaster.NotAdmitted.v1',operation_id:operation,scope,attempt_id:rejectedAttempt,reason:'Fixture rejected before intent',record_sha256:'e'.repeat(64),production_go:false}}:{}),
         archive:archived?{path:'C:/DEV/archives/'+operation,operation_id:operation,evidence_sha256:digest,manifest_sha256:'f'.repeat(64),log_count:2,retention:'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW'}:null,resolution:resolved?{disposition:'ACKNOWLEDGED_NO_RETRY',operation_id:operation,scope,evidence_sha256:digest,archive_manifest_sha256:'f'.repeat(64),record_sha256:'e'.repeat(64),reason:'Reviewed stopped fixture; preserve evidence.',new_operation_allowed:true,production_go:false}:null});
       if(request.action==='logs') {
         assert.equal(request.operation_id,operation);assert.equal(request.recovery.expected_evidence_sha256,digest);
@@ -53,12 +53,17 @@ try {
         const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),`orf-studio-operation-v2-${scope}`);
         assert.equal(saved.operation,operation);
         assert.equal(saved.attempt_id,request.attempt_id);
-        if(preIntentReject){state='DENIED';rejectedAttempt=request.attempt_id;return JSON.stringify({state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',...metadata()});}
+        if(preIntentReject){
+          if(proofWriteBusy){state='NOT_FOUND';rejectedAttempt=null;throw Error('Fixture proof writer busy');}
+          state='DENIED';rejectedAttempt=request.attempt_id;return JSON.stringify({state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',...metadata()});
+        }
         return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state:'REQUESTED',operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false});
       }
-      assert.ok(['status','archive','resolve'].includes(request.action));assert.equal(request.operation_id,operation);
-      if(request.action!=='status') {assert.equal(request.recovery.expected_evidence_sha256,digest);archived=true;}
-      if(request.action==='resolve') {assert.equal(request.recovery.acknowledge,true);assert.ok(request.recovery.reason.length>=10);resolved=true;}
+      assert.ok(['status','archive','resolve','prove_not_admitted'].includes(request.action));assert.equal(request.operation_id,operation);
+      if(request.action!=='status')assert.equal(request.recovery.expected_evidence_sha256,digest);
+      if(['archive','resolve'].includes(request.action))archived=true;
+      if(request.action==='prove_not_admitted'){assert.equal(request.attempt_id,(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),`orf-studio-operation-v2-${scope}`)).attempt_id);state='DENIED';rejectedAttempt=request.attempt_id;}
+      if(request.action==='resolve') {assert.equal(request.recovery.acknowledge,true);assert.ok(request.recovery.reason.length>=10);if(rejectedAttempt)assert.equal(request.attempt_id,rejectedAttempt);resolved=true;}
       return JSON.stringify({schema:'OpenRemaster.DevWorkflowResult.v1',state,operation_id:operation,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true,automatic_retry:false,launch_count:['BUSY','DENIED'].includes(state)?undefined:1,reason:state==='HOLD'?'Fixture failure needs review':undefined,ack:{operation_id:operation},commit:state==='COMMITTED'?{operation_id:operation}:null,worker:state==='COMMITTED'?{success:true,owned_tree_stopped:true,wrapper_exit:0,artifacts:{studio_exe:'C:/DEV/Studio.exe',studio_exe_sha256:digest}}:undefined,logs:{'stdout.log':'Compiling Studio fixture','stderr.log':''},...metadata()});
     });
     await context.addInitScript(()=>{window.__TAURI_INTERNALS__={invoke:(command,args)=>window.testNative(command,args)};});
@@ -200,6 +205,12 @@ try {
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
       preIntentReject=true;
       await worker.getByRole('button',{name:'Build a DEV candidate'}).click();
+      await worker.getByText('Error: Fixture proof writer busy',{exact:false}).waitFor();
+      await worker.getByRole('button',{name:'Refresh build status'}).click();
+      const verifyAttempt=worker.getByRole('button',{name:'Verify this attempt was not admitted'});
+      await verifyAttempt.waitFor();
+      proofWriteBusy=false;
+      await verifyAttempt.click();
       await worker.getByText('The proof matches this saved attempt.',{exact:false}).waitFor();
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       await page.reload();
@@ -215,6 +226,7 @@ try {
       await worker.getByText('The proof does not match a fresh saved attempt',{exact:false}).waitFor();
       assert.equal(await worker.getByTestId('dev-run').isDisabled(),true);
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,2);
+      assert.equal(commands.filter(call=>call.args?.request?.action==='prove_not_admitted').length,1);
       await page.reload();
       await worker.getByText('Hold acknowledged.',{exact:false}).waitFor();
       assert.equal(commands.filter(call=>call.args?.request?.action==='resolve').length,2);

@@ -7,6 +7,9 @@ param(
 $ErrorActionPreference = 'Stop'
 if ($Commit -notmatch '^[a-f0-9]{40}$') { throw 'A full source commit is required.' }
 $studio = Split-Path $PSScriptRoot -Parent
+$reviewText = & python -B (Join-Path $PSScriptRoot 'verify_controls_review.py') --studio $studio --commit $Commit
+if ($LASTEXITCODE -ne 0) { throw 'README_HOLD: exact source controls review required.' }
+$controlsReview = $reviewText | ConvertFrom-Json
 $output = [IO.Path]::GetFullPath((Join-Path $studio $OutputDirectory))
 if (Test-Path -LiteralPath $output) { throw 'Use a fresh output directory.' }
 $package = Join-Path $output 'OpenRemaster-Studio-DEV'
@@ -72,6 +75,7 @@ $info = [ordered]@{
     production_go = $false
     signing_provider = 'PENDING'
     proposed_license = 'MIT_PENDING_OWNER_APPROVAL'
+    controls_review = $controlsReview
 }
 $info | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $package 'BUILD-INFO.json') -Encoding utf8
 $buildId="studio-dev-$Commit"
@@ -85,10 +89,10 @@ $readme=@"
 **Platform:** Windows x64, WebView2
 **Launcher:** OpenRemaster-Studio-DEV.exe
 **Verification status:** VERIFIED
-**Reviewed by:** Codex source-controls review and automated CI
-**Reviewed at:** $date
-**Verification method:** Source controls review, TypeScript and behavioral tests; native startup and Chromium scenarios are separate checks
-**Source/InputMap evidence:** Git $Commit; src/QuickNavigation.tsx, src/DevWorkerPanel.tsx, src/DevLogViewer.tsx, tools/check-studio-dev-browser.mjs
+**Reviewed by:** $($controlsReview.reviewer)
+**Reviewed at:** $($controlsReview.reviewed_at)
+**Verification method:** Source-controls review record $($controlsReview.record_sha256); source census and SHA-256 values checked against this Git checkout. Runtime checks are separate.
+**Source/InputMap evidence:** Git $Commit; reviewed source fingerprint $($controlsReview.source_fingerprint); controls-review.json records every covered source file
 **Runtime test evidence:** Native startup at $RunUrl; separate Chromium review scenarios use mocked worker IPC and do not prove a HomePC build
 
 ## Launch instructions
@@ -136,6 +140,7 @@ Current Owner/Resource/GAME and Windows-role admission is not connected to the p
 
 ## Verification
 Build-specific source and checks: $RunUrl. Package source: $Commit. Complete package hashes: SHA256SUMS.txt. A successful technical build does not accept an Owner/Witness grant or authorize production activation.
+The README verification label covers the documented source controls. Its reviewer and date come from a source-bound review record, not from the build clock. Source hashes normalize text CRLF to LF and preserve binary bytes. Changed or additional source files block packaging until a new review record is supplied. This record is not an independent signature or production release acceptance.
 "@
 $readme | Set-Content -LiteralPath (Join-Path $package 'README.md') -Encoding utf8
 & python -B (Join-Path $PSScriptRoot 'verify_dev_build_readme.py') --build-dir $package --project OpenRemasterStudio --build-id $buildId
