@@ -17,8 +17,54 @@ function load(url) {
   return module.exports;
 }
 const worker = load(new URL('../src/dev-worker.ts', import.meta.url));
+const diagnostics = load(new URL('../src/dev-diagnostics.ts', import.meta.url));
 const releases = load(new URL('../src/studio-releases.ts', import.meta.url));
 const id = 'a'.repeat(32), scope = 'b'.repeat(64), commit = 'c'.repeat(40);
+test('diagnostics expire and unknown authority never enables a build',()=>{
+  const report={schema:'OpenRemaster.DevPreflight.v1',scope,production_go:false,checked_at_ms:1000,valid_for_ms:30000,can_submit:true,
+    checks:diagnostics.diagnosticIds.map(id=>({id,status:'PASS',detail:'Verified fixture',next_step:'Review fixture'}))};
+  const parsed=diagnostics.parsePreflight(report,scope);
+  assert.equal(diagnostics.preflightAllowsSubmit(parsed,1000),true);
+  assert.equal(diagnostics.preflightAllowsSubmit(parsed,31000),false);
+  assert.equal(diagnostics.preflightAllowsSubmit(parsed,999),false);
+  const unknown={...report,checks:report.checks.map(row=>row.id==='owner'?{...row,status:'UNKNOWN'}:row)};
+  assert.throws(()=>diagnostics.parsePreflight(unknown,scope));
+  assert.equal(diagnostics.preflightAllowsSubmit(diagnostics.parsePreflight({...unknown,can_submit:false},scope),1000),false);
+  assert.throws(()=>diagnostics.parsePreflight({...report,checks:report.checks.slice(1)},scope));
+  assert.throws(()=>diagnostics.parsePreflight(report,'e'.repeat(64)));
+});
+test('a not-admitted proof releases only its matching saved attempt after explicit acknowledgment',()=>{
+  const attempt='d'.repeat(32),hash='e'.repeat(64);
+  const raw={...response('DENIED'),schema:'OpenRemaster.DevWorkflowResult.v2',control_scope:scope,control_verified:true,dev_receipt_verified:false,
+    evidence_sha256:hash,launch_count:0,recovery:{allowed:true,reason:'No intent, queue or ledger exists'},
+    not_admitted:{schema:'OpenRemaster.NotAdmitted.v1',operation_id:id,scope,attempt_id:attempt,reason:'Native admission unavailable',record_sha256:hash,production_go:false},
+    archive:{operation_id:id,evidence_sha256:hash,manifest_sha256:hash,path:'C:/DEV/archive',log_count:0,retention:'KEEP_UNTIL_EXPLICIT_EXPORT_AND_REVIEW'},
+    resolution:{operation_id:id,scope,evidence_sha256:hash,archive_manifest_sha256:hash,record_sha256:hash,disposition:'ACKNOWLEDGED_NO_RETRY',reason:'Reviewed this fresh rejected attempt.',new_operation_allowed:true,production_go:false}};
+  const parsed=worker.parseDevResult(JSON.stringify(raw),id,scope);
+  assert.equal(worker.canStartAnother(parsed),false);
+  assert.equal(worker.canStartAnother(parsed,'f'.repeat(32)),false);
+  assert.equal(worker.canStartAnother(parsed,attempt),true);
+  assert.equal(worker.canStartAnother({...parsed,resolution:null},attempt),false);
+  const store=storage();worker.saveOperation(store,scope,id,null,attempt);worker.saveOperation(store,scope,id,parsed);
+  assert.equal(worker.readOperation(store,scope).attempt_id,attempt);
+  assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,launch_count:1}),id,scope));
+  assert.throws(()=>worker.parseDevResult(JSON.stringify({...raw,ack:{operation_id:id}}),id,scope));
+});
+test('log pages verify bytes, scope, progress and archive identity',async()=>{
+  const bytes=Buffer.from('error: žltý fixture\r\nwarning: retained\n');
+  const hash=createHash('sha256').update(bytes).digest('hex');
+  const page={schema:'OpenRemaster.DevLogPage.v1',operation_id:id,scope,evidence_sha256:hash,source:'archive',name:'stdout.log',offset:0,next_offset:bytes.length,total_bytes:bytes.length,
+    bytes_base64:bytes.toString('base64'),chunk_sha256:hash,file_sha256:hash,manifest_sha256:hash,verified:true,eof:true,production_go:false};
+  const parse=value=>diagnostics.parseLogPage(JSON.stringify(value),id,scope,hash,'archive','stdout.log',0,hash);
+  assert.deepEqual(Buffer.from((await parse(page)).bytes),bytes);
+  await assert.rejects(()=>parse({...page,bytes_base64:Buffer.from('tampered').toString('base64')}));
+  await assert.rejects(()=>parse({...page,scope:'f'.repeat(64)}));
+  await assert.rejects(()=>parse({...page,manifest_sha256:'f'.repeat(64)}));
+  await assert.rejects(()=>parse({...page,eof:false}));
+  await assert.rejects(()=>parse({...page,verified:false}));
+  assert.equal(diagnostics.filterLog(bytes.toString(),'fixture','error'),'error: žltý fixture');
+  assert.match(diagnostics.filterLog(bytes.toString(),'','warning'),/^warning:/);
+});
 const response = state => ({schema:'OpenRemaster.DevWorkflowResult.v1',state,operation_id:id,production_go:false,independent_authority:false,engine:'unsigned-studio-dev-build',dev_receipt_verified:true});
 function storage() {
   const values = new Map();

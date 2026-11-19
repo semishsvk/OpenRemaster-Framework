@@ -1,13 +1,14 @@
 export type NativeInvoke = (command: string, args?: Record<string, unknown>) => Promise<unknown>;
 declare global { interface Window { __TAURI_INTERNALS__?: {invoke: NativeInvoke} } }
 
-export type Capabilities = {worker_compiled: boolean; worker_ready: boolean; worker_scope: string | null; reason: string; control_ready?: boolean; recovery_supported?: boolean; log_archive_supported?: boolean};
+export type Capabilities = {worker_compiled: boolean; worker_ready: boolean; worker_scope: string | null; reason: string; control_ready?: boolean; recovery_supported?: boolean; log_archive_supported?: boolean;preflight?:Preflight};
 export type DevResult = {
   schema: 'OpenRemaster.DevWorkflowResult.v1' | 'OpenRemaster.DevWorkflowResult.v2'; state: string; operation_id: string;
   production_go: false; independent_authority: false; engine: 'unsigned-studio-dev-build';
   dev_receipt_verified: boolean; launch_count?: number; reason?: string; ack?: unknown; commit?: unknown;
   control_scope?: string; control_verified?: boolean; evidence_sha256?: string;
   recovery?: {allowed: boolean; reason: string};
+  not_admitted?: {schema:'OpenRemaster.NotAdmitted.v1';operation_id:string;scope:string;attempt_id:string;reason:string;record_sha256:string;production_go:false};
   resolution?: {disposition: 'ACKNOWLEDGED_NO_RETRY'; operation_id: string; scope: string; evidence_sha256: string; archive_manifest_sha256: string; record_sha256: string; reason: string; new_operation_allowed: true; production_go: false} | null;
   archive?: {path: string; operation_id: string; evidence_sha256: string; manifest_sha256: string; log_count: number; retention: string} | null;
   logs?: Record<string, string>;
@@ -38,6 +39,7 @@ export function parseCapabilities(raw: unknown): Capabilities {
       || (value.worker_compiled ? !hex(value.worker_scope, 64) : value.worker_scope !== null)) {
     throw Error('Native capability response was rejected');
   }
+  if(value.preflight!==undefined)parsePreflight(value.preflight,value.worker_scope);
   return value as Capabilities;
 }
 
@@ -57,6 +59,12 @@ export function parseDevResult(raw: unknown, operation: string, scope?: string):
     throw Error('DEV response identity or scope was rejected');
   }
   if (controlled) {
+    if(value.not_admitted!==undefined) {
+      const proof=object(value.not_admitted);
+      if(value.state!=='DENIED'||value.launch_count!==0||proof.schema!=='OpenRemaster.NotAdmitted.v1'||proof.operation_id!==operation||proof.scope!==scope
+          ||!hex(proof.attempt_id,32)||!hex(proof.record_sha256,64)||!text(proof.reason,2048)||proof.production_go!==false
+          ||value.ack!=null||value.commit!=null||value.worker!=null)throw Error('Invalid not-admitted proof');
+    }
     if (!hex(value.evidence_sha256,64)) throw Error('DEV observation evidence is missing');
     const recovery = object(value.recovery);
     if (typeof recovery.allowed !== 'boolean' || !text(recovery.reason,4096)) throw Error('Invalid recovery observation');
@@ -91,7 +99,7 @@ export function parseDevResult(raw: unknown, operation: string, scope?: string):
   return value as DevResult;
 }
 
-export type OperationRecord = {schema: 'OpenRemaster.StudioOperation.v2'; scope: string; operation: string; result: DevResult | null};
+export type OperationRecord = {schema: 'OpenRemaster.StudioOperation.v2'; scope: string; operation: string; result: DevResult | null;attempt_id?:string};
 export const operationKey = (scope: string) => `orf-studio-operation-v2-${scope}`;
 export function readOperation(storage: Storage, scope: string): OperationRecord | null {
   const raw = storage.getItem(operationKey(scope));
@@ -101,25 +109,31 @@ export function readOperation(storage: Storage, scope: string): OperationRecord 
     if (value.schema !== 'OpenRemaster.StudioOperation.v2' || value.scope !== scope || !hex(value.operation, 32)) {
       throw Error('Saved operation has an invalid identity');
     }
+    if(value.attempt_id!==undefined&&!hex(value.attempt_id,32))throw Error('Invalid saved attempt identity');
     const result = value.result === null ? null : parseDevResult(JSON.stringify(value.result), value.operation, scope);
-    return {schema: 'OpenRemaster.StudioOperation.v2', scope, operation: value.operation, result};
+    return {schema: 'OpenRemaster.StudioOperation.v2', scope, operation: value.operation, result,attempt_id:value.attempt_id as string|undefined};
   }
   const legacy = storage.getItem(legacyOperationKey);
   if (!legacy) return null;
   if (!hex(legacy, 32)) throw Error('Saved legacy operation has an invalid identity');
   return {schema: 'OpenRemaster.StudioOperation.v2', scope, operation: legacy, result: null};
 }
-export function saveOperation(storage: Storage, scope: string, operation: string, result: DevResult | null) {
+export function saveOperation(storage: Storage, scope: string, operation: string, result: DevResult | null, attemptId?:string) {
   // Logs are a transient observation; keep the durable record small across restarts.
   const durable = result ? {...result, logs: undefined} : null;
-  const record: OperationRecord = {schema: 'OpenRemaster.StudioOperation.v2', scope, operation, result: durable};
+  const old=readOperation(storage,scope);
+  const attempt=attemptId??(old?.operation===operation?old.attempt_id:undefined);
+  if(attempt!==undefined&&!hex(attempt,32))throw Error('Invalid attempt identity');
+  const record: OperationRecord = {schema: 'OpenRemaster.StudioOperation.v2', scope, operation, result: durable,attempt_id:attempt};
   const raw = JSON.stringify(record);
   if (raw.length > 131072) throw Error('Saved operation metadata is too large');
   storage.setItem(operationKey(scope), raw);
   if (result && storage.getItem(legacyOperationKey) === operation) storage.removeItem(legacyOperationKey);
 }
-export function canStartAnother(result: DevResult | null) {
+export function canStartAnother(result: DevResult | null, attemptId?:string) {
   // A status rejection says nothing about whether a previous submission launched.
+  if(result?.not_admitted&&result.not_admitted.attempt_id!==attemptId)return false;
   return result?.state === 'COMMITTED' || (result?.schema === 'OpenRemaster.DevWorkflowResult.v2'
     && ['HOLD','DENIED','NOT_FOUND'].includes(result.state) && result.resolution?.new_operation_allowed === true);
 }
+import {parsePreflight, type Preflight} from './dev-diagnostics';

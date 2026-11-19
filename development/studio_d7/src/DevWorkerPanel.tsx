@@ -1,5 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {activeStates, canStartAnother, operationKey, parseCapabilities, parseDevResult, phaseLabels, readOperation, saveOperation, type Capabilities, type DevResult} from './dev-worker';
+import {diagnosticLabels, preflightAllowsSubmit, preflightFresh} from './dev-diagnostics';
+import DevLogViewer from './DevLogViewer';
 
 export default function DevWorkerPanel() {
   const [capabilities, setCapabilities] = useState<Capabilities | null>(null);
@@ -11,6 +13,8 @@ export default function DevWorkerPanel() {
   const [storageReady, setStorageReady] = useState(false);
   const [resolutionReason, setResolutionReason] = useState('');
   const [acknowledged, setAcknowledged] = useState(false);
+  const [attemptId,setAttemptId]=useState<string|undefined>();
+  const [clock,setClock]=useState(Date.now());
   const pending = useRef(false);
   const currentOperation = useRef('');
   const mounted = useRef(false);
@@ -41,14 +45,14 @@ export default function DevWorkerPanel() {
         if (!invoke) throw Error('Open the native Studio app to inspect DEV worker capabilities.');
         const value = parseCapabilities(await invoke('studio_capabilities'));
         if (!mounted.current) return;
-        setCapabilities(value);
+        setCapabilities(value);setClock(Date.now());
         const workerScope = value.worker_scope ?? 'portable-ui';
         const saved = readOperation(localStorage, workerScope);
         const probe = `${operationKey(workerScope)}-storage-probe`;
         localStorage.setItem(probe, '1'); localStorage.removeItem(probe);
         setStorageReady(true);
         if (saved) {
-          currentOperation.current = saved.operation; setOperation(saved.operation);
+          currentOperation.current = saved.operation; setOperation(saved.operation);setAttemptId(saved.attempt_id);
           if (value.control_ready ?? value.worker_ready) await query(saved.operation, workerScope);
         }
       } catch (reason) { if (mounted.current) setCapabilityError(String(reason)); }
@@ -56,6 +60,20 @@ export default function DevWorkerPanel() {
     void connect();
     return () => { mounted.current = false; };
   }, [query]);
+
+  useEffect(()=>{const timer=setInterval(()=>setClock(Date.now()),1000);return()=>clearInterval(timer);},[]);
+  async function refreshDiagnostics() {
+    if(pending.current)return;
+    pending.current=true;setBusy(true);setCapabilityError('');
+    try {
+      const invoke=window.__TAURI_INTERNALS__?.invoke;
+      if(!invoke)throw Error('Open the native Studio app to refresh diagnostics.');
+      const value=parseCapabilities(await invoke('studio_capabilities'));
+      if(value.worker_scope!==capabilities?.worker_scope)throw Error('Worker scope changed. Reopen Studio to inspect its saved operations.');
+      if(mounted.current){setCapabilities(value);setClock(Date.now());}
+    }catch(reason){if(mounted.current){setCapabilities(value=>value?{...value,worker_ready:false,preflight:undefined}:null);setCapabilityError(String(reason));}}
+    finally{pending.current=false;if(mounted.current)setBusy(false);}
+  }
 
   useEffect(() => {
     if (!(capabilities?.control_ready ?? capabilities?.worker_ready) || !operation || !activeStates.includes(result?.state ?? '')) return;
@@ -68,8 +86,9 @@ export default function DevWorkerPanel() {
       if (event.key !== operationKey(scope)) return;
       try {
         const saved = readOperation(localStorage, scope);
-        if (!saved || saved.operation === currentOperation.current) return;
-        currentOperation.current = saved.operation; setOperation(saved.operation); setResult(null);
+        if (!saved) return;
+        if(saved.operation===currentOperation.current){setAttemptId(saved.attempt_id);return;}
+        currentOperation.current = saved.operation; setOperation(saved.operation); setResult(null);setAttemptId(saved.attempt_id);
         setError('Another Studio window selected an operation. Refresh its saved status.');
       } catch (reason) { setStorageReady(false); setError(String(reason)); }
     }
@@ -78,20 +97,21 @@ export default function DevWorkerPanel() {
   }, [scope]);
 
   async function submit() {
-    if (pending.current || !capabilities?.worker_ready || !storageReady) return;
+    if (pending.current || !capabilities?.worker_ready || !storageReady || !preflightAllowsSubmit(capabilities.preflight)) return;
     if (!navigator.locks) { setError('This WebView needs Web Locks support to coordinate DEV submissions.'); return; }
     pending.current = true; setBusy(true); setError('');
     try {
       await navigator.locks.request(`orf-studio-submit-${scope}`, {ifAvailable: true}, async lock => {
         if (!lock) throw Error('Another Studio window is submitting a build. Refresh status.');
         const saved = readOperation(localStorage, scope);
-        if (saved && !canStartAnother(saved.result)) throw Error('Resolve the saved operation before starting another build.');
+        if (saved && !canStartAnother(saved.result,saved.attempt_id)) throw Error('Resolve the saved operation before starting another build.');
         const id = crypto.randomUUID().replaceAll('-', '');
-        saveOperation(localStorage, scope, id, null);
+        const attempt=crypto.randomUUID().replaceAll('-','');
+        saveOperation(localStorage, scope, id, null,attempt);setAttemptId(attempt);
         currentOperation.current = id; setOperation(id); setResult(null);
         const invoke = window.__TAURI_INTERNALS__?.invoke;
         if (!invoke) throw Error('Native worker connection is unavailable');
-        const raw = await invoke('dev_worker_call', {request: {action: 'submit', operation_id: id, scenario: 'build_studio_dev'}});
+        const raw = await invoke('dev_worker_call', {request: {action: 'submit', operation_id: id, scenario: 'build_studio_dev',attempt_id:attempt}});
         const value = parseDevResult(raw, id, scope);
         saveOperation(localStorage, scope, id, value);
         if (mounted.current && currentOperation.current === id) setResult(value);
@@ -100,17 +120,21 @@ export default function DevWorkerPanel() {
     finally { pending.current = false; if (mounted.current) setBusy(false); }
   }
 
-  async function manage(action: 'archive' | 'resolve') {
+  async function manage(action: 'archive' | 'resolve' | 'prove_not_admitted') {
     if (pending.current || !result?.evidence_sha256 || !operation || !navigator.locks) return;
     if (action === 'resolve' && (!acknowledged || resolutionReason.trim().length < 10)) return;
     const id=operation, expected=result.evidence_sha256;
     pending.current=true; setBusy(true); setError('');
     try {
       await navigator.locks.request(`orf-studio-submit-${scope}`,{ifAvailable:true},async lock=>{
-        if (!lock || readOperation(localStorage,scope)?.operation !== id) throw Error('Operation changed in another Studio window. Refresh status.');
+        const saved=readOperation(localStorage,scope);
+        if (!lock || saved?.operation !== id || (result.not_admitted&&saved.attempt_id!==result.not_admitted.attempt_id)) throw Error('Operation or attempt changed in another Studio window. Refresh status.');
+        if(action==='prove_not_admitted'&&!saved.attempt_id)throw Error('Only a fresh saved attempt can request not-admitted verification.');
         const invoke=window.__TAURI_INTERNALS__?.invoke;
         if (!invoke) throw Error('Native worker connection is unavailable');
-        const raw=await invoke('dev_worker_call',{request:{action,operation_id:id,scenario:'build_studio_dev',recovery:{expected_evidence_sha256:expected,...(action==='resolve'?{reason:resolutionReason.trim(),acknowledge:true}:{})}}});
+        const raw=await invoke('dev_worker_call',{request:{action,operation_id:id,scenario:'build_studio_dev',
+          ...((action==='prove_not_admitted'||(action==='resolve'&&result.not_admitted))?{attempt_id:saved.attempt_id}:{}),
+          recovery:{expected_evidence_sha256:expected,...(action==='resolve'?{reason:resolutionReason.trim(),acknowledge:true}:{})}}});
         const value=parseDevResult(raw,id,scope);
         if (readOperation(localStorage,scope)?.operation !== id) return;
         saveOperation(localStorage,scope,id,value);
@@ -122,24 +146,38 @@ export default function DevWorkerPanel() {
 
   const ready = capabilities?.worker_ready === true;
   const connected = (capabilities?.control_ready ?? capabilities?.worker_ready) === true;
+  const diagnosticReady=preflightAllowsSubmit(capabilities?.preflight,clock);
+  const proofMatches=!result?.not_admitted||result.not_admitted.attempt_id===attemptId;
   const artifact = result?.state === 'COMMITTED' ? result.worker?.artifacts : undefined;
   return <section className="panel" aria-label="Studio DEV operation" data-testid="dev-worker-panel" style={{padding:24,marginBottom:24,overflowWrap:'anywhere'}}>
     <div className="eyebrow">DEV UNSIGNED</div><h2>Studio DEV build</h2>
     <p>{capabilities?.reason ?? (capabilityError || 'Checking native capabilities…')}</p>
     {capabilities && capabilityError && <p role="alert">{capabilityError}</p>}
     {capabilities && <p>DEV worker: <strong>{ready ? 'available' : 'unavailable'}</strong></p>}
+    <section aria-label="Build diagnostics">
+      <h3>Before you build</h3>
+      <p role="status">{!capabilities?.preflight?'Current diagnostic evidence is unavailable.':!preflightFresh(capabilities.preflight,clock)?'Diagnostics expired. Refresh before building.':diagnosticReady?'All required DEV checks passed.':'Build blocked. Resolve the checks below through the original authority.'}</p>
+      <button disabled={busy} onClick={()=>void refreshDiagnostics()}>Refresh diagnostics</button>
+      {capabilities?.preflight&&<ul>{capabilities.preflight.checks.map(check=><li key={check.id}><strong>{diagnosticLabels[check.id]} · {check.status}</strong><p>{check.detail}{check.status!=='PASS'&&<> Next: {check.next_step}</>}</p></li>)}</ul>}
+      <small>Diagnostic checks are read-only and expire after 30 seconds. They never issue a lease, change GAME mode or switch Windows accounts.</small>
+    </section>
     <div style={{display:'flex',gap:12,flexWrap:'wrap'}}>
-      <button data-testid="dev-run" disabled={busy || !ready || !storageReady || (!!operation && !canStartAnother(result))} onClick={() => void submit()}>Build a DEV candidate</button>
+      <button data-testid="dev-run" disabled={busy || !ready || !diagnosticReady || !storageReady || (!!operation && !canStartAnother(result,attemptId))} onClick={() => void submit()}>Build a DEV candidate</button>
       <button data-testid="dev-status" disabled={busy || !connected || !operation} onClick={() => void query(operation, scope)}>Refresh build status</button>
     </div>
     <p>Operation: <code>{operation || 'none'}</code></p>
     <div role="status" aria-live="polite">{busy ? 'Checking operation…' : phaseLabels[result?.state ?? ''] ?? (operation ? 'Saved outcome needs verification' : 'Ready')}</div>
     {error && <p role="alert">{error}</p>}
     {result?.reason && <p>Reason: {result.reason}</p>}
+    {result?.not_admitted&&<p>Attempt rejected before admission · no queue or launch was recorded. {proofMatches?'The proof matches this saved attempt.':'The proof does not match a fresh saved attempt; the operation stays on hold.'}</p>}
+    {result?.state==='NOT_FOUND'&&!result.not_admitted&&attemptId&&connected&&<p>
+      <button disabled={busy} onClick={()=>void manage('prove_not_admitted')}>Verify this attempt was not admitted</button>{' '}
+      Checks absence under the existing worker locks and records proof. It never resubmits a build. If evidence is unknown or busy, the operation stays on hold.
+    </p>}
     {result && <p>Launches: {result.launch_count ?? 'unconfirmed'} · ACK: {result.ack ? 'recorded' : 'pending'} · Commit: {result.commit ? 'recorded' : 'pending'}</p>}
     {result?.recovery && !result.resolution && ['HOLD','DENIED','NOT_FOUND'].includes(result.state) && <div>
       <h3>Review held operation</h3><p>{result.recovery.reason}</p>
-      {result.recovery.allowed && capabilities?.recovery_supported && <>
+      {result.recovery.allowed && proofMatches && capabilities?.recovery_supported && <>
         <label>Resolution note <textarea style={{display:'block',width:'100%',boxSizing:'border-box'}} maxLength={1024} value={resolutionReason} onChange={event=>setResolutionReason(event.target.value)} /></label>
         <label><input type="checkbox" checked={acknowledged} onChange={event=>setAcknowledged(event.target.checked)} />I acknowledge this hold. Preserve its evidence and do not retry this operation.</label>
         <p><button disabled={busy || !connected || !acknowledged || resolutionReason.trim().length<10} onClick={()=>void manage('resolve')}>Archive evidence and acknowledge hold</button></p>
@@ -150,6 +188,7 @@ export default function DevWorkerPanel() {
     {capabilities?.log_archive_supported && result?.evidence_sha256 && !result.archive && ['COMMITTED','HOLD','DENIED','NOT_FOUND'].includes(result.state) && <p><button disabled={busy || !connected} onClick={()=>void manage('archive')}>Archive build logs</button></p>}
     {artifact && <dl className="studio-build-identity"><dt>Artifact</dt><dd><code>{artifact.studio_exe}</code></dd><dt>SHA-256</dt><dd><code>{artifact.studio_exe_sha256}</code></dd></dl>}
     {Object.entries(result?.logs ?? {}).map(([name, log]) => <details key={name}><summary>{name} · last 8 KiB</summary><pre style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere',maxHeight:300,overflow:'auto'}}>{log || 'No output yet'}</pre></details>)}
+    {result?.evidence_sha256&&<DevLogViewer result={result} scope={scope} connected={connected}/>}
     <small>Active operation status refreshes every 10 seconds. Saved operations resume status checks after reopening Studio. Unknown outcomes remain on hold.</small>
   </section>;
 }

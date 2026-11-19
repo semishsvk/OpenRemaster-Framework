@@ -92,7 +92,11 @@ fn call_control(
         atomic::{AtomicBool, Ordering},
         Arc,
     };
-    const LIMIT: u64 = 131072;
+    let limit: u64 = if request["action"] == "logs" {
+        2 * 1024 * 1024
+    } else {
+        131072
+    };
     let mut child = Command::new(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?)
         .args([
             "-B",
@@ -114,11 +118,12 @@ fn call_control(
     fn reader<R: Read + Send + 'static>(
         stream: R,
         flag: Arc<AtomicBool>,
+        limit: u64,
     ) -> thread::JoinHandle<std::io::Result<Vec<u8>>> {
         thread::spawn(move || {
             let mut bytes = Vec::new();
-            stream.take(LIMIT + 1).read_to_end(&mut bytes)?;
-            if bytes.len() as u64 > LIMIT {
+            stream.take(limit + 1).read_to_end(&mut bytes)?;
+            if bytes.len() as u64 > limit {
                 flag.store(true, Ordering::SeqCst);
             }
             Ok(bytes)
@@ -127,10 +132,12 @@ fn call_control(
     let stdout = reader(
         child.stdout.take().ok_or("DEV_CONTROL_STDOUT")?,
         overflow.clone(),
+        limit,
     );
     let stderr = reader(
         child.stderr.take().ok_or("DEV_CONTROL_STDERR")?,
         overflow.clone(),
+        limit,
     );
     if child
         .stdin
@@ -196,10 +203,24 @@ pub struct RecoveryRequest {
 }
 #[derive(Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
+pub struct LogRequest {
+    source: String,
+    name: String,
+    offset: u64,
+    limit: u64,
+    #[serde(default)]
+    manifest_sha256: Option<String>,
+}
+#[derive(Deserialize, Clone)]
+#[serde(deny_unknown_fields)]
 pub struct DevRequest {
     action: String,
     operation_id: String,
     scenario: String,
+    #[serde(default)]
+    attempt_id: Option<String>,
+    #[serde(default)]
+    log: Option<LogRequest>,
     #[serde(default)]
     recovery: Option<RecoveryRequest>,
     #[serde(default)]
@@ -369,7 +390,16 @@ fn issue_ephemeral_receipt(
     Ok(generated)
 }
 fn execute(request: DevRequest) -> Result<String, String> {
-    if !["submit", "status", "archive", "resolve"].contains(&request.action.as_str())
+    if ![
+        "submit",
+        "status",
+        "archive",
+        "resolve",
+        "logs",
+        "export",
+        "prove_not_admitted",
+    ]
+    .contains(&request.action.as_str())
         || request.scenario != "build_studio_dev"
         || request.operation_id.len() != 32
         || !request
@@ -380,7 +410,23 @@ fn execute(request: DevRequest) -> Result<String, String> {
         return Err("DEV_REQUEST_DENIED".into());
     }
     let mut raw = serde_json::json!({"action":request.action,"operation_id":request.operation_id,"scenario":request.scenario});
-    if ["archive", "resolve"].contains(&request.action.as_str()) {
+    if let Some(attempt) = &request.attempt_id {
+        if !["submit", "resolve", "prove_not_admitted"].contains(&request.action.as_str())
+            || attempt.len() != 32
+            || !attempt
+                .bytes()
+                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+        {
+            return Err("DEV_ATTEMPT_SCOPE".into());
+        }
+        raw["attempt_id"] = serde_json::json!(attempt);
+    }
+    if request.action == "prove_not_admitted" && request.attempt_id.is_none() {
+        return Err("DEV_ATTEMPT_SCOPE".into());
+    }
+    if ["archive", "resolve", "logs", "export", "prove_not_admitted"]
+        .contains(&request.action.as_str())
+    {
         let recovery = request
             .recovery
             .as_ref()
@@ -409,10 +455,60 @@ fn execute(request: DevRequest) -> Result<String, String> {
     } else if request.recovery.is_some() {
         return Err("DEV_UNEXPECTED_RECOVERY_DETAILS".into());
     }
+    if request.action == "logs" {
+        let log = request.log.as_ref().ok_or("DEV_LOG_DETAILS_REQUIRED")?;
+        if !["live", "archive", "bundle"].contains(&log.source.as_str())
+            || !(if log.source == "bundle" {
+                log.name == "diagnostics.zip"
+            } else {
+                ["stdout.log", "stderr.log"].contains(&log.name.as_str())
+            })
+            || log.limit == 0
+            || log.limit > 1024 * 1024
+            || log.offset > 64 * 1024 * 1024 + 131072
+        {
+            return Err("DEV_LOG_PAGE_SCOPE".into());
+        }
+        raw["source"] = serde_json::json!(log.source);
+        raw["name"] = serde_json::json!(log.name);
+        raw["offset"] = serde_json::json!(log.offset);
+        raw["limit"] = serde_json::json!(log.limit);
+        if let Some(manifest) = &log.manifest_sha256 {
+            raw["manifest_sha256"] = serde_json::json!(manifest);
+        }
+    } else if request.log.is_some() {
+        return Err("DEV_UNEXPECTED_LOG_DETAILS".into());
+    }
     let pins: serde_json::Value = serde_json::from_str(CONFIG).map_err(|_| "DEV_CONFIG_INVALID")?;
     verify_pins(&pins)?;
     let root = PathBuf::from(pins["root"].as_str().ok_or("DEV_ROOT_REQUIRED")?);
     let python = PathBuf::from(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?);
+    if request.action == "submit" {
+        if let Some(reason) = crate::dev_preflight::submission_blocker() {
+            if request.attempt_id.is_none() {
+                return Err(reason.into());
+            }
+            // Ask the pinned client to prove absence under the original locks.
+            // Failure to obtain that proof leaves the saved UI ID on HOLD.
+            raw["action"] = serde_json::json!("reject");
+            raw["reason"] = serde_json::json!(reason);
+            let mut rejected = call_control(&pins, &raw)?;
+            if rejected["schema"] != "OpenRemaster.DevWorkflowResult.v2"
+                || rejected["operation_id"] != request.operation_id
+                || rejected["control_scope"] != control_scope()
+                || rejected["control_verified"] != true
+                || rejected["production_go"] != false
+                || rejected["independent_authority"] != false
+                || rejected["state"] != "DENIED"
+                || rejected["launch_count"] != 0
+                || rejected["not_admitted"]["attempt_id"].as_str() != request.attempt_id.as_deref()
+            {
+                return Err("DEV_REJECTION_SCOPE".into());
+            }
+            rejected["dev_receipt_verified"] = serde_json::json!(false);
+            return Ok(rejected.to_string());
+        }
+    }
     // Only execution admission issues/verifies a DEV receipt. Status/recovery do not.
     let receipt = if request.action == "submit" {
         let admitted = if request.dev_receipt_path.is_none() && request.dev_receipt_sha256.is_none()
@@ -435,6 +531,28 @@ fn execute(request: DevRequest) -> Result<String, String> {
         raw["dev_receipt_sha256"] = serde_json::json!(admitted_sha);
     }
     let mut value = call_control(&pins, &raw)?;
+    if request.action == "prove_not_admitted"
+        && (value["state"] != "DENIED"
+            || value["launch_count"] != 0
+            || value["not_admitted"]["attempt_id"].as_str() != request.attempt_id.as_deref())
+    {
+        return Err("DEV_REJECTION_SCOPE".into());
+    }
+    if ["logs", "export"].contains(&request.action.as_str()) {
+        let schema = if request.action == "logs" {
+            "OpenRemaster.DevLogPage.v1"
+        } else {
+            "OpenRemaster.DevLogExport.v1"
+        };
+        if value["schema"] != schema
+            || value["operation_id"] != request.operation_id
+            || value["scope"] != control_scope()
+            || value["production_go"] != false
+        {
+            return Err("DEV_LOG_RESPONSE_SCOPE".into());
+        }
+        return Ok(value.to_string());
+    }
     if value["schema"] != "OpenRemaster.DevWorkflowResult.v2"
         || value["operation_id"] != request.operation_id
         || value["production_go"] != false
@@ -461,11 +579,23 @@ pub async fn dev_worker_call(request: DevRequest) -> Result<String, String> {
 mod tests {
     use super::*;
     #[test]
+    fn portable_log_paths_are_rejected_before_worker_access() {
+        let request: DevRequest = serde_json::from_value(serde_json::json!({
+            "action":"logs","operation_id":"a".repeat(32),"scenario":"build_studio_dev",
+            "recovery":{"expected_evidence_sha256":"b".repeat(64)},
+            "log":{"source":"archive","name":"../ledger.sqlite","offset":0,"limit":65536}
+        }))
+        .unwrap();
+        assert_eq!(execute(request).unwrap_err(), "DEV_LOG_PAGE_SCOPE");
+    }
+    #[test]
     fn portable_rejects_recovery_without_current_evidence() {
         let request = DevRequest {
             action: "resolve".into(),
             operation_id: "a".repeat(32),
             scenario: "build_studio_dev".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
@@ -509,6 +639,8 @@ mod tests {
             action: "submit".into(),
             operation_id: "../escape".into(),
             scenario: "normal".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
@@ -519,6 +651,8 @@ mod tests {
             action: "submit".into(),
             operation_id: "a".repeat(32),
             scenario: "shell".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
@@ -540,6 +674,8 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: Some(pins["dev_packet"].as_str().expect("packet").into()),
             dev_receipt_path: None,
@@ -562,6 +698,8 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
@@ -582,6 +720,8 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: Some(
@@ -612,6 +752,8 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "normal".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: Some(tampered.display().to_string()),
@@ -629,6 +771,8 @@ mod tests {
             action: "status".into(),
             operation_id: "a7d7c0de202510250000000000000001".into(),
             scenario: "build_studio_dev".into(),
+            attempt_id: None,
+            log: None,
             recovery: None,
             dev_packet_path: None,
             dev_receipt_path: None,
