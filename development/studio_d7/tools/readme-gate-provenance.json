@@ -1,0 +1,6 @@
+{
+  "method": "Unmodified copy of the existing owner-approved structural checker for portable CI; no production authority",
+  "source": "F:/Remaster Framework/orchestrator/dev-build-readme-v1/verify_dev_build_readme.py",
+  "sha256": "2b05c8cc1e38aa73165fa5c7e6f7a7c4a98a3427de61f8fe033802a0507c0dbf",
+  "production_go": false
+}

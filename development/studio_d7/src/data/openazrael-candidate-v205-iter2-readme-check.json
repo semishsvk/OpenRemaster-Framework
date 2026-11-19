@@ -1,0 +1,13 @@
+{
+  "schema": "OpenRemaster.StudioReadmeCheck.v1",
+  "projectId": "OpenAzrael",
+  "buildId": "candidate-v205-iter2",
+  "acceptanceSha256": "16ed66f786a84a8c19285aaa4547c78a1c498e03e8752fca15cd30fcaf25ca3a",
+  "checkedAt": "2026-11-11T07:30:14+00:00",
+  "validator": "verify_dev_build_readme.py",
+  "validatorSha256": "2b05c8cc1e38aa73165fa5c7e6f7a7c4a98a3427de61f8fe033802a0507c0dbf",
+  "status": "README_HOLD",
+  "problems": [
+    "README.md missing"
+  ]
+}

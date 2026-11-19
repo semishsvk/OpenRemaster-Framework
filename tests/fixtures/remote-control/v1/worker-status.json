@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "worker_id": "synthetic-worker",
+  "observed_utc": "2026-10-13T12:00:00Z",
+  "state": "READY",
+  "capabilities": [
+    "synthetic.validate"
+  ]
+}

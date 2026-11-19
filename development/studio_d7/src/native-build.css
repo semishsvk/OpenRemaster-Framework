@@ -1,0 +1,58 @@
+/* UI-015 / Native Build Lab: historical source-bound MSVC smoke, not a Tauri app. */
+.native-build-page{min-width:0}
+.native-build-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:7px 0 19px}
+.native-build-metrics>div{padding:18px 17px;background:#152b34;border:1px solid #38565d;border-radius:9px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.native-build-metrics small{color:#9bb3b6;font-size:10px;line-height:1.4;text-transform:uppercase;letter-spacing:.5px}
+.native-build-metrics strong{font-size:31px;color:#d3f1dc;line-height:1.15}
+.native-build-metrics strong.native-build-warning{color:#eab09a}
+.native-build-metrics span{color:#8fa7ae;font-size:10px;line-height:1.5}
+.native-build-hero{background:radial-gradient(ellipse at 85% 0%,rgba(142,195,174,.17),transparent 56%),linear-gradient(114deg,#234133,#102831);border-color:#476b58}
+.native-build-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:17px;align-items:start;margin:0 0 20px}
+.native-build-columns>.panel{min-width:0}
+.native-build-filters,.native-build-switcher{display:flex;gap:7px;flex-wrap:wrap;margin:-2px 0 14px}
+.native-build-filters button,.native-build-switcher button{padding:9px 12px;font-size:10px;background:#173139;border:1px solid #3e5356;color:#a9c9bb;border-radius:6px}
+.native-build-filters button:hover,.native-build-switcher button:hover{border-color:#7cb295}
+.native-build-filters button.active,.native-build-switcher button.active{background:#244b3e;border-color:#7cbfa0;color:#e0f2e0}
+.native-build-gates{display:flex;flex-direction:column;gap:7px}
+.native-build-gate{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:#122b34;border:1px solid #365259;border-radius:7px;padding:12px 11px;color:#cfe4dc;min-width:0}
+.native-build-gate:hover{border-color:#80a995;background:#203c3b}
+.native-build-gate.selected{border-color:#9ad2ad;background:#23493d}
+.native-build-index{font:700 11px Consolas,monospace;color:#9bd8ac;flex-shrink:0}
+.native-build-gate-info{flex:1;min-width:0}
+.native-build-gate-info strong{display:block;font-size:11px;color:#e0eee2;line-height:1.4}
+.native-build-gate-info small{display:block;color:#8eaaad;font-size:9px;margin-top:5px;line-height:1.45}
+.native-build-pill{font-size:9px;font-weight:730;letter-spacing:.4px;padding:6px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.native-build-pill.passed{border:1px solid #507f68;background:#254639;color:#b3e7bd}
+.native-build-pill.blocked{border:1px solid #785b50;background:#382b27;color:#e5a78f}
+.native-build-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 0 16px}
+.native-build-details>div{background:#172e32;border:1px solid #3d5356;border-radius:7px;padding:13px;min-width:0}
+.native-build-details small{display:block;color:#91aaa7;font-size:10px;line-height:1.55}
+.native-build-details strong{display:block;margin-top:9px;color:#d9ddc5;font-size:12px;line-height:1.45}
+.native-build-binary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:4px 0 18px}
+.native-build-binary>div{padding:13px;background:#162e36;border:1px solid #3d5958;border-radius:8px;min-width:0}
+.native-build-binary small{color:#9cb6b3;font-size:10px;display:block;line-height:1.5}
+.native-build-binary strong{font-size:12px;color:#d9ecd9;display:block;margin-top:10px;line-height:1.45}
+.native-build-hash{padding:12px 15px;border:1px solid #3c5659;background:#102934;border-radius:7px;margin:0 0 19px}
+.native-build-hash span{display:block;color:#91b0b0;font-size:9px;margin-bottom:9px}
+.native-build-hash code{display:block;color:#d0edda;font-size:10px;overflow-wrap:anywhere}
+.native-build-chain{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.native-build-chain>div{display:flex;align-items:center;gap:9px;padding:12px;background:#142a34;border:1px solid #354b52;border-radius:7px;min-width:0}
+.native-build-chain>div>span:first-child{color:#b5d5b9;font:700 11px Consolas,monospace}
+.native-build-chain strong{color:#d2e0dc;font-size:10px;line-height:1.45;flex:1}
+.native-build-tooling{display:flex;flex-direction:column;gap:9px;margin:3px 0 16px}
+.native-build-tooling>div{display:grid;grid-template-columns:85px minmax(0,1fr) auto;align-items:center;gap:8px;background:#133037;padding:12px;border:1px solid #486657;border-radius:7px}
+.native-build-tooling strong{font:700 10px Consolas,monospace;color:#d4efda}
+.native-build-tooling span{font-size:10px;color:#a4bfb4}
+.native-build-tooling code{font-size:9px;color:#a0d0ae}
+.native-build-scenario{margin:15px 0;padding:15px;border-radius:7px;border:1px solid #76534b;background:#332d29}
+.native-build-scenario strong{font:700 16px Consolas,monospace;color:#f0c5a3}
+.native-build-scenario p{font-size:11px;color:#d4b7ab;line-height:1.6;margin:10px 0}
+.native-build-scenario small{color:#b8b6a3;font-size:10px}
+.native-build-footnote{font-size:10px;color:#bdd7b5;line-height:1.5;margin:9px 0}
+.native-build-source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 0 18px}
+.native-build-source-grid>div{min-width:0;padding:12px;border:1px solid #3a5256;background:#152b33;border-radius:7px}
+.native-build-source-grid span{display:block;font-size:10px;text-transform:capitalize;color:#9bb5b0;margin-bottom:9px}
+.native-build-source-grid code{font-size:9px;color:#abddbf;overflow-wrap:anywhere}
+@media(max-width:1180px){.native-build-columns{grid-template-columns:1fr}.native-build-binary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:920px){.native-build-metrics,.native-build-source-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.native-build-chain{grid-template-columns:1fr}}
+@media(max-width:650px){.native-build-metrics,.native-build-binary,.native-build-source-grid{grid-template-columns:1fr}.native-build-tooling>div{display:flex;flex-wrap:wrap}.native-build-gate{flex-wrap:wrap}}

@@ -1,0 +1,166 @@
+{
+  "schema": "OpenRemaster.StudioPortableHostEvidence.v1",
+  "releaseId": "ORF-STUDIO-UI-20261018-r8",
+  "generatedUtc": "2026-10-18T12:21:35+00:00",
+  "status": "PORTABLE_BINDINGS_AND_SYNTHETIC_TRANSPORT_SOURCE_VERIFIED_PRODUCTION_HOLD",
+  "sourceAuthority": "UNSIGNED_LOCAL_SHA256_IS_NOT_OWNER_OR_PUBLISHER_AUTHENTICATION",
+  "sourcePins": {
+    "parentR7ZipSha256": "aca85e09eac5961a765d6e416e7fb32a3ff0caf27666905ee753f88d116b54a6",
+    "acSourceZipSha256": "b35c5dc790d0314619a106612a8c734069e1d4cbf67eca37b64da5ec9471c040",
+    "adSourceZipSha256": "399b3c210418090fb0337d14c2bfb7ced20752e538f5fadf1fa176226a324bfa",
+    "acRuntimeManifestSha256": "2544a185765586b53d500cb83d7719c0cef48080d81a5b8c171306046c5a5749",
+    "nodeProposal": "ffe343d59f88a1b1ced30863f8c7d225e31dad004fdf6905b3c3671e2c5a353a",
+    "portableRegression": "9a285594ac3cc0440da9c937c51077a8450bc63e808f942e9135fa26c952ff60",
+    "portableNegative": "d7fedae5a2b6c841646cb4253d51140a08be5d443fc79f6817d58ac92020f25c",
+    "portablePackageReceipt": "2ca2ed88e19183701ba9db6417859bfd349d2d3c18d2b1702db4fccf60894e63",
+    "transportResult": "2d1b9f3b33ad3622eb76f386a0ea71f05df9ba753127160f7b301b6ca05809ce",
+    "transportReceipt": "35de0c2e0dfffd42a7afe6c8988f94434a80e31ae98d952fa4f371424ede539f",
+    "transportCases": "b17e840def0de13a9e0c7359a25f687ce5b6f8722a8935ef9e3ab29c22ec7a67"
+  },
+  "host": {
+    "proof": "NW025-AC_OFFLINE_RELOCATION_AND_EXECUTABLE_BINDING",
+    "originalRegressionCount": 188,
+    "pythonTests": 118,
+    "nodeTests": 70,
+    "regressionGroups": [
+      {
+        "name": "host_contract",
+        "tests": 23
+      },
+      {
+        "name": "inspector_api",
+        "tests": 28
+      },
+      {
+        "name": "registry_adapter",
+        "tests": 27
+      },
+      {
+        "name": "cache",
+        "tests": 28
+      },
+      {
+        "name": "original_registry",
+        "tests": 12
+      },
+      {
+        "name": "session",
+        "tests": 23
+      },
+      {
+        "name": "bridge",
+        "tests": 16
+      },
+      {
+        "name": "consumer",
+        "tests": 31
+      }
+    ],
+    "negativeCases": 7,
+    "emptyExecutableNegativeCases": 2,
+    "runtimeManifestFiles": 759,
+    "pythonRuntimeFiles": 757,
+    "nodeRuntimeFiles": 2,
+    "runtimeManifestFilesReadOnlyRehashed": 759,
+    "runtimeManifestBytesReadOnlyRehashed": 127210300,
+    "candidatePinsVerifiedByAC": 849,
+    "relativeRuntimePaths": true,
+    "noUserProvidedExecutablePath": true,
+    "noPathFallback": true,
+    "noRuntimeBinaryCopiedIntoStudio": true,
+    "installedPythonNodePathsUsedForRelocatedService": false,
+    "fullOfflineHostRerunWasNW025AC": true,
+    "liveProductionHostRPCs": 0,
+    "ownerWitnessAuthenticated": false
+  },
+  "transport": {
+    "proof": "NW025-AD_ACTUAL_WIN32_JOB_OWNED_SYNTHETIC_NODE_PYTHON",
+    "windowsJobBoundedSyntheticInvocations": 7,
+    "passed": 7,
+    "sourcePinsRechecked": 764,
+    "serviceKind": "SYNTHETIC_FIXTURE_NOT_REAL_INSPECTOR",
+    "processesBoundToJobBeforeResume": true,
+    "killOnCloseUsed": true,
+    "testProcessCap": 6,
+    "testCases": [
+      {
+        "mode": "success",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "EXITED"
+      },
+      {
+        "mode": "wrong_id",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "EXITED"
+      },
+      {
+        "mode": "stderr",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "EXITED"
+      },
+      {
+        "mode": "nonzero",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "EXITED"
+      },
+      {
+        "mode": "duplicate",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "EXITED"
+      },
+      {
+        "mode": "timeout",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "JOB_TIMEOUT_HOLD"
+      },
+      {
+        "mode": "orphan",
+        "passed": true,
+        "processChain": "WINDOWS_JOB_OWNED_NODE_BRIDGE_TO_SYNTHETIC_PYTHON",
+        "allRecordedTestProcessesStopped": true,
+        "status": "JOB_DESCENDANT_SURVIVED_PARENT_HOLD"
+      }
+    ],
+    "allRecordedTestProcessesStopped": true,
+    "liveInspectorRPCs": 0,
+    "originalGamesTouched": false,
+    "canExecuteProductionJobs": false
+  },
+  "nodeProposedShippingSubset": {
+    "nodeExecutable": "node.exe",
+    "license": "LICENSE",
+    "licenseExactVersionMatched": true,
+    "npmProposed": false,
+    "npxProposed": false,
+    "corepackProposed": false,
+    "sourceProposalAcceptedForProduction": false,
+    "independentLicenseReviewDone": false
+  },
+  "deployment": {
+    "sourceRuntimeClosureInTestedACContext": true,
+    "authenticRealInspectorPortabilityTested": false,
+    "separateCleanWindowsMachineTested": false,
+    "transitiveDynamicDllShippingAcceptance": false,
+    "completeLegalRedistributionApproval": false,
+    "externalSignerOwnerWitnessApproved": false,
+    "studioTauri2ExeBuilt": false,
+    "approvedExistingStudioIconFileVerified": false,
+    "signedOneInstallerBuilt": false,
+    "runtimeConfigProductionAdmitted": false,
+    "jobDispatchAllowed": false,
+    "automaticRetry": false,
+    "status": "HOLD_NO_AUTO_RETRY"
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "approvedExternally": false,
+  "classification": "HISTORICAL_LOCAL_SOURCE_ONLY_NO_PRODUCTION_AUTHORITY",
+  "currentNativeTaskQueried": false,
+  "currentOwnerWitnessQueried": false,
+  "disclaimer": "Historical review handoff only. No external A/B/C approval, current witness, signer or native execution authority.",
+  "firstReview": "A01_ROOT_OF_TRUST",
+  "gateCount": 9,
+  "gates": [
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Approved out-of-band publisher, Owner and witness public-key fingerprints; issuer/revocation.",
+      "id": "A01_ROOT_OF_TRUST",
+      "predecessors": [],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "owner",
+        "publisher",
+        "independent_reviewer"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Distinct cloud tenant/IAM/billing administrator and no HomePC CAS/HSM privileges.",
+      "id": "A02_INDEPENDENT_WITNESS_TENANT",
+      "predecessors": [
+        "A01_ROOT_OF_TRUST"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "owner",
+        "independent_witness_operator",
+        "cloud_security"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Protected non-exportable purpose-separated witness/Owner HSM keys with rotation/revocation.",
+      "id": "A03_SIGNER_ROLE_CUSTODY",
+      "predecessors": [
+        "A01_ROOT_OF_TRUST",
+        "A02_INDEPENDENT_WITNESS_TENANT"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "owner",
+        "independent_witness_operator",
+        "security_reviewer"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Live If-Match 412; durable same-partition atomic highwater + unsigned intent; global fence.",
+      "id": "A04_REAL_COSMOS_CAS",
+      "predecessors": [
+        "A02_INDEPENDENT_WITNESS_TENANT"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "independent_witness_operator",
+        "cloud_security"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Canonical signed receipt over release/source/host/SID/epoch/nonce; verify against separately pinned key.",
+      "id": "A05_CRYPTO_RECEIPT",
+      "predecessors": [
+        "A01_ROOT_OF_TRUST",
+        "A03_SIGNER_ROLE_CUSTODY",
+        "A04_REAL_COSMOS_CAS"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "witness_signing_operator",
+        "independent_reviewer"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Externally signed key change; reject retired/revoked version despite old valid signatures.",
+      "id": "A06_KEY_ROTATION_REVOCATION",
+      "predecessors": [
+        "A03_SIGNER_ROLE_CUSTODY",
+        "A05_CRYPTO_RECEIPT"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "owner",
+        "independent_witness_operator",
+        "security_reviewer"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Signed fresh monotonic epoch and nonce highwater, trusted clock, revocation freshness.",
+      "id": "A07_SIGNED_CURRENT_HIGHWATER",
+      "predecessors": [
+        "A04_REAL_COSMOS_CAS",
+        "A05_CRYPTO_RECEIPT",
+        "A06_KEY_ROTATION_REVOCATION"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "independent_witness_operator",
+        "security_reviewer"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "After durable commit/lost reply reconcile existing operation; failover/split-brain/rollback HOLD.",
+      "id": "A08_UNKNOWN_OUTCOME_RECOVERY",
+      "predecessors": [
+        "A04_REAL_COSMOS_CAS",
+        "A05_CRYPTO_RECEIPT",
+        "A07_SIGNED_CURRENT_HIGHWATER"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "independent_witness_operator",
+        "security_reviewer"
+      ],
+      "role_metadata_available": false
+    },
+    {
+      "current_status": "NEEDS_SEPARATE_OUT_OF_BAND_EVIDENCE",
+      "dependency_authenticated": false,
+      "external_evidence_task": "Out-of-band Gate A decision, signed by separately authorized parties; B/C not included.",
+      "id": "A09_DISTINCT_OWNER_ACCEPTANCE",
+      "predecessors": [
+        "A01_ROOT_OF_TRUST",
+        "A02_INDEPENDENT_WITNESS_TENANT",
+        "A03_SIGNER_ROLE_CUSTODY",
+        "A04_REAL_COSMOS_CAS",
+        "A05_CRYPTO_RECEIPT",
+        "A06_KEY_ROTATION_REVOCATION",
+        "A07_SIGNED_CURRENT_HIGHWATER",
+        "A08_UNKNOWN_OUTCOME_RECOVERY"
+      ],
+      "real_crypto_or_origin_verified": false,
+      "required_role_aliases": [
+        "independent_owner",
+        "independent_security_reviewer"
+      ],
+      "role_metadata_available": false
+    }
+  ],
+  "historicalSourceTestsPassed": 83,
+  "independentlySignedEvidenceCount": 0,
+  "mayAutoRetry": false,
+  "mayDispatch": false,
+  "mayInstall": false,
+  "mayStartWorker": false,
+  "reviewWaveCount": 8,
+  "roleFieldCount": 22,
+  "schema": "OpenRemaster.StudioGateAReviewProjection.v19",
+  "sourceOwnerR18aCheckpointSha256": "39bce8528299f1178e77c03132823510eec34d0fc14a08425492eeaf7eedf731",
+  "sourceOwnerR18aZipSha256": "b44a54cfa3a068966691ae8c73b3cb82fff29f0ecd42956290b60d136698175f",
+  "sourceStudioR11ZipSha256": "8771434f02188076dd30e6638a2bb436e592f3b9a72224170d1c5e2589608417",
+  "waves": [
+    {
+      "gate_ids": [
+        "A01_ROOT_OF_TRUST"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 1
+    },
+    {
+      "gate_ids": [
+        "A02_INDEPENDENT_WITNESS_TENANT"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 2
+    },
+    {
+      "gate_ids": [
+        "A03_SIGNER_ROLE_CUSTODY",
+        "A04_REAL_COSMOS_CAS"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 3
+    },
+    {
+      "gate_ids": [
+        "A05_CRYPTO_RECEIPT"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 4
+    },
+    {
+      "gate_ids": [
+        "A06_KEY_ROTATION_REVOCATION"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 5
+    },
+    {
+      "gate_ids": [
+        "A07_SIGNED_CURRENT_HIGHWATER"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 6
+    },
+    {
+      "gate_ids": [
+        "A08_UNKNOWN_OUTCOME_RECOVERY"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 7
+    },
+    {
+      "gate_ids": [
+        "A09_DISTINCT_OWNER_ACCEPTANCE"
+      ],
+      "not_an_execution_schedule": true,
+      "wave": 8
+    }
+  ]
+}

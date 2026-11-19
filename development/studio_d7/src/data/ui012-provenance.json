@@ -1,0 +1,50 @@
+{
+  "schema": "OpenRemaster.StudioUI012.SourceReconciliation.v1",
+  "release": "ORF-STUDIO-UI-20261018-r11",
+  "recordedUtc": "2026-10-18T13:48:22+00:00",
+  "scope": "ARCHITECTURE_R1_AND_LIFECYCLE_R2_HISTORICAL_SOURCE_ONLY",
+  "parentReleaseSha256": "9339c3a6dbf1fa48bd15bba07ee1f83ee5f1af99c4f0941ba7f22acb4ffcd227",
+  "externalPins": {
+    "r10_parent_zip": "9339c3a6dbf1fa48bd15bba07ee1f83ee5f1af99c4f0941ba7f22acb4ffcd227",
+    "architecture_r1_zip": "1b03ed43050a6ff573592a6216d4db414bf0f8e2e7949bbb1bbb6a696ee456af",
+    "lifecycle_r2_zip": "f7f47d1531f41c0e5b0332a269b4fda69ca68f8259c353e430708cd92f0bb9d4",
+    "original_k003": "644f9ef4d001a56ee9738d91ac558c5fed32967a17819245a3174b0815fe1d7a"
+  },
+  "importedPins": {
+    "src/architecture.ts": "3b8a0bd20032d1a57901e21656ceddc30e432052007273e97f2d1baa2e1f74a1",
+    "src/data/architecture-snapshot.json": "9aee87cb8effea1c79024416aee893c86a3218a9f2a9be794dcc482969e3f2a3",
+    "src/bounded-plan.ts": "8b8a52a6f3a181cf021ae135533bd708215a343d59024d64388b6304b1f05fd4",
+    "src/NextTaskLab.tsx": "c7e861318415aa9739b5d9490df1b48a9fa356067594a461bb36cf0277345ac6",
+    "src/data/bounded-plan-evidence.json": "72645767a587899279dcc3f3733e3286dd8b58ce047a105cb100f64fec8074eb",
+    "source-proofs/ARCHITECTURE_CHECKPOINT.json": "6fc7fbe81e4c5747c712a5d692a0d7736ea2a8e25b4c2c43d49eecfa9a637458",
+    "source-proofs/ARCHITECTURE_SOURCE_LOCK.json": "cd2f241281fdec192e7e77cce6f1150f3ef0af75e7d3d7903139e653481f63f2",
+    "source-proofs/LIFECYCLE_CHECKPOINT.json": "6ef137d8cbdd97d08368b344bf14405badf54b3df6b4648682147d6418f4cf4e",
+    "source-proofs/NEXT_TASK_LAB_PARENT_PINS.json": "e09ad117ab7a6aaf860b935fb26e925778e8df7a2b74154e9e85da1079e34d7c"
+  },
+  "status": "ORIGINAL_SOURCE_DIGESTS_MATCH_PRODUCTION_HOLD",
+  "architecture": {
+    "capabilities": 9,
+    "sourcePins": 16,
+    "historicalSoftwareTests": 202,
+    "mayDispatch": false,
+    "nativeOrOriginalGameFidelityVerified": false
+  },
+  "boundedPlan": {
+    "historicalTasks": 5,
+    "scenarios": 8,
+    "historicalSoftwareTests": 215,
+    "maxPublishedModelPlans": 1,
+    "liveWorkerObserved": false,
+    "mayDispatch": false,
+    "signedLeaseAndOwnerVerified": false
+  },
+  "production": {
+    "status": "HOLD_NO_AUTO_RETRY",
+    "nativeStudioBuilt": false,
+    "publisherOrOwnerWitnessSigned": false,
+    "secondSchedulerCreated": false,
+    "installerBuilt": false,
+    "gameCorpusTouched": false,
+    "currentNativeStatus": false
+  }
+}

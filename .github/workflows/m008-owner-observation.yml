@@ -1,0 +1,35 @@
+name: ORCH M008 Owner Observation Synthetic Signatures
+on:
+  pull_request:
+    branches: [m007/source-freshness-guard-v1-20261014]
+    paths:
+      - 'src/openremaster/m008_owner_observation_attestation.py'
+      - 'tests/test_m008_owner_observation_attestation.py'
+      - 'tests/test_m008_wire_schemas.py'
+      - 'contracts/orch-m008/**'
+      - 'docs/contracts/orch-m008-owner-observation-attestation-v1.md'
+      - '.github/workflows/m008-owner-observation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orf-m008-owner-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic-signature-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5 jsonschema==4.23.0 rfc3339-validator==0.1.4 cryptography==46.0.4
+      - name: Review-only Ed25519 and wire-schema negative fixtures; no native worker
+        run: PYTHONPATH=src python -m pytest -q tests/test_m008_owner_observation_attestation.py tests/test_m008_wire_schemas.py

@@ -1,0 +1,117 @@
+/** UI-008: exact Node v24.19.0 source notice, NOT a redistribution or installer approval.
+ * The old NW025-U source remains historical and is never overwritten.
+ */
+export type NodeNoticeCrosswalk={
+  schema:"OpenRemaster.StudioNodeNoticeCrosswalk.v1";
+  release:"ORF-STUDIO-UI-20261018-r7";
+  generatedUtc:string;
+  status:"VERSION_MATCHED_NODE_NOTICE_OBTAINED_LEGAL_REVIEW_PENDING";
+  sourceScope:"OFFICIAL_WINDOWS_ARCHIVE_SHA_INDEX_PLUS_LOCAL_INSTALLED_NODE_IMAGE";
+  sourceAuthority:"PUBLIC_HTTPS_CHECKSUM_NOT_INDEPENDENT_PUBLISHER_SIGNATURE";
+  pins:Record<string,string>;
+  node:{
+    version:"24.19.0";platform:"win-x64";
+    sourceDistributionUrl:string;sourceNodeArchiveSha256:string;
+    licenseFilename:"NODE_v24.19.0_LICENSE.txt";
+    licenseSha256:string;licenseBytes:160552;
+    installedNodeExeSha256:string;
+    binaryMatchesOfficialRelease:true;
+    versionMatchedNodeNoticeObtained:true;
+    nPMAndCorepackNoticesComplete:false;
+    thirdPartyLicensingLegalReviewApproved:false;
+    checksumPublisherSignatureVerified:false;
+    AuthenticodeVerified:false;
+  };
+  legacy:{
+    nw025uOriginalSaidNodeNoticeMissing:true;
+    legacyR6SourceUnchanged:true;
+    sourceUpdatedRetroactively:false;
+  };
+  releaseGates:{
+    exactVersionNodeLicenseAvailable:true;
+    nodeLicenseReviewAccepted:false;
+    redistributionPermittedByProjectReview:false;
+    completeThirdPartyNotices:false;
+    fullDynamicLoaderClosureVerified:false;
+    cleanMachineRelocationVerified:false;
+    ownerWitnessSigned:false;
+    publisherCodeSigned:false;
+    nativeTauriBuilt:false;
+    approvedStudioIconVerified:false;
+    readyForOneInstaller:false;
+    productionDispatchEnabled:false;
+    automaticRetry:false;
+    admission:"HOLD_NO_AUTO_RETRY";
+  };
+  sourceOnly:true;
+  originalRuntimeFilesModified:false;
+  nodeDownloadedArchiveIncludedInUiRelease:false;
+  originalGameCorporaTouched:false;
+};
+const asObject=(value:unknown):value is Record<string,unknown> =>
+  value!==null && typeof value==="object" && !Array.isArray(value);
+const eq=(source:Record<string,unknown>,expected:Record<string,unknown>):boolean =>
+  Object.keys(source).sort().join("|")===Object.keys(expected).sort().join("|") &&
+  Object.entries(expected).every(([key,value])=>source[key]===value);
+const pins={
+ legacyNativeR6:"c193f312fea03df3d641a4ecb3acc7e5e77b1c42a4326efdedcfaf57f6c3c32c",
+ officialNodeNoticeProvenance:"0fb88e26a21c823d539f9ac17bfe74fb42a93e8cf24c6f3bca5f32f3c94b44f3",
+ nodeLicense:"d9c4eeda951d6d08f4aa1316b61aafcf67e6da5f79b18f8edeb56fa6abdc038c",
+ parentR6:"f82b65cd76794f3c41f37843ceaac1236d01705ed263cc438d44c41dbbc56a58"
+};
+const NODE_BINARY="3602f2bb1a10f2cbab4c36886218a33c1ab3db87290e73b033c46c77147d0237";
+export function validateNodeNotice(value:unknown):value is NodeNoticeCrosswalk {
+  if(!asObject(value) || value.schema!=="OpenRemaster.StudioNodeNoticeCrosswalk.v1" ||
+     value.release!=="ORF-STUDIO-UI-20261018-r7" ||
+     value.status!=="VERSION_MATCHED_NODE_NOTICE_OBTAINED_LEGAL_REVIEW_PENDING" ||
+     value.sourceScope!=="OFFICIAL_WINDOWS_ARCHIVE_SHA_INDEX_PLUS_LOCAL_INSTALLED_NODE_IMAGE" ||
+     value.sourceAuthority!=="PUBLIC_HTTPS_CHECKSUM_NOT_INDEPENDENT_PUBLISHER_SIGNATURE" ||
+     typeof value.generatedUtc!=="string" || !Number.isFinite(Date.parse(value.generatedUtc)) ||
+     !asObject(value.pins) || !asObject(value.node) ||
+     !asObject(value.legacy) || !asObject(value.releaseGates) ||
+     value.sourceOnly!==true || value.originalRuntimeFilesModified!==false ||
+     value.nodeDownloadedArchiveIncludedInUiRelease!==false ||
+     value.originalGameCorporaTouched!==false) return false;
+  if(!eq(value.pins,pins)) return false;
+  const node={
+    version:"24.19.0",platform:"win-x64",
+    sourceDistributionUrl:"https://nodejs.org/download/release/v24.19.0/node-v24.19.0-win-x64.zip",
+    sourceNodeArchiveSha256:"57f71ab3652e797d84acddc79c81cc9ff1c6ddb2a1974cdb83f00fee9bff4c73",
+    licenseFilename:"NODE_v24.19.0_LICENSE.txt",
+    licenseSha256:pins.nodeLicense,
+    licenseBytes:160552,
+    installedNodeExeSha256:NODE_BINARY,
+    binaryMatchesOfficialRelease:true,
+    versionMatchedNodeNoticeObtained:true,
+    nPMAndCorepackNoticesComplete:false,
+    thirdPartyLicensingLegalReviewApproved:false,
+    checksumPublisherSignatureVerified:false,
+    AuthenticodeVerified:false
+  };
+  const old={nw025uOriginalSaidNodeNoticeMissing:true,
+    legacyR6SourceUnchanged:true,sourceUpdatedRetroactively:false};
+  const gate={
+    exactVersionNodeLicenseAvailable:true,
+    nodeLicenseReviewAccepted:false,
+    redistributionPermittedByProjectReview:false,
+    completeThirdPartyNotices:false,
+    fullDynamicLoaderClosureVerified:false,
+    cleanMachineRelocationVerified:false,
+    ownerWitnessSigned:false,
+    publisherCodeSigned:false,
+    nativeTauriBuilt:false,
+    approvedStudioIconVerified:false,
+    readyForOneInstaller:false,
+    productionDispatchEnabled:false,
+    automaticRetry:false,
+    admission:"HOLD_NO_AUTO_RETRY"
+  };
+  return eq(value.node,node) && eq(value.legacy,old) && eq(value.releaseGates,gate) &&
+    Object.keys(value).length===14;
+}
+export function nodeNoticeView(value:unknown){
+  if(!validateNodeNotice(value))
+    return {phase:"HOLD" as const,reason:"SOURCE_OR_AUTHORITY_REJECTED",data:null};
+  return {phase:"VERSION_MATCHED_NOTICE_FOUND" as const,
+    reason:"LEGAL_AND_INSTALLER_REVIEW_PENDING",data:value};
+}

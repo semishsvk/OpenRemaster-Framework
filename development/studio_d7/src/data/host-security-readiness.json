@@ -1,0 +1,67 @@
+{
+  "schema": "OpenRemaster.StudioHostSecurityReadiness.v1",
+  "release": "ORF-STUDIO-UI-20261018-r5",
+  "generatedUtc": "2026-10-18T10:51:41+00:00",
+  "sourceMode": "PINNED_LOCAL_WINDOWS_SAME_USER_PIPE_TEST",
+  "sourceAuthority": "LOCAL_TEST_NO_EXTERNAL_ATTESTATION",
+  "status": "SAME_USER_IMPERSONATION_TESTED_PRODUCTION_HOLD",
+  "host": "HomePC",
+  "sourcePins": {
+    "r4ZipSha256": "bfa838ddd1a0b646aa1aabc254d9bfe694ee767f536f5807601e38db5326576a",
+    "sameUserSecurityReceiptSha256": "60673781317e9677e7c12e17fc2cf1ac449a4888390e3b94a1c6c35ce841af90",
+    "ownerR8Sha256": "47ac5e7223c5dedd6cefc0ec1e323338c4d07a538fc9327452a1fe8ecd03b325",
+    "runtimeAuditSha256": "82f3c43016f2ea7a7d0b998f64203b8e9181206b296fd98b3d7a2e0afa76959d"
+  },
+  "osProof": {
+    "windowsNamedPipe": true,
+    "currentUserOnly": true,
+    "sameUserImpersonationObserved": true,
+    "clientSidComparedInternally": true,
+    "clientSidPersisted": false,
+    "distinctSidAuthenticated": false,
+    "externalRoleTokenOrAclProof": false,
+    "roleSeparationAccepted": false,
+    "testCount": 16,
+    "testFailures": 0,
+    "testStatus": "PASS",
+    "oneShotNoPersistentListener": true
+  },
+  "installReadiness": {
+    "requiredComponentCount": 9,
+    "installedComponentCount": 0,
+    "requiredComponents": [
+      "framework_core",
+      "host_api",
+      "orchestrator",
+      "orion",
+      "governor",
+      "native_worker_v2",
+      "asset_labs",
+      "fidelity_evidence",
+      "component_manager"
+    ],
+    "componentManagerReleaseAccepted": false,
+    "portableRuntimeDllClosure": false,
+    "nodePythonTransitiveImportsVerified": false,
+    "nativeTauri2ExeBuilt": false,
+    "nativeTauri2WindowTested": false,
+    "cargoAvailableInCurrentPath": false,
+    "publisherSigningAvailable": false,
+    "approvedOriginalStudioIconAssetVerified": false,
+    "oneInstallerIdentity": "OpenRemasterStudio-Setup-x64.exe",
+    "installerCreated": false
+  },
+  "authority": {
+    "ownerSigned": false,
+    "witnessIndependent": false,
+    "fencedGlobalCasValidated": false,
+    "nativeWorkerV2Admitted": false,
+    "modelInvocationAllowed": false,
+    "jobDispatchAllowed": false,
+    "newSchedulerCreated": false,
+    "automaticRetry": false,
+    "productionAdmission": "HOLD",
+    "unknownOutcome": "HOLD_NO_AUTO_RETRY"
+  },
+  "qualifier": "CurrentUserOnly and Windows impersonation establish bounded same-user identity only. This is not a distinct Windows SID, externally authenticated Owner/Witness, signed Tauri host, current native worker state or protected installer root."
+}

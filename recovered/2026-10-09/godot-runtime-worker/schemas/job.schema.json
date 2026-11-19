@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GodotRuntimeJob.v1",
+  "type": "object",
+  "required": ["schema","job_id","project","project_path","mode"],
+  "properties": {
+    "schema":{"const":"GodotRuntimeJob.v1"},
+    "job_id":{"type":"string","minLength":1},
+    "project":{"type":"string","minLength":1},
+    "project_path":{"type":"string","minLength":1},
+    "mode":{"enum":["smoke","headless","replay","capture","import"]},
+    "args":{"type":"array","items":{"type":"string"}},
+    "timeout_seconds":{"type":"integer","minimum":1},
+    "expected_exit_code":{"type":"integer","default":0}
+  }
+}

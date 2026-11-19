@@ -1,0 +1,14 @@
+{
+  "reuse:first_divergence_v1.py": {
+    "local": "reused/first_divergence_v1.py",
+    "sha256": "fa7146f9c7ee7d804945d7eafc5d127503b221b10a20d31f829c44d0f4c08af0"
+  },
+  "reuse:evidence_cache_v1.py": {
+    "local": "reused/evidence_cache_v1.py",
+    "sha256": "79309a8f8574065fd6e7cdb674cb6f837a638444e86096a216de17d557ade4d1"
+  },
+  "reuse:vendor/evidence_behavior.py": {
+    "local": "reused/vendor/evidence_behavior.py",
+    "sha256": "29a6b3c0ff531cffa4605b55d3d768de21875d1cf4490f0efa222648c290fd04"
+  }
+}

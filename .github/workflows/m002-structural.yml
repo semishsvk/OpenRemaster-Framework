@@ -1,0 +1,33 @@
+name: ORCH M002 Structural Canary
+on:
+  pull_request:
+    branches: [remote-control/m001-contracts-20261013]
+    paths:
+      - 'src/openremaster/m002_structural.py'
+      - 'tests/test_m002_structural.py'
+      - 'docs/contracts/orch-m002-structural-v0.md'
+      - '.github/workflows/m002-structural.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orf-m002-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  structural-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5
+      - name: Test pure safety proposals only
+        run: PYTHONPATH=src python -m pytest -q tests/test_m002_structural.py

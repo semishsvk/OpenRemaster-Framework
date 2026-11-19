@@ -1,0 +1,213 @@
+{
+  "capability": {
+    "automatic_latest_selection": false,
+    "capabilities": [
+      {
+        "id": "ORF-ADM-001",
+        "kind": "safety",
+        "owner": "K003_OWNER_WITNESS",
+        "requires": [],
+        "sources": [
+          "production_readiness",
+          "owner_stage_policy",
+          "k003"
+        ],
+        "status": "BLOCKED_EXTERNAL_A_B_C"
+      },
+      {
+        "id": "ORF-CIE-001",
+        "kind": "advisory",
+        "owner": "OPENREMASTER_COMPLETION",
+        "requires": [
+          "ORF-ADM-001"
+        ],
+        "sources": [
+          "completion_archive",
+          "regression_planner_source"
+        ],
+        "status": "ISOLATED_COMPOSABLE"
+      },
+      {
+        "id": "ORF-FDD-001",
+        "kind": "diagnostic",
+        "owner": "FIDELITY_GATES",
+        "requires": [
+          "ORF-ADM-001"
+        ],
+        "sources": [
+          "first_divergence_archive",
+          "evidence_graph_source"
+        ],
+        "status": "ISOLATED_COMPOSABLE_ORIGINAL_ORACLE_UNPROVEN"
+      },
+      {
+        "id": "ORF-CAP-001",
+        "kind": "registry",
+        "owner": "FRAMEWORK_CAPABILITY_CATALOG",
+        "requires": [
+          "ORF-ADM-001"
+        ],
+        "sources": [
+          "capability_catalog"
+        ],
+        "status": "DERIVED_PARTIAL_INDEX"
+      },
+      {
+        "id": "ORF-ERI-001",
+        "kind": "evidence",
+        "owner": "FRAMEWORK_EVIDENCE",
+        "requires": [
+          "ORF-CAP-001"
+        ],
+        "sources": [
+          "evidence_graph_source",
+          "regression_planner_source"
+        ],
+        "status": "BOUNDED_SOURCE_REUSE"
+      },
+      {
+        "id": "ORF-CGR-001",
+        "kind": "contract",
+        "owner": "FRAMEWORK_RUNTIME",
+        "requires": [
+          "ORF-ERI-001",
+          "ORF-FDD-001"
+        ],
+        "sources": [
+          "completion_archive",
+          "evidence_graph_source"
+        ],
+        "status": "CONTRACT_ONLY_GAME_SPECIFIC_VALIDATION_REQUIRED"
+      },
+      {
+        "id": "ORF-ORION-BRIDGE",
+        "kind": "advisory",
+        "owner": "ORION",
+        "requires": [
+          "ORF-ADM-001",
+          "ORF-CAP-001"
+        ],
+        "sources": [
+          "orion_k003_governor",
+          "orion_trust_crosswalk"
+        ],
+        "status": "PROPOSAL_ONLY"
+      },
+      {
+        "id": "ORF-PRV-001",
+        "kind": "verification",
+        "owner": "STUDIO_RELEASE",
+        "requires": [
+          "ORF-ADM-001",
+          "ORF-CAP-001"
+        ],
+        "sources": [
+          "studio_r9_checkpoint",
+          "studio_shipping",
+          "studio_security"
+        ],
+        "status": "SOURCE_READINESS_ONLY"
+      },
+      {
+        "id": "ORF-STUDIO-HOST",
+        "kind": "presentation",
+        "owner": "STUDIO_HOST_API",
+        "requires": [
+          "ORF-CIE-001",
+          "ORF-FDD-001",
+          "ORF-CAP-001",
+          "ORF-CGR-001",
+          "ORF-ORION-BRIDGE",
+          "ORF-PRV-001"
+        ],
+        "sources": [
+          "studio_host",
+          "studio_security"
+        ],
+        "status": "READ_ONLY_SNAPSHOT_CONTRACT"
+      }
+    ],
+    "derived_catalog_authoritative": false,
+    "graph_order": [
+      "ORF-ADM-001",
+      "ORF-CIE-001",
+      "ORF-FDD-001",
+      "ORF-CAP-001",
+      "ORF-ERI-001",
+      "ORF-CGR-001",
+      "ORF-ORION-BRIDGE",
+      "ORF-PRV-001",
+      "ORF-STUDIO-HOST"
+    ],
+    "independent_compatibility_review": false,
+    "may_install_or_retire_tools": false,
+    "schema": "OpenRemaster.CapabilitySnapshot.v1",
+    "source_pin_count": 16,
+    "status": "DERIVED_PARTIAL_CATALOG_NOT_AUTHORITATIVE"
+  },
+  "completion": {
+    "available": true,
+    "mode": "ADVISORY_INPUT_REQUIRED"
+  },
+  "cross_game": {
+    "available": true,
+    "requires_game_specific_validation": true
+  },
+  "dynamic_control_available": false,
+  "first_divergence": {
+    "available": true,
+    "mode": "DIAGNOSTIC_INPUT_REQUIRED"
+  },
+  "fresh_native_state_observed": false,
+  "host_api": {
+    "cache_control": "no-store",
+    "content_type": "application/json",
+    "may_issue_lease": false,
+    "may_spawn_process": false,
+    "methods": [
+      "GET",
+      "HEAD"
+    ],
+    "version": "v1"
+  },
+  "production": {
+    "decision": "NO_GO_PRODUCTION_HOLD",
+    "effective_windows_roles_verified": false,
+    "external_A": false,
+    "external_B": false,
+    "external_C": false,
+    "governor_point_of_use_recheck_required": true,
+    "k003_is_only_scheduler": true,
+    "may_acquire_lease": false,
+    "may_auto_retry": false,
+    "may_dispatch": false,
+    "may_install": false,
+    "may_open_native_work": false,
+    "owner_epoch_and_highwater_verified": false,
+    "owner_witness_CAS_verified": false,
+    "requires_independent_owner_commissioning": true,
+    "review_consistent": true,
+    "review_source": "HISTORICAL_LOCAL_SOURCE_BOUND_R12",
+    "schema": "OpenRemaster.UnifiedAdmissionBoundary.v1",
+    "signed_receipts_verified": false
+  },
+  "runtime": {
+    "approved_icon_embedded_verified": false,
+    "effective_windows_role_separation_verified": false,
+    "may_publish": false,
+    "native_shipping_contract_pinned": true,
+    "offline_stack_and_rollback_verified": false,
+    "portable_dependency_graph_verified": false,
+    "schema": "OpenRemaster.PortableRuntimeVerification.v1",
+    "signed_studio_exe_verified": false,
+    "single_installer_verified": false,
+    "status": "NOT_PROVEN_NATIVE_RUNTIME",
+    "studio_source": "STUDIO_UI_R9_SOURCE_BOUND",
+    "ui_host_contract_pinned": true
+  },
+  "schema": "OpenRemaster.StudioArchitectureSnapshot.v1",
+  "source_drift": false,
+  "source_evidence": "LOCAL_HASH_MATCH_NOT_ATTESTED",
+  "source_pin_count": 16,
+  "transport": "STATIC_READ_ONLY_DATA_NO_EXECUTION_ENDPOINT"
+}

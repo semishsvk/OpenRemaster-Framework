@@ -1,0 +1,33 @@
+name: ORCH M005 Detached Anchor Synthetic Contract
+on:
+  pull_request:
+    branches: [m004/witness-forward-recovery-lab-20261013]
+    paths:
+      - 'src/openremaster/m005_anchor_contract.py'
+      - 'tests/test_m005_anchor_contract.py'
+      - 'docs/contracts/orch-m005-detached-anchor-v0.md'
+      - '.github/workflows/m005-detached-anchor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orf-m005-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detached-signature-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5 cryptography==46.0.4
+      - name: Isolated M004 and M005 synthetic tests only
+        run: PYTHONPATH=src python -m pytest -q tests/test_m004_witness_lab.py tests/test_m005_anchor_contract.py

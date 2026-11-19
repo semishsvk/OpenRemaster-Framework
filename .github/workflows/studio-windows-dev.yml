@@ -1,0 +1,96 @@
+name: Studio Windows DEV
+
+on:
+  push:
+    branches: [development/studio-windows-dev, consolidation/master-development-20261025, main]
+    paths: ['development/studio_d7/**', '.github/workflows/studio-windows-dev.yml']
+  pull_request:
+    branches: [consolidation/master-development-20261025, main]
+    paths: ['development/studio_d7/**', '.github/workflows/studio-windows-dev.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: studio-windows-dev-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: development/studio_d7
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: node --test tests/build-status.test.mjs tests/modelWitnessView.test.cjs tests/studio-dev.test.mjs
+      - run: python -B -m unittest discover -s tests -p 'test_*.py' -v
+      - run: npm run build
+      - name: Build native Windows executable
+        run: |
+          rustup toolchain install 1.99.1 --profile minimal
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          rustup override set 1.99.1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo build --manifest-path src-tauri/Cargo.toml --locked --release --features custom-protocol
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo check --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo test --manifest-path src-tauri/Cargo.toml --locked --features custom-protocol,dev-worker portable_
+      - name: Smoke test native startup
+        run: |
+          $process = Start-Process -FilePath (Resolve-Path 'src-tauri/target/release/openremaster_studio_shadow.exe') -PassThru -WindowStyle Hidden
+          try {
+            if ($process.WaitForExit(10000)) { throw "Studio exited during startup with code $($process.ExitCode)." }
+            if (-not $process.WaitForInputIdle(30000)) { throw 'Studio did not reach its message loop.' }
+            'Native startup reached the Windows message loop.'
+          } finally {
+            if (-not $process.HasExited) { Stop-Process -Id $process.Id }
+          }
+      - name: Package preview and dependency notices
+        run: |
+          $commit = git rev-parse HEAD
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./tools/package-windows-dev.ps1 -Commit $commit -RunUrl '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: studio-windows-dev-${{ github.sha }}
+          path: |
+            development/studio_d7/windows-dev-output/*.zip
+            development/studio_d7/windows-dev-output/*.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+  publish-dev-preview:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: studio-windows-dev-${{ github.sha }}
+          path: preview
+      - name: Publish unsigned DEV prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          DEV_COMMIT: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          tag="studio-dev-${DEV_COMMIT:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf '%s\n' 'Unsigned portable Windows x64 DEV preview.' "Source commit ${DEV_COMMIT}" "Build and startup check ${RUN_URL}" 'Requires Microsoft Edge WebView2 Runtime.' 'MIT licensing proposal, media rights, complete notices and SignPath acceptance remain pending.' 'Production admission remains HOLD.' > release-notes.txt
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --target "$DEV_COMMIT" --draft --prerelease --title "Studio Windows DEV ${DEV_COMMIT:0:12}" --notes-file release-notes.txt
+          fi
+          gh release upload "$tag" preview/*.zip preview/*.sha256
+          gh release edit "$tag" --draft=false --prerelease

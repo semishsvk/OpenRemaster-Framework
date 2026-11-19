@@ -1,0 +1,29 @@
+name: ORCH M003 SQLite CAS Lab
+on:
+  pull_request:
+    branches: [m002/structural-fencing-recovery-20261013]
+    paths:
+      - 'src/openremaster/m003_cas_lab.py'
+      - 'tests/test_m003_cas_lab.py'
+      - 'docs/contracts/orch-m003-cas-lab-v0.md'
+      - '.github/workflows/m003-cas-lab.yml'
+permissions:
+  contents: read
+concurrency:
+  group: orf-m003-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  sqlite-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5
+      - name: Isolated SQLite CAS laboratory tests only
+        run: PYTHONPATH=src python -m pytest -q tests/test_m003_cas_lab.py

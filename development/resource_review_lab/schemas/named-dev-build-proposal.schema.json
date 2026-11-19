@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PROPOSAL ONLY - not an accepted K003 execution kind",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "kind",
+    "trust_class",
+    "action",
+    "operation_id",
+    "project",
+    "recipe",
+    "adapter",
+    "timeout_seconds",
+    "automatic_retries",
+    "capability",
+    "source_manifest_sha256",
+    "recipe_sha256",
+    "toolchain_manifest_sha256",
+    "dependency_lock_sha256",
+    "job_bytes_sha256",
+    "request_sha256",
+    "owner_fence_sha256",
+    "resource_fence_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "OpenRemaster.K003.NamedDevBuildProposal.v1"
+    },
+    "kind": {
+      "const": "build_studio_dev"
+    },
+    "trust_class": {
+      "const": "DEVELOPMENT"
+    },
+    "action": {
+      "const": "submit"
+    },
+    "operation_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$"
+    },
+    "project": {
+      "const": "OpenRemasterStudio"
+    },
+    "recipe": {
+      "const": "D7.build_studio_dev.v1"
+    },
+    "adapter": {
+      "const": "NativeLocalQueue"
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2400
+    },
+    "automatic_retries": {
+      "const": 0
+    },
+    "capability": {
+      "const": "build_studio_dev"
+    },
+    "source_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "recipe_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "toolchain_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "dependency_lock_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "job_bytes_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "request_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "owner_fence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "resource_fence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

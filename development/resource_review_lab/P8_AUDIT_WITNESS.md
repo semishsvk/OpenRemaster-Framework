@@ -1,0 +1,7 @@
+# Complete P8 audit snapshot witness validation
+
+Only integration tests and evidence reporting change in this candidate. P8 journal/boundary, rejection export/import, mapping verifier and M011/M012 implementations remain byte-identical to the parent package. All signatures use the existing ephemeral fixtures; no production signer or trust configuration is accessed.
+
+Portable tests cover a full thirteen-outcome reported P8 bundle. The Windows integration additionally produces eight disposable journal cases, including an explicitly simulated missing-platform branch and an injected fsync error, then passes the exact bundle through the existing signed mapping and independent-key-domain verifier. The suite rejects changed/reordered/missing bytes, duplicate attempts, missing/unknown reasons, permission claims, stale/revoked/overlapping trust, wrong challenge/source and a higher expected sequence floor. Invalid content stays rejected even when its hashes and fixture signatures are recomputed.
+
+Valid signatures bind content under caller-supplied test trust. They do not prove that journal events occurred, establish their timestamps as current, link an unknown journal operation to the recovery operation, consume global nonces or authenticate durable complete storage. Tests explicitly show these limits, including an old record timestamp and coherent content changed under newly supplied fixture signatures. Every outcome remains HOLD; query-only reasons retain no-auto-retry. No queue, worker, live witness, credentials, identity or release policy is activated.
