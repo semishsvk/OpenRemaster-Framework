@@ -195,6 +195,7 @@ try {
       await resolveHold.click();
       await worker.getByText('Hold acknowledged.',{exact:false}).waitFor();
       await worker.getByRole('button',{name:'Refresh diagnostics'}).click();
+      await page.waitForFunction(()=>document.querySelector('[data-testid="dev-run"]')?.disabled===false);
       assert.equal(await worker.getByTestId('dev-run').isEnabled(),true);
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,1);
       preIntentReject=true;
@@ -207,6 +208,7 @@ try {
       await worker.getByRole('checkbox',{name:'I acknowledge this hold.',exact:false}).check();
       await worker.getByRole('button',{name:'Archive evidence and acknowledge hold'}).click();
       await worker.getByText('Hold acknowledged.',{exact:false}).waitFor();
+      await page.waitForFunction(()=>document.querySelector('[data-testid="dev-run"]')?.disabled===false);
       assert.equal(await worker.getByTestId('dev-run').isEnabled(),true);
       await page.evaluate(key=>{const saved=JSON.parse(localStorage.getItem(key));delete saved.attempt_id;localStorage.setItem(key,JSON.stringify(saved));},`orf-studio-operation-v2-${scope}`);
       await page.reload();
