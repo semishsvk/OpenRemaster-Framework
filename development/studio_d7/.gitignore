@@ -1,0 +1,4 @@
+# Offline source-test pool and private source-check outputs are never source.
+.studio-test-deps/
+.studio-test-deps.provision-*/
+test-results/

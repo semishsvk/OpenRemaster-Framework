@@ -1,7 +1,7 @@
 name: Consolidated development source checks
 on:
   pull_request:
-    branches: [main]
+    branches: [main, consolidation/master-development-20261025]
     paths: ['development/**', 'scripts/development_acceptance.py', 'tests/test_m010_durable_recovery.py', '.github/workflows/development-consolidation.yml']
   workflow_dispatch:
 permissions:
@@ -32,6 +32,17 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npx --no-install tsc --noEmit
       - run: node --test tests/modelWitnessView.test.cjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify pinned offline Studio source cohort
+        working-directory: .
+        run: >-
+          python -B scripts/development_acceptance.py
+          --studio-offline-only
+          --studio-deps-root development/studio_d7/node_modules
+          --studio-node node
+          --out artifacts/studio-offline-source
   portable-resource-review:
     runs-on: ubuntu-latest
     timeout-minutes: 10

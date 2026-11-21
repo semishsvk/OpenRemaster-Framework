@@ -1,0 +1,8 @@
+tests/fixtures/r8/*.json -text
+OFFLINE-DEPENDENCIES.json -text
+tools/offline-dependencies-parent.json -text
+tools/r8-observation/entry.py -text
+tools/r8-observation/producer.py -text
+tools/r8-observation/files.py -text
+src-tauri/**/*.rs -text
+evidence/NODE_v24.19.0_WINDOWS_SIGNATURE.json -text

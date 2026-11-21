@@ -15,6 +15,7 @@ export default function DevWorkerPanel() {
   const [acknowledged, setAcknowledged] = useState(false);
   const [attemptId,setAttemptId]=useState<string|undefined>();
   const [clock,setClock]=useState(Date.now());
+  const [cachedObservation,setCachedObservation]=useState(false);
   const pending = useRef(false);
   const currentOperation = useRef('');
   const mounted = useRef(false);
@@ -31,7 +32,7 @@ export default function DevWorkerPanel() {
       if (!mounted.current || currentOperation.current !== id) return;
       if (readOperation(localStorage, workerScope)?.operation !== id) return;
       saveOperation(localStorage, workerScope, id, value);
-      setResult(value);
+      setResult(value);setCachedObservation(false);
     } catch (reason) {
       if (mounted.current && currentOperation.current === id) { setResult(null); setError(String(reason)); }
     } finally { pending.current = false; if (mounted.current) setBusy(false); }
@@ -54,6 +55,7 @@ export default function DevWorkerPanel() {
         if (saved) {
           currentOperation.current = saved.operation; setOperation(saved.operation);setAttemptId(saved.attempt_id);
           if (value.control_ready ?? value.worker_ready) await query(saved.operation, workerScope);
+          else {setResult(saved.result);setCachedObservation(!!saved.result);}
         }
       } catch (reason) { if (mounted.current) setCapabilityError(String(reason)); }
     }
@@ -150,7 +152,9 @@ export default function DevWorkerPanel() {
   const proofMatches=!result?.not_admitted||result.not_admitted.attempt_id===attemptId;
   const artifact = result?.state === 'COMMITTED' ? result.worker?.artifacts : undefined;
   return <section className="panel" aria-label="Studio DEV operation" data-testid="dev-worker-panel" style={{padding:24,marginBottom:24,overflowWrap:'anywhere'}}>
-    <div className="eyebrow">DEV UNSIGNED</div><h2>Studio DEV build</h2>
+    <div className="eyebrow">LEGACY DEV ADMISSION · UNSIGNED</div><h2>Studio DEV operation</h2>
+    <p>These saved-operation controls use the historical admission route. The local worker view above reports the current LOCAL_DEV workflow separately.</p>
+    {cachedObservation&&<p role="status">Saved observation only. The legacy worker is unavailable; this record is not current admission or artifact verification.</p>}
     <p>{capabilities?.reason ?? (capabilityError || 'Checking native capabilities…')}</p>
     {capabilities && capabilityError && <p role="alert">{capabilityError}</p>}
     {capabilities && <p>DEV worker: <strong>{ready ? 'available' : 'unavailable'}</strong></p>}

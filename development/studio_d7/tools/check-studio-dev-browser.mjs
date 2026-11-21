@@ -26,12 +26,23 @@ try {
     const page = await context.newPage(), errors = [], unexpected = [], commands = [];
     let available = false, state = 'STARTED', operation = oldId, failNetwork = false, remoteCalls = 0, archived = false, resolved = false;
     let admissionReady=false,corruptLog=false,preIntentReject=false,rejectedAttempt=null,proofWriteBusy=true;
+    let localView='healthy',legacyUnavailable=false;
     page.setDefaultTimeout(10000);
     page.on('pageerror',error=>errors.push(error.message));
     await context.exposeFunction('testNative',async(command,args)=>{
       commands.push({command,args});
-      if(command==='studio_capabilities') return {schema:'OpenRemaster.StudioCapabilities.v1',worker_compiled:available,worker_ready:available,control_ready:available,recovery_supported:available,log_archive_supported:available,worker_scope:available?scope:null,reason:available?'Pinned DEV broker available':portableReason,production_go:false,
-        preflight:{schema:'OpenRemaster.DevPreflight.v1',scope:available?scope:null,checked_at_ms:Date.now(),valid_for_ms:30000,can_submit:available&&admissionReady,production_go:false,
+      if(command==='local_dev_status') {
+        assert.equal(args,undefined);
+        if(localView==='unavailable')throw Error('Local status reader unavailable');
+        return {schema:'OpenRemaster.LocalStudioStatus.v1',captured_epoch:Date.now()/1000-(localView==='stale'?20:0),
+          mode:'LOCAL_DEV',source:'LOCAL_NATIVE_READONLY',read_only:true,azure_required:false,witness_required:false,production_go:false,
+          host:{state:'IDLE',healthy:true,process_alive:true,heartbeat_age_seconds:1,generation:'d'.repeat(32)},
+          counts:{queued:0,running:0,committed:1,hold:0,checkpoint_pending:1},
+          jobs:[{operation_id:'e'.repeat(32),scenario:'build_studio_dev',state:'COMMITTED',launch_count:1,project:'studio',
+            knowledge:{state:'CHECKPOINT_PENDING',project:'OpenRemasterStudio',attempts:1,reason:'Fixture metadata hook unavailable'}}]};
+      }
+      if(command==='studio_capabilities') return {schema:'OpenRemaster.StudioCapabilities.v1',worker_compiled:available,worker_ready:available&&!legacyUnavailable,control_ready:available&&!legacyUnavailable,recovery_supported:available&&!legacyUnavailable,log_archive_supported:available&&!legacyUnavailable,worker_scope:available?scope:null,reason:available?(legacyUnavailable?'Legacy fixture worker unavailable':'Pinned DEV broker available'):portableReason,production_go:false,
+        preflight:{schema:'OpenRemaster.DevPreflight.v1',scope:available?scope:null,checked_at_ms:Date.now(),valid_for_ms:30000,can_submit:available&&admissionReady&&!legacyUnavailable,production_go:false,
           checks:['native','worker','owner','resources','game','account','source'].map(id=>({id,status:available&&(admissionReady||['native','worker'].includes(id))?'PASS':'UNKNOWN',detail:'Mocked IPC diagnostic fixture',next_step:'Verify original admission'}))}};
       if(command==='studio_open_release') return;
       assert.equal(command,'dev_worker_call');
@@ -82,6 +93,21 @@ try {
     });
     try {
       await page.goto(origin+'/#buildlab');
+      await page.locator('main#openremaster-studio-ready-v1').waitFor();
+      assert.equal(await page.title(),'OpenRemaster Studio workspace');
+      const local=page.getByRole('region',{name:'Local DEV status'});
+      await local.getByText('Host: IDLE · healthy',{exact:true}).waitFor();
+      await local.getByText('Committed · launches 1',{exact:true}).waitFor();
+      await local.getByText('Fixture metadata hook unavailable',{exact:true}).waitFor();
+      await local.screenshot({path:resolve(screenshots,`local-status-${viewport.width}.png`)});
+      localView='stale';await local.getByRole('button',{name:'Refresh local status',exact:true}).click();
+      await local.getByText(/Local DEV snapshot expired/).waitFor();
+      assert.equal(await local.getByRole('table').count(),0);
+      localView='unavailable';await local.getByRole('button',{name:'Refresh local status',exact:true}).click();
+      await local.getByText(/Local status reader unavailable/).waitFor();
+      assert.equal(await local.getByRole('table').count(),0);
+      localView='healthy';await local.getByRole('button',{name:'Refresh local status',exact:true}).click();
+      await local.getByText('Host: IDLE · healthy',{exact:true}).waitFor();
       const worker=page.getByRole('region',{name:'Studio DEV operation'});
       await worker.getByText(portableReason,{exact:true}).waitFor();
       await page.keyboard.press('Control+k');
@@ -232,10 +258,15 @@ try {
       assert.equal(commands.filter(call=>call.args?.request?.action==='resolve').length,2);
       assert.equal(commands.filter(call=>call.args?.request?.action==='submit').length,2);
       assert.ok(await worker.evaluate(el=>el.scrollWidth<=el.clientWidth),'Resolved hold must fit the viewport');
+      legacyUnavailable=true;await page.reload();
+      await worker.getByText('Saved observation only. The legacy worker is unavailable; this record is not current admission or artifact verification.',{exact:true}).waitFor();
+      assert.equal(await worker.getByTestId('dev-run').isEnabled(),false);
+      legacyUnavailable=false;await page.reload();
+      await worker.getByText(/Hold acknowledged\. Evidence is retained/).waitFor();
       await worker.screenshot({path:resolve(screenshots,`worker-${viewport.width}.png`)});
       await page.screenshot({path:resolve(screenshots,`operation-${viewport.width}.png`),fullPage:true});
       assert.deepEqual(unexpected,[]);assert.deepEqual(errors,[]);
-      console.log(`PASS ${viewport.width}x${viewport.height}: capabilities, release/CI identity, local file checksums, offline clearing, durable restore, rejected status hold and two-window single submit, log archival and explicit hold resolution`);
+      console.log(`PASS ${viewport.width}x${viewport.height}: workspace readiness, read-only local status/checkpoint separation, stale/error clearing, capabilities, release/CI identity, local file checksums, offline clearing, durable restore, rejected status hold and two-window single submit, log archival and explicit hold resolution`);
     } catch (error) {
       console.error('Studio GUI failure', {errors, unexpected, remoteCalls});
       console.error(await page.locator('main').innerText().catch(()=>page.locator('body').innerText()));

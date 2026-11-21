@@ -126,6 +126,7 @@ Not implemented in this build: language, translation and subtitle switches are a
 | Device | Control | Action | Evidence |
 | --- | --- | --- | --- |
 | Mouse / keyboard | Refresh diagnostics | Recheck the native DEV diagnostic view | DevWorkerPanel.tsx; dev_preflight.rs |
+| Mouse / keyboard | Refresh local status | Read current local host, jobs and knowledge checkpoints; refreshes every five seconds and expires after ten | LocalDevStatusPanel.tsx; local-dev-status.ts; pinned read-only native reader |
 | Mouse / keyboard | Load log, source/file selectors, Previous/Next page | Inspect full logs by page | DevLogViewer.tsx; Python and browser scenarios |
 | Mouse / keyboard | Search this page, Log level | Filter the displayed page | dev-diagnostics.ts; frontend tests |
 | Mouse / keyboard | Follow live output | Refresh the live tail every ten seconds | DevLogViewer.tsx |
@@ -136,7 +137,7 @@ Worker controls require a commissioned worker-enabled build. This public package
 Not implemented in this build: additional application-specific function-key, controller or game shortcuts are absent. Evidence: QuickNavigation.tsx defines the page-search shortcut; other panels use standard HTML controls.
 
 ## Known limitations and unavailable features
-Current Owner/Resource/GAME and Windows-role admission is not connected to the pinned worker 06 route. Native submission stays blocked. The original R07S2 source and this Git build require explicit reconciliation. Browser worker IPC is mocked in tests. Production admission, signing, final license/rights review and SignPath acceptance remain pending. This README verifies documented source controls; it does not certify original gameplay or production authority. See README.txt and BUILD-INFO.json for prerequisites, privacy and provenance.
+Legacy Studio submission stays blocked: its original Owner/Resource/GAME and Windows-role admission route is not connected. The separately configured LOCAL_DEV workflow uses the existing local Host/Broker and explicit selected inputs without Azure or an external Witness. The local status panel is read-only and cannot start, retry or authorize jobs; portable previews report it unavailable. Browser worker IPC is mocked in tests. Production admission, signing, final license/rights review and SignPath acceptance remain pending. This README verifies documented source controls; it does not certify original gameplay or production authority. See README.txt and BUILD-INFO.json for prerequisites, privacy and provenance.
 
 ## Verification
 Build-specific source and checks: $RunUrl. Package source: $Commit. Complete package hashes: SHA256SUMS.txt. A successful technical build does not accept an Owner/Witness grant or authorize production activation.

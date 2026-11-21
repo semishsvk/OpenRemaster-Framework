@@ -71,6 +71,16 @@ against the existing archive storage budget. Diagnostic files may contain
 local paths and compiler output; review them before sharing with anyone.
 The public preview has production admission disabled.
 
+Configured HomePC builds also provide a read-only LOCAL_DEV view of the
+existing Host/Broker: host identity/heartbeat, recent jobs and knowledge
+checkpoint state. It refreshes every five seconds and expires after ten.
+The native adapter uses a pinned reader and Python, with an eight-second
+timeout and 64 KiB response limit. No database, start, retry or lease command
+is exposed to this panel. A committed build can have CHECKPOINT_PENDING;
+checkpoint recovery never resubmits that build. Portable previews report
+local status unavailable. The legacy admission controls remain separately
+blocked; their historical production HOLD is not LOCAL_DEV build authority.
+
 BUILD-INFO.json records the source commit, build time, feature, toolchain,
 workflow run and executable digest. SHA256SUMS.txt covers every archive file
 except SHA256SUMS.txt itself; the published archive digest covers the whole ZIP.
@@ -106,6 +116,22 @@ confirmed. Code review by Claude is recorded separately from account roles.
 SignPath attribution and signing integration can be finalized after acceptance.
 Every signing request will require manual approval by the named signing
 approver. CI publishes unsigned DEV previews with their source provenance.
+
+Source-only status v2 candidate (20 November 2026)
+
+This source delta has no replacement native EXE or inherited GUI qualification.
+The v2 read-only consumer distinguishes unresolved HOLD, known FAILED_SETTLED,
+COMMITTED and UNKNOWN. Settled failures retain original HOLD, launch count,
+disposition kind and receipt SHA-256. Settlement does not mean build success,
+knowledge verification, retry permission or release acceptance.
+V1 responses retain raw HOLD history; settlement counts remain unavailable.
+The next native increment pins local-status-v2-pins.json independently of legacy
+dispatch controls. Missing or changed pins and unsupported schemas fail closed.
+No fallback to the historical v1 reader is automatic. The qualified gen1 EXE
+and its recorded v1 inputs remain unchanged during the current assembly.
+Source reviews and controls records apply only to their exact source revision.
+They do not qualify a native EXE or grant build, GUI or payload cutover admission.
+Native compilation and GUI qualification require the explicit common increment.
 
 Downloads and source
 

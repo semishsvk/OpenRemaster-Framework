@@ -14,7 +14,7 @@ def source_files(studio):
         files.update(path for path in (studio / folder).rglob('*') if path.is_file())
     files.update(studio / path for path in (
         'index.html', 'package.json', 'package-lock.json', 'WINDOWS-DEV.txt',
-        'vite.config.ts', 'tsconfig.json', 'src-tauri/build.rs', 'src-tauri/dev-worker-pins.json', 'tools/studio_dev_control.py',
+        'vite.config.ts', 'tsconfig.json', 'src-tauri/build.rs', 'src-tauri/dev-worker-pins.json', 'src-tauri/local-status-pins.json', 'src-tauri/local-status-v2-pins.json', 'tools/studio_dev_control.py',
         'src-tauri/Cargo.toml', 'src-tauri/Cargo.lock', 'src-tauri/tauri.conf.json',
         'tools/package-windows-dev.ps1', 'tools/verify_dev_build_readme.py', 'tools/verify_controls_review.py'))
     result = {}
