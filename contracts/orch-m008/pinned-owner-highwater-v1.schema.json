@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/semishsvk/OpenRemaster-Framework/contracts/orch-m008/pinned-owner-highwater-v1.schema.json",
+  "title": "ORF M008 Caller-Pinned High-Water Review HINT (not externally current head)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "authority_id",
+    "registry_id",
+    "sequence",
+    "owner_epoch_counter",
+    "last_attestation_sha256"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ORF-M008.PinnedOwnerObservationHighwater.v1"
+    },
+    "authority_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "registry_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775000
+    },
+    "owner_epoch_counter": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775000
+    },
+    "last_attestation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

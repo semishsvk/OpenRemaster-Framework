@@ -1,0 +1,49 @@
+name: Studio build review
+
+on:
+  pull_request:
+    branches: [main, consolidation/master-development-20261025]
+    paths:
+      - 'development/studio_d7/**'
+      - '.github/workflows/studio-build-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  studio-review:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: development/studio_d7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts
+      - run: node --test tests/build-status.test.mjs tests/modelWitnessView.test.cjs tests/studio-dev.test.mjs
+      - run: python -B -m unittest discover -s tests -p 'test_*.py' -v
+      - run: npm run build
+      - name: Check Studio in Chromium
+        shell: pwsh
+        run: |
+          $browserTools = Join-Path $env:RUNNER_TEMP 'studio-browser'
+          npm install --prefix $browserTools --ignore-scripts --no-audit --no-fund --no-package-lock playwright@1.62.1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $playwright = Join-Path $browserTools 'node_modules/playwright'
+          node (Join-Path $playwright 'cli.js') install chromium
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $env:STUDIO_PLAYWRIGHT = Join-Path $playwright 'index.js'
+          $env:STUDIO_EXPECTED_COMMIT = git rev-parse HEAD
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tools/check-build-review-browser.mjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tools/check-studio-dev-browser.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: studio-dev-gui-${{ github.sha }}
+          path: development/studio_d7/.cache/studio-dev-browser/*.png
+          if-no-files-found: warn

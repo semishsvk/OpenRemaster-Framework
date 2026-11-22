@@ -1,0 +1,34 @@
+{
+  "parent_checkpoint": "v002",
+  "runs": [
+    {
+      "path": "master/v002/evidence/core.log",
+      "passed": 971,
+      "skipped": 1,
+      "total": 972,
+      "scope": "Original suite before additive contract/portability regressions"
+    },
+    {
+      "path": "master/v002/evidence/final-r1/core.log",
+      "passed": 980,
+      "skipped": 1,
+      "total": 981,
+      "scope": "Nine added contract cases"
+    },
+    {
+      "path": "master/v002/evidence/final-r2/core.log",
+      "passed": 984,
+      "skipped": 1,
+      "total": 985,
+      "scope": "Four added symlink-harness regression cases"
+    },
+    {
+      "path": "master/v002/evidence/LINUX_CI.json",
+      "passed": 985,
+      "skipped": 0,
+      "total": 985,
+      "scope": "Same final Core suite on Linux CI; real symlink test runs"
+    }
+  ],
+  "note": "Counts refer to distinct captured suite revisions; historical logs remain untouched."
+}

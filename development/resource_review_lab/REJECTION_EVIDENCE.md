@@ -1,0 +1,9 @@
+# Shadow rejection evidence export v1
+
+The existing successful-admission ACK/event remains transactional. A failed admission rolls back that transaction. This candidate serializes already reported HOLD/REJECT decisions into a bounded evidence export after that rollback, without adding a database, authority, scheduler or live journal. Existing K003 execution_journal.py was inspected; its append/fsync primitive is not a security rejection schema and is not called by this offline exporter.
+
+Records contain a fresh attempt identifier, optional operation identifier, optional input digests, observed time and a vetted reason code. Unknown reasons become UNCLASSIFIED_FAILURE; raw exception text, paths, keys, grants and requests are never exported. Null references explicitly preserve unknown evidence. A repeated operation may have multiple distinct attempt records. The exporter rejects duplicate attempt IDs and more than 128 records.
+
+All records and exports deny dispatch/sign/publish/promote/fallback. Digests detect accidental modification, not authenticity: a coherent rewrite, deletion or truncation cannot be excluded without an independent authority and external head. Context/time are reported by the caller, not independently verified. In-memory construction and file export do not prove durable audit, completeness or exactly-once capture. The test runner persists synthetic actual-rollback records in REJECTION_EVIDENCE.json outside source. Export failure must remain HOLD and must never retry admission or execution.
+
+This does not install a production audit sink. Live durable audit, external witness, ordering/concurrency and audit-unavailable policy require independent validation and current owner admission. Existing development unsigned and release fail-closed boundaries remain unchanged.

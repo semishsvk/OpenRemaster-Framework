@@ -1,0 +1,64 @@
+/* UI-014: real, locally rendered Inspector replay; no native Host is executed. */
+.host-replay-page{min-width:0}
+.host-replay-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:8px 0 18px}
+.host-replay-metrics>div{min-width:0;display:flex;flex-direction:column;gap:8px;background:#172b33;border:1px solid #35505a;border-radius:9px;padding:17px}
+.host-replay-metrics small{color:#9bb9b8;font-size:10px;letter-spacing:.5px;text-transform:uppercase;line-height:1.4}
+.host-replay-metrics strong{font-size:30px;color:#d7f3e7;line-height:1.1}
+.host-replay-metrics strong.host-replay-alert{color:#f0a18c}
+.host-replay-metrics span{font-size:10px;color:#8ca9b1;line-height:1.5}
+.host-replay-hero{background:radial-gradient(ellipse at 75% 0%,rgba(105,143,201,.19),transparent 57%),linear-gradient(114deg,#1c3743,#13262f)}
+.host-replay-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 19px;align-items:start}
+.host-replay-columns>.panel{min-width:0}
+.host-fixture-list{display:flex;flex-direction:column;gap:8px}
+.host-fixture{display:flex;align-items:center;gap:12px;width:100%;min-width:0;text-align:left;background:#172d35;color:#d2e8e2;border:1px solid #3b5560;border-radius:8px;padding:13px 11px}
+.host-fixture:hover{background:#1b3b3c;border-color:#77a79a}
+.host-fixture.selected{background:#294b44;border-color:#86c9ab;box-shadow:inset 0 0 0 1px rgba(118,190,152,.17)}
+.host-fixture-num{font:700 10px Consolas,monospace;color:#bad9ca;min-width:16px}
+.host-fixture-info{min-width:0;flex:1}
+.host-fixture-info strong{display:block;font-size:11px;color:#e4f0eb;line-height:1.35}
+.host-fixture-info small{display:block;font:9px Consolas,monospace;margin-top:6px;color:#94b0b6;line-height:1.5;overflow-wrap:anywhere}
+.host-fixture-pill{display:inline-flex;align-items:center;flex-shrink:0;padding:5px 7px;border-radius:4px;font:700 9px Consolas,monospace;letter-spacing:.3px}
+.host-fixture-pill.ok{background:#24473a;color:#a6e3ba;border:1px solid #457962}
+.host-fixture-pill.hold{background:#442b26;color:#efae99;border:1px solid #87574a}
+.host-source-text{font-size:11px;color:#9dbea9;line-height:1.6;margin:13px 0}
+.host-action-strip{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.host-action-strip>.secondary-button{font-size:10px;padding:9px 11px}
+.host-session-state{background:#122a35;border:1px solid #425966;border-radius:9px;padding:17px;margin-bottom:13px}
+.host-session-state small{color:#a0c2b5;letter-spacing:.6px;font-size:9px;display:block}
+.host-session-state strong{font-size:18px;display:block;color:#e5d9c3;margin:9px 0}
+.host-session-state code{display:block;color:#adc8bc;font-size:11px;overflow-wrap:anywhere}
+.host-session-facts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.host-session-facts>div{background:#172d32;border:1px solid #39515a;border-radius:6px;padding:12px;min-width:0}
+.host-session-facts span{display:block;color:#96aeb2;font-size:10px;line-height:1.45}
+.host-session-facts strong{display:block;color:#d2eada;font-size:18px;margin-top:7px}
+.host-rejection{padding:13px 16px;color:#edc8ac;font-size:11px;line-height:1.7;border:1px solid #835f46;border-radius:7px;background:#352822;margin:14px 0}
+.host-decision{margin:14px 0;padding:13px;background:#1a3031;border:1px solid #4b695c;border-radius:8px}
+.host-decision small{display:block;color:#a8cabb;font-size:9px;letter-spacing:.5px}
+.host-decision strong{font-size:12px;color:#cfe2d4;display:block;margin-top:8px;line-height:1.4}
+.host-decision p{font-size:10px;color:#9db4b7;margin-top:8px;line-height:1.55}
+.host-observed-list{display:flex;flex-direction:column;gap:7px;margin:12px 0}
+.host-observed-list>div{display:flex;flex-direction:column;gap:4px;padding:11px;border:1px solid #365050;border-radius:6px;background:#112b30}
+.host-observed-list strong{color:#d0eacb;font-size:11px}
+.host-observed-list small{color:#9bb3ad;font-size:9px;overflow-wrap:anywhere}
+.host-observed-list code{color:#91bbb1;font-size:9px;overflow-wrap:anywhere}
+.host-replay-hint{color:#9cb2af;font-size:10.5px;line-height:1.65;margin:13px 0 0}
+.host-contract-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:4px 0 15px}
+.host-contract-grid>div{padding:13px;border:1px solid #4b5d58;background:#183333;border-radius:8px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.host-contract-grid strong{font:700 12px Consolas,monospace;color:#dcf4df}
+.host-contract-grid small{font-size:10px;color:#a7c3b6;line-height:1.4}
+.host-contract-grid span{font-size:9px;color:#deb899}
+.host-source-hashes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.host-source-hashes>div{padding:12px;background:#132932;border:1px solid #33494e;border-radius:7px;min-width:0}
+.host-source-hashes small{display:block;font-size:10px;color:#99b2b3;margin-bottom:8px}
+.host-source-hashes code{display:block;font-size:9px;color:#a5d7bf;overflow-wrap:anywhere}
+.host-desktop-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.host-desktop-metrics>div{background:#182d35;border:1px solid #3e545d;padding:14px;border-radius:7px;min-width:0}
+.host-desktop-metrics strong{font-size:23px;display:block;color:#ead8c5}
+.host-desktop-metrics span{color:#96b4b3;font-size:10px;display:block;line-height:1.45;margin-top:5px}
+.host-desktop-actions{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.host-desktop-blockers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:17px 0}
+.host-desktop-blockers>div{display:flex;align-items:center;gap:9px;padding:11px;background:#182a31;border:1px solid #4c494a;border-radius:7px;min-width:0}
+.host-desktop-blockers>div>span:first-child{font:700 10px Consolas,monospace;color:#c4b7aa}
+.host-desktop-blockers strong{font-size:10px;color:#d1dcdb;flex:1;text-transform:capitalize;overflow-wrap:anywhere}
+@media(max-width:1160px){.host-replay-columns{grid-template-columns:1fr}.host-replay-metrics,.host-desktop-metrics{grid-template-columns:1fr 1fr}}
+@media(max-width:690px){.host-replay-metrics,.host-desktop-metrics,.host-contract-grid,.host-source-hashes,.host-desktop-blockers{grid-template-columns:1fr}.host-fixture{flex-wrap:wrap}}

@@ -1,0 +1,91 @@
+{
+  "$id": "urn:openremaster:ResourceResolutionContract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "game": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "layers": {
+      "items": {
+        "properties": {
+          "entries": {
+            "items": {
+              "properties": {
+                "path": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "sha256": {
+                  "pattern": "^[0-9a-fA-F]{64}$",
+                  "type": "string"
+                },
+                "size": {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "size"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_sha256": {
+            "pattern": "^[0-9a-fA-F]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "source_sha256",
+          "entries"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "order_evidence_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "order_evidence_sha256": {
+      "pattern": "^[0-9a-fA-F]{64}$",
+      "type": "string"
+    },
+    "order_evidence_state": {
+      "enum": [
+        "VALIDATED",
+        "HYPOTHESIS"
+      ]
+    },
+    "resolution_order": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": {
+      "const": "ResourceResolutionContract.v1"
+    }
+  },
+  "required": [
+    "schema",
+    "resolution_order",
+    "order_evidence_state",
+    "order_evidence_path",
+    "order_evidence_sha256",
+    "layers"
+  ],
+  "title": "ResourceResolutionContract.v1",
+  "type": "object"
+}

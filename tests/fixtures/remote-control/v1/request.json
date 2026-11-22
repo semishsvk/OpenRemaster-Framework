@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "request_id": "m001-example",
+  "idempotency_key": "m001-example",
+  "worker_id": "synthetic-worker",
+  "operation": "synthetic.validate",
+  "repository": "semishsvk/OpenRemaster-Framework",
+  "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "input_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "deadline_utc": "2030-01-01T00:00:00Z",
+  "limits": {
+    "timeout_seconds": 30,
+    "max_output_bytes": 4096
+  }
+}

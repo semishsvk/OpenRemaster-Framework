@@ -1,0 +1,231 @@
+{
+  "schema": "OpenRemaster.StudioNativeBuildReview.v1",
+  "release": "ORF-STUDIO-UI-20261018-r14",
+  "generatedUtc": "2026-10-18T16:19:30+00:00",
+  "status": "REAL_MSVC_SYNTHETIC_SMOKE_SOURCE_PROVEN__TAURI_AND_OWNER_RELEASE_HOLD",
+  "authority": "HISTORICAL_SAME_MACHINE_SOURCE_SHA_NOT_CURRENT_RELEASE_SIGNOFF",
+  "sourcePins": {
+    "studioR13": "305ecd7fa56324cc8511d81cde8f69ac872cd888e0218d7a8ac56201fb002975",
+    "nativeR24Sealed": "61ec7a029d4d019607a2f92f938346b2c972be1d50a85ddb57f8329040802baa",
+    "originalK003": "644f9ef4d001a56ee9738d91ac558c5fed32967a17819245a3174b0815fe1d7a",
+    "desktopContractR22": "48808670f3c4c116ab007198fa3539d0234d40d614890fc0fdc973b938ce29a9",
+    "tauriTestOverlayR22": "46ba0820337772553000c2fb28ee2001382acc5a186a963230f38f832e0dfb4a",
+    "toolchainInventoryR23": "6f87b72d2b44d934c5c8fffb5032940f032506dab2470c07e1a5d00784c1b3ed",
+    "nativeCheckpointR24": "e68dc63f242efad9a4203ccd3be933eaffb884fbb7cf1ac2accfab9eb49642ad",
+    "nativeGateDeltaR24": "ad9cdf6b9a7082576d29ad586f5f24e0838b87ba737bac2bcd9d2dac64dd47ef",
+    "microsoftVendorSignaturesR24": "fa9c77e2bd3efb9d6c416f9a1987a1df7b58313974956ac4572096ac9bc95f3b",
+    "nativeValidationR24": "7fff43b24c388a07505a7609b6048d63af54425c7d854aaeb7ed05fb7310bc1b",
+    "nativeSyntheticStdoutR24": "96d0fae991c24bdf4175347b4ecd3274c40b8e571886c6458cbe90ec224705ce"
+  },
+  "stage": "OFFLINE_READONLY_TECHNICAL_EVIDENCE",
+  "gates": [
+    {
+      "id": "T01",
+      "name": "Rust stable x86_64-pc-windows-msvc",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "Rust Cargo and rustc remain unverified/missing; no installer run",
+      "prerequisites": "approved rustup and compiler target",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T02",
+      "name": "MSVC C++ compiler/linker",
+      "readyHistorical": true,
+      "wasReadyInR23": false,
+      "reason": "MSVC cl/link x64 signed Microsoft binaries; real compiled Win64 synthetic exe ran exit 0",
+      "prerequisites": "approved Visual Studio C++ build tools; SDK alone is insufficient",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T03",
+      "name": "Windows SDK",
+      "readyHistorical": true,
+      "wasReadyInR23": true,
+      "reason": "Windows SDK 10.0.26100.0 headers, libraries and signtool present",
+      "prerequisites": "headers/libraries and signing utilities where applicable",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T04",
+      "name": "Original approved icon",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "User-approved original ORION icon source not independently located",
+      "prerequisites": "verified approved original asset, sizes, .ico and source SHA",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T05",
+      "name": "Tauri shadow native smoke build",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "No Rust toolchain, thus no real Tauri executable",
+      "prerequisites": "T01/T02/T03 plus source-only shadow identity; no native commands",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T06",
+      "name": "Native UI screenshot acceptance",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "No validated real new Studio native UI screenshot",
+      "prerequisites": "actual renderer pixels and human review, not synthetic mock",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T07",
+      "name": "Mandatory runtime closure",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "No independently approved mandatory component installer closure",
+      "prerequisites": "Framework Core, ORION, Governor, worker, Asset Labs and Component Manager version pins",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T08",
+      "name": "Publisher signing and Windows setup",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "Microsoft signtool present, but no authorized publisher cert or signed Setup",
+      "prerequisites": "independent signing authority and Gate B",
+      "acceptedForProduction": false
+    },
+    {
+      "id": "T09",
+      "name": "Production canary",
+      "readyHistorical": false,
+      "wasReadyInR23": false,
+      "reason": "Independent Owner A/Windows B/Canary C still unapproved",
+      "prerequisites": "independent A/B/C approval, fenced leases and no retry",
+      "acceptedForProduction": false
+    }
+  ],
+  "requiredSteps": [
+    {
+      "id": "D01",
+      "title": "Rust stable MSVC toolchain",
+      "sourceStatus": "MISSING",
+      "needs": "approved rustup/cargo/rustc + Windows C++ build tools",
+      "releaseAccepted": false
+    },
+    {
+      "id": "D02",
+      "title": "Approved Studio brand icon",
+      "sourceStatus": "MISSING",
+      "needs": "reuse previously approved icon source; verified .ico and sizes",
+      "releaseAccepted": false
+    },
+    {
+      "id": "D03",
+      "title": "Tauri 2 native smoke build",
+      "sourceStatus": "BLOCKED",
+      "needs": "isolated shadow identifier, no host IPC, no worker, no installer",
+      "releaseAccepted": false
+    },
+    {
+      "id": "D04",
+      "title": "Actual UI render acceptance",
+      "sourceStatus": "NOT_VERIFIED",
+      "needs": "real local browser or native screenshot, no generated mock",
+      "releaseAccepted": false
+    },
+    {
+      "id": "D05",
+      "title": "Component Manager closure",
+      "sourceStatus": "NOT_VERIFIED",
+      "needs": "mandatory Core/ORION/Governor/worker/Asset Labs dependency manifest",
+      "releaseAccepted": false
+    },
+    {
+      "id": "D06",
+      "title": "One signed x64 installer",
+      "sourceStatus": "NOT_AUTHORIZED",
+      "needs": "independent publisher certificate, Gate B and approved official icon",
+      "releaseAccepted": false
+    },
+    {
+      "id": "D07",
+      "title": "Native execution canary",
+      "sourceStatus": "NOT_AUTHORIZED",
+      "needs": "independent Gate A/B/C acceptance, no auto retry",
+      "releaseAccepted": false
+    }
+  ],
+  "progress": {
+    "historicalPriorReady": 1,
+    "historicalNowReady": 2,
+    "totalTechnicalGates": 9,
+    "historicalRemaining": 7,
+    "changedGate": "T02",
+    "syntheticExecutableProduced": true,
+    "syntheticExeSha256": "02df3045dd18966e85bbb3f79eca48608a95eef5d8b85721da3b051b0390626e",
+    "realStudioTauriAppProduced": false,
+    "prebuiltMicrosoftSDKProven": true,
+    "preinstalledMSVCCompilerProven": true,
+    "publisherApproved": false,
+    "approvedOriginalOrionIconLocated": false,
+    "independentOwnerA_B_CApproved": false,
+    "signedOneInstallerCreated": false,
+    "admittedProductionComponents": 0
+  },
+  "tooling": {
+    "msvcVersion": "14.44.35207",
+    "visualStudioVersion": "Enterprise 2022 17.14.42",
+    "sdkVersion": "10.0.26100.0",
+    "historicalSignedMicrosoftTools": [
+      {
+        "role": "cl",
+        "sha256": "fe251ef50a1545b1b0835ee17b1e785459712b38d79e45b5c1d3d28970a36619",
+        "microsoftCodeSignatureValidAtR24": true,
+        "publisherIsOpenRemaster": false
+      },
+      {
+        "role": "link",
+        "sha256": "a364af801a8539e4324d9489313dbf001d959128451fc99a27b24676bbac058f",
+        "microsoftCodeSignatureValidAtR24": true,
+        "publisherIsOpenRemaster": false
+      },
+      {
+        "role": "sdk_signtool",
+        "sha256": "431ee314c83988cacda86606356fd321b75ae0093481b97e3b738e99c412f2a0",
+        "microsoftCodeSignatureValidAtR24": true,
+        "publisherIsOpenRemaster": false
+      }
+    ],
+    "historicalR24SoftwareTests": 19,
+    "newWin64ProcessExecutionByStudio": false,
+    "syntheticWin64SmokeActualExecutedAtR24": true,
+    "sourceOnlyReferenceNoExecutableCopied": true,
+    "syntheticExeIsNotStudioExe": true
+  },
+  "pe": {
+    "kind": "PE32_PLUS_CONSOLE_SYNTHETIC",
+    "amd64": true,
+    "aslr": true,
+    "highEntropyAslr": true,
+    "nxDep": true,
+    "sections": 5,
+    "win64PointerBits": 64,
+    "realTauriUiRendered": false
+  },
+  "production": {
+    "status": "HOLD_NO_AUTO_RETRY",
+    "mayInstall": false,
+    "mayDispatch": false,
+    "mayStartNativeWorker": false,
+    "mayAutoRetry": false,
+    "newSchedulerCreated": false,
+    "originalGamesOpenedOrModified": false,
+    "originalK003Modified": false,
+    "windowsAccountsServicesOrTasksModified": false,
+    "rustToolchainInstalledOrUsed": false,
+    "nativeStudioExeBuilt": false,
+    "signedInstallerBuilt": false,
+    "gameFidelityProven": false,
+    "cleanIndependentWindowsInstallVerified": false,
+    "currentOwnerWitnessSignerAdmitted": false,
+    "totalGlobalHeavySlotsMax": 3,
+    "singleWriterPerGame": true
+  }
+}

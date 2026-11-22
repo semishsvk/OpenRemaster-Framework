@@ -1,0 +1,434 @@
+{
+  "schema": "OpenRemaster.StudioHostConnectorOfflineFixture.v1",
+  "release": "ORF-STUDIO-HOST-CONNECTOR-20261018-r1",
+  "generatedUtc": "2026-10-18T14:28:56+00:00",
+  "status": "HISTORICAL_REAL_WINDOWS_INSPECTOR_RESPONSES_REPLAY_ONLY_PRODUCTION_HOLD",
+  "authority": "UNSIGNED_FIXED_LOCAL_HOST_EVIDENCE_NO_LIVE_AUTHORITY",
+  "sourcePins": {
+    "parentR11": "8771434f02188076dd30e6638a2bb436e592f3b9a72224170d1c5e2589608417",
+    "hostCheckpoint": "3c0fcd236ed9b6a006dbe22480cac47e66a8287454214057e94f667cbd6e87ba",
+    "hostApiContract": "4883aa7a411b37cf0532ec4ba4bf30a280796f63f8728116c44cd57f5e5a6845",
+    "hostSession": "7b3b1cc23abb8b128dbd73bdcd80996e4bcdf9b41bbb850ab7edab4dec6e618c",
+    "windowsVerification": "a25293726e66ae2f57a520ff4f2a57f82da84fa041e4fbce4d5b3c45bcbf1a69",
+    "historicalRealHostPilot": "f579c57a366bcd6ae6bc99e8936f8a8d4c5628fda1d774c68b95f7167f0dd9d0",
+    "studioArchivedCapture": "8dd02986d98ece86ed7530c1ce302cb92d6a1fbb43b8799c2ac708011f259251"
+  },
+  "hostContract": {
+    "version": "1.0.0",
+    "requestSchema": "OpenRemaster.ContinuationInspector.Request.v1",
+    "responseSchema": "OpenRemaster.ContinuationInspector.Response.v1",
+    "transport": "ONE_SHOT_JSON_STDIO_TO_EOF_NO_LISTENER",
+    "allowedMethods": [
+      "health.get",
+      "checkpoints.list",
+      "checkpoints.get"
+    ],
+    "maxRequestBytes": 8192,
+    "maxResponseBytes": 131072,
+    "clientPendingDeadlineMs": 15000,
+    "clientFreshnessLimitMs": 30000,
+    "hostDeadlineMs": 8000,
+    "originalHostTestsPassed": 201,
+    "realHistoricalWindowsHostRequests": 6,
+    "historicalSuccessResponses": 5,
+    "historicalSnapshotRejects": 1
+  },
+  "archivedSnapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+  "responseFixtures": [
+    {
+      "request": {
+        "id": "host-real-1",
+        "method": "checkpoints.list",
+        "params": {
+          "limit": 1
+        },
+        "schema": "OpenRemaster.ContinuationInspector.Request.v1",
+        "version": "1.0.0"
+      },
+      "response": {
+        "data": {
+          "cache_generation": 1,
+          "count": 1,
+          "decision": {
+            "owner_selected_id": null,
+            "production_admission": "HOLD",
+            "reason_codes": [
+              "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED",
+              "OWNER_ACCEPTANCE_UNATTESTED",
+              "PRODUCTION_HOST_NOT_BOUND"
+            ],
+            "registry_blockers": [
+              "EXTERNAL_OWNER_CANONICAL_SELECTION_REQUIRED"
+            ],
+            "status": "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED"
+          },
+          "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+          "has_more": true,
+          "items": [
+            {
+              "edition": "Framework0",
+              "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+              "id": "cp_04573f19e83e10ada3102de6f9518c008b4ff8c2d35c23712c37770a3c3d791a",
+              "observation_class": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+              "parent_ids": [
+                "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64"
+              ],
+              "project": "OpenRemaster",
+              "reported_at_utc": null,
+              "reported_status": "ISOLATED_SOFTWARE_AND_SOURCE_BOUND_CACHE_PASS__PRODUCTION_HOLD",
+              "scope": "EvidenceDependency",
+              "source_schema": "OpenRemaster.DerivedEvidenceCacheCheckpoint.v1",
+              "source_sha256": "e0a582f08b4869a1340c6ac0cdc7e656246029fdb7f1436f9f348387fe4c51f9",
+              "workstream": "EvidenceCache"
+            }
+          ],
+          "offset": 0,
+          "total": 2
+        },
+        "id": "host-real-1",
+        "method": "checkpoints.list",
+        "ok": true,
+        "schema": "OpenRemaster.ContinuationInspector.Response.v1",
+        "security": {
+          "authority": "SOURCE_BOUND_READONLY_PROJECTION",
+          "auto_retry": false,
+          "fidelity_verified": false,
+          "game_launch": false,
+          "model_calls": false,
+          "native_dispatch": false,
+          "owner_admitted": false,
+          "production_admission": "HOLD",
+          "read_only": true,
+          "runtime_verified": false,
+          "writes_allowed": false
+        },
+        "snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "request": {
+        "id": "host-real-2",
+        "method": "checkpoints.list",
+        "params": {
+          "if_snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+          "limit": 1,
+          "offset": 1
+        },
+        "schema": "OpenRemaster.ContinuationInspector.Request.v1",
+        "version": "1.0.0"
+      },
+      "response": {
+        "data": {
+          "cache_generation": 1,
+          "count": 1,
+          "decision": {
+            "owner_selected_id": null,
+            "production_admission": "HOLD",
+            "reason_codes": [
+              "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED",
+              "OWNER_ACCEPTANCE_UNATTESTED",
+              "PRODUCTION_HOST_NOT_BOUND"
+            ],
+            "registry_blockers": [
+              "EXTERNAL_OWNER_CANONICAL_SELECTION_REQUIRED"
+            ],
+            "status": "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED"
+          },
+          "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+          "has_more": false,
+          "items": [
+            {
+              "edition": "Framework0",
+              "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+              "id": "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64",
+              "observation_class": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+              "parent_ids": [],
+              "project": "OpenRemaster",
+              "reported_at_utc": null,
+              "reported_status": "ISOLATED_SHADOW_SOFTWARE_AND_SOURCE_PINS_PASS__PRODUCTION_HOLD",
+              "scope": "EvidenceDependency",
+              "source_schema": "OpenRemaster.IsolatedCrosscuttingUpgradeCheckpoint.v1",
+              "source_sha256": "e9647e621b111305a9e92ba1859569caca96b9d9f00c33c6e2a418615c0f8dab",
+              "workstream": "CrosscuttingUpgrades"
+            }
+          ],
+          "offset": 1,
+          "total": 2
+        },
+        "id": "host-real-2",
+        "method": "checkpoints.list",
+        "ok": true,
+        "schema": "OpenRemaster.ContinuationInspector.Response.v1",
+        "security": {
+          "authority": "SOURCE_BOUND_READONLY_PROJECTION",
+          "auto_retry": false,
+          "fidelity_verified": false,
+          "game_launch": false,
+          "model_calls": false,
+          "native_dispatch": false,
+          "owner_admitted": false,
+          "production_admission": "HOLD",
+          "read_only": true,
+          "runtime_verified": false,
+          "writes_allowed": false
+        },
+        "snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "request": {
+        "id": "host-real-3",
+        "method": "checkpoints.get",
+        "params": {
+          "id": "cp_04573f19e83e10ada3102de6f9518c008b4ff8c2d35c23712c37770a3c3d791a",
+          "if_snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6"
+        },
+        "schema": "OpenRemaster.ContinuationInspector.Request.v1",
+        "version": "1.0.0"
+      },
+      "response": {
+        "data": {
+          "cache_generation": 1,
+          "decision": {
+            "owner_selected_id": null,
+            "production_admission": "HOLD",
+            "reason_codes": [
+              "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED",
+              "OWNER_ACCEPTANCE_UNATTESTED",
+              "PRODUCTION_HOST_NOT_BOUND"
+            ],
+            "registry_blockers": [
+              "EXTERNAL_OWNER_CANONICAL_SELECTION_REQUIRED"
+            ],
+            "status": "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED"
+          },
+          "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+          "item": {
+            "edition": "Framework0",
+            "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+            "id": "cp_04573f19e83e10ada3102de6f9518c008b4ff8c2d35c23712c37770a3c3d791a",
+            "observation_class": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+            "parent_ids": [
+              "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64"
+            ],
+            "project": "OpenRemaster",
+            "reported_at_utc": null,
+            "reported_status": "ISOLATED_SOFTWARE_AND_SOURCE_BOUND_CACHE_PASS__PRODUCTION_HOLD",
+            "scope": "EvidenceDependency",
+            "source_schema": "OpenRemaster.DerivedEvidenceCacheCheckpoint.v1",
+            "source_sha256": "e0a582f08b4869a1340c6ac0cdc7e656246029fdb7f1436f9f348387fe4c51f9",
+            "workstream": "EvidenceCache"
+          }
+        },
+        "id": "host-real-3",
+        "method": "checkpoints.get",
+        "ok": true,
+        "schema": "OpenRemaster.ContinuationInspector.Response.v1",
+        "security": {
+          "authority": "SOURCE_BOUND_READONLY_PROJECTION",
+          "auto_retry": false,
+          "fidelity_verified": false,
+          "game_launch": false,
+          "model_calls": false,
+          "native_dispatch": false,
+          "owner_admitted": false,
+          "production_admission": "HOLD",
+          "read_only": true,
+          "runtime_verified": false,
+          "writes_allowed": false
+        },
+        "snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "request": {
+        "id": "host-real-4",
+        "method": "health.get",
+        "params": {},
+        "schema": "OpenRemaster.ContinuationInspector.Request.v1",
+        "version": "1.0.0"
+      },
+      "response": {
+        "data": {
+          "cache_generation": 1,
+          "checkpoint_count": 2,
+          "decision": {
+            "owner_selected_id": null,
+            "production_admission": "HOLD",
+            "reason_codes": [
+              "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED",
+              "OWNER_ACCEPTANCE_UNATTESTED",
+              "PRODUCTION_HOST_NOT_BOUND"
+            ],
+            "registry_blockers": [
+              "EXTERNAL_OWNER_CANONICAL_SELECTION_REQUIRED"
+            ],
+            "status": "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED"
+          },
+          "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+          "status": "READONLY_PROJECTION_AVAILABLE"
+        },
+        "id": "host-real-4",
+        "method": "health.get",
+        "ok": true,
+        "schema": "OpenRemaster.ContinuationInspector.Response.v1",
+        "security": {
+          "authority": "SOURCE_BOUND_READONLY_PROJECTION",
+          "auto_retry": false,
+          "fidelity_verified": false,
+          "game_launch": false,
+          "model_calls": false,
+          "native_dispatch": false,
+          "owner_admitted": false,
+          "production_admission": "HOLD",
+          "read_only": true,
+          "runtime_verified": false,
+          "writes_allowed": false
+        },
+        "snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "request": {
+        "id": "host-real-5",
+        "method": "checkpoints.list",
+        "params": {
+          "if_snapshot": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+          "offset": 1
+        },
+        "schema": "OpenRemaster.ContinuationInspector.Request.v1",
+        "version": "1.0.0"
+      },
+      "response": {
+        "error": {
+          "code": "SNAPSHOT_CHANGED",
+          "status": "HOLD_NO_FALLBACK"
+        },
+        "id": "host-real-5",
+        "method": "checkpoints.list",
+        "ok": false,
+        "schema": "OpenRemaster.ContinuationInspector.Response.v1",
+        "security": {
+          "authority": "SOURCE_BOUND_READONLY_PROJECTION",
+          "auto_retry": false,
+          "fidelity_verified": false,
+          "game_launch": false,
+          "model_calls": false,
+          "native_dispatch": false,
+          "owner_admitted": false,
+          "production_admission": "HOLD",
+          "read_only": true,
+          "runtime_verified": false,
+          "writes_allowed": false
+        },
+        "version": "1.0.0"
+      }
+    },
+    {
+      "request": {
+        "id": "host-real-6",
+        "method": "checkpoints.list",
+        "params": {},
+        "schema": "OpenRemaster.ContinuationInspector.Request.v1",
+        "version": "1.0.0"
+      },
+      "response": {
+        "data": {
+          "cache_generation": 1,
+          "count": 2,
+          "decision": {
+            "owner_selected_id": null,
+            "production_admission": "HOLD",
+            "reason_codes": [
+              "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED",
+              "OWNER_ACCEPTANCE_UNATTESTED",
+              "PRODUCTION_HOST_NOT_BOUND"
+            ],
+            "registry_blockers": [
+              "EXTERNAL_OWNER_CANONICAL_SELECTION_REQUIRED"
+            ],
+            "status": "MULTI_WORKSTREAM_CONFLICT_OWNER_SELECTION_REQUIRED"
+          },
+          "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+          "has_more": false,
+          "items": [
+            {
+              "edition": "Framework0",
+              "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+              "id": "cp_04573f19e83e10ada3102de6f9518c008b4ff8c2d35c23712c37770a3c3d791a",
+              "observation_class": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+              "parent_ids": [
+                "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64"
+              ],
+              "project": "OpenRemaster",
+              "reported_at_utc": null,
+              "reported_status": "ISOLATED_SOFTWARE_AND_SOURCE_BOUND_CACHE_PASS__PRODUCTION_HOLD",
+              "scope": "EvidenceDependency",
+              "source_schema": "OpenRemaster.DerivedEvidenceCacheCheckpoint.v1",
+              "source_sha256": "e0a582f08b4869a1340c6ac0cdc7e656246029fdb7f1436f9f348387fe4c51f9",
+              "workstream": "EvidenceCache"
+            },
+            {
+              "edition": "Framework0",
+              "freshness": "MATCHES_PINNED_SHA256_NOT_LATEST_ASSERTION",
+              "id": "cp_255b09ff2e9e9850019b552fc210e651ccbcb7eab080d16710082bd7a7afdf64",
+              "observation_class": "PINNED_CHECKPOINT_REPORT_NOT_OWNER_SIGNOFF",
+              "parent_ids": [],
+              "project": "OpenRemaster",
+              "reported_at_utc": null,
+              "reported_status": "ISOLATED_SHADOW_SOFTWARE_AND_SOURCE_PINS_PASS__PRODUCTION_HOLD",
+              "scope": "EvidenceDependency",
+              "source_schema": "OpenRemaster.IsolatedCrosscuttingUpgradeCheckpoint.v1",
+              "source_sha256": "e9647e621b111305a9e92ba1859569caca96b9d9f00c33c6e2a418615c0f8dab",
+              "workstream": "CrosscuttingUpgrades"
+            }
+          ],
+          "offset": 0,
+          "total": 2
+        },
+        "id": "host-real-6",
+        "method": "checkpoints.list",
+        "ok": true,
+        "schema": "OpenRemaster.ContinuationInspector.Response.v1",
+        "security": {
+          "authority": "SOURCE_BOUND_READONLY_PROJECTION",
+          "auto_retry": false,
+          "fidelity_verified": false,
+          "game_launch": false,
+          "model_calls": false,
+          "native_dispatch": false,
+          "owner_admitted": false,
+          "production_admission": "HOLD",
+          "read_only": true,
+          "runtime_verified": false,
+          "writes_allowed": false
+        },
+        "snapshot": "sha256:20f15ecee63ea7daea2b8e9a72060e9348eee22b8d9bb085063a0bb687ce43e6",
+        "version": "1.0.0"
+      }
+    }
+  ],
+  "security": {
+    "sourceContext": "HISTORICAL_HOST_PILOT_NOT_CURRENT",
+    "archiveCanDemonstrateTransportContract": true,
+    "liveHostConnected": false,
+    "originalHostExecutedNow": false,
+    "currentWindowsUserRoleAuthenticated": false,
+    "currentOwnerAdmitted": false,
+    "currentWitnessAdmitted": false,
+    "currentGuiLease": false,
+    "signedPublisher": false,
+    "originalGamesTouched": false,
+    "nativeDispatch": false,
+    "autoRetry": false,
+    "canInstall": false,
+    "canStartWorker": false,
+    "canRunModel": false,
+    "canCommitJob": false,
+    "productionStatus": "HOLD_NO_AUTO_RETRY"
+  }
+}

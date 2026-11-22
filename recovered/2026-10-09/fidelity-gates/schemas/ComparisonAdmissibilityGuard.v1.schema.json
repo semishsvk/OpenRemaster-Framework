@@ -1,0 +1,31 @@
+{
+  "$id": "urn:openremaster:ComparisonAdmissibilityGuard.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "alignment": {
+      "type": "object"
+    },
+    "fidelity_verified": {
+      "const": false
+    },
+    "may_report_fidelity_score": {
+      "type": "boolean"
+    },
+    "schema": {
+      "const": "ComparisonAdmissibilityGuard.v1"
+    },
+    "status": {
+      "enum": [
+        "ADMISSIBLE",
+        "BLOCKED"
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "status",
+    "alignment"
+  ],
+  "title": "ComparisonAdmissibilityGuard.v1",
+  "type": "object"
+}

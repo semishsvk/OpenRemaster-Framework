@@ -1,0 +1,121 @@
+{
+  "schema": "OpenRemaster.FrameworkVNextPolicies.v1",
+  "phase1_baseline": "FROZEN_UNCHANGED",
+  "contracts": {
+    "OracleReadinessContract.v1": {
+      "promotion_requires": [
+        "runtime_fingerprint",
+        "process_identity",
+        "reproducible_launch",
+        "deterministic_control_path",
+        "capture_or_probe_path",
+        "acceptance_comparator"
+      ],
+      "process_identity_requires": [
+        "executable_path",
+        "command_line_or_config",
+        "creation_or_parent_provenance"
+      ],
+      "deterministic_control_capabilities": [
+        "dos.input.keyboard_deterministic",
+        "dos.input.mouse_motion_deterministic",
+        "dos.input.mouse_button_deterministic"
+      ],
+      "failure_policy": "FAIL_CLOSED_TO_WARM"
+    },
+    "RuntimeLeaseContract.v1": {
+      "resource_classes": [
+        "WORKER",
+        "GODOT_GPU",
+        "DOS_RUNTIME",
+        "ORIGINAL_RUNTIME_CAPTURE",
+        "DEBUGGER",
+        "BUILD"
+      ],
+      "rule": "EXCLUSIVE_WHEN_DECLARED"
+    },
+    "SchedulerPromotionPolicy.v1": {
+      "knowledge_lanes": "UNBOUNDED_BY_POLICY",
+      "max_heavy_lanes": 3,
+      "wip_limit_per_project": 1,
+      "promotion": "READY_HIGHEST_COMPLETION_VALUE",
+      "demotion": [
+        "ORACLE_NOT_READY",
+        "MISSING_RUNTIME",
+        "LONG_EXTERNAL_BLOCKER",
+        "RESOURCE_CONFLICT"
+      ],
+      "blocked_lane_behavior": "PROMOTE_NEXT_READY"
+    },
+    "OracleEvidenceLevels.v1": {
+      "ordered_levels": [
+        "DIAGNOSTIC_CAPTURE",
+        "ORIGINAL_RUNTIME_OBSERVATION",
+        "ALIGNED_ORACLE",
+        "DETERMINISTIC_ORACLE",
+        "FIDELITY_ATTESTED"
+      ],
+      "no_implicit_promotion": true,
+      "remote_desktop_stream_max_level": "DIAGNOSTIC_CAPTURE"
+    },
+    "InteractionAudioFidelityContract.v1": {
+      "scope": "all OpenRemaster game projects and ReconstructionAdapters",
+      "unit": "interaction branch / trigger / puzzle transition / NPC-dialog activation / automatic gameplay side-effect",
+      "required_classification": [
+        "SOURCE_AUDIO_VERIFIED",
+        "NO_AUDIO_BY_SOURCE",
+        "HOLD_UNRESOLVED"
+      ],
+      "rules": [
+        "Every reconstructed interaction unit MUST have an explicit audio classification.",
+        "Audio MUST NOT be inferred from semantic category alone; generic pickup/use/door/dialog sounds are forbidden unless source-backed.",
+        "NPC/dialog voice MUST NOT be synthesized or inferred from text when canonical voice evidence is absent.",
+        "Successful and failed branches are classified independently; audio from a successful branch MUST NOT leak into a silent failure branch.",
+        "SOURCE_AUDIO_VERIFIED requires provenance to corpus/oracle evidence, asset identity when applicable, runtime event binding, and validation.",
+        "NO_AUDIO_BY_SOURCE requires evidence that the reconstructed branch is intentionally silent; silence is a fidelity result, not missing implementation.",
+        "HOLD_UNRESOLVED forbids guessing and blocks FIDELITY_VERIFIED promotion when the unresolved audio could materially affect the slice.",
+        "Canonical source assets MUST retain hashes/provenance; substitutions require explicit non-fidelity labeling.",
+        "Logical audio events and physical playback MUST share the same canonical binding so replay, diagnostics and packaged runtime cannot diverge.",
+        "The interaction-audio matrix MUST expand with reconstructed scope; structural completeness cannot silently omit audio semantics."
+      ],
+      "authority": "FidelityAuthorityChain.v1",
+      "required_evidence_fields": [
+        "interaction_id",
+        "game",
+        "room_or_context",
+        "trigger_or_object",
+        "branch",
+        "classification",
+        "source_evidence",
+        "asset_if_any",
+        "asset_sha256_if_any",
+        "runtime_event",
+        "test_status"
+      ],
+      "verify_gate": {
+        "SOURCE_AUDIO_VERIFIED": [
+          "asset_exists_or_native_source_resolves",
+          "asset_hash_or_identity_verified",
+          "logical_event_matches",
+          "physical_playback_ready",
+          "packaged_presence_when_packaged"
+        ],
+        "NO_AUDIO_BY_SOURCE": [
+          "forbidden_audio_assertion"
+        ],
+        "HOLD_UNRESOLVED": [
+          "no_guessed_audio"
+        ],
+        "promotion_failures": [
+          "UNCLASSIFIED",
+          "GUESSED_AUDIO",
+          "MISSING_VERIFIED_ASSET",
+          "WRONG_EVENT",
+          "FORBIDDEN_AUDIO_EMITTED"
+        ]
+      },
+      "engine_neutral": true,
+      "adapter_responsibility": "Game/engine adapter maps canonical AudioEventIR bindings to runtime playback; framework contract does not prescribe WAV, Miles, MIDI, Redbook, streamed voice, or engine-specific formats."
+    }
+  }
+}

@@ -1,0 +1,3 @@
+# Preserve reused SHA-pinned source bytes across platforms.
+development/glca/reused/** -text
+development/resource_review_lab/** -text

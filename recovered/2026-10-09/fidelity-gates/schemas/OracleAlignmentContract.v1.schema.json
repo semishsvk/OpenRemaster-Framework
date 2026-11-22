@@ -1,0 +1,326 @@
+{
+  "$id": "urn:openremaster:OracleAlignmentContract.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "original": {
+      "properties": {
+        "camera": {
+          "properties": {
+            "canonical_space_sha256": {
+              "pattern": "^[0-9a-fA-F]{64}$",
+              "type": "string"
+            },
+            "fov_deg": {
+              "type": "number"
+            },
+            "pitch_deg": {
+              "type": "number"
+            },
+            "position": {
+              "items": {
+                "type": "number"
+              },
+              "maxItems": 3,
+              "minItems": 3,
+              "type": "array"
+            },
+            "projection": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "viewport": {
+              "items": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "yaw_deg": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "position",
+            "yaw_deg",
+            "pitch_deg",
+            "fov_deg",
+            "projection",
+            "viewport",
+            "canonical_space_sha256"
+          ],
+          "type": "object"
+        },
+        "canonical_scene_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "capture_method": {
+          "enum": [
+            "LOCAL_FRAMEBUFFER",
+            "LOCAL_RUNTIME_FILE",
+            "NATIVE_WINDOW_CAPTURE"
+          ]
+        },
+        "capture_point_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "frame": {
+          "properties": {
+            "relative_path": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-fA-F]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "relative_path",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "game": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "input_trace_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "oracle_level": {
+          "enum": [
+            "ALIGNED_ORACLE",
+            "DETERMINISTIC_ORACLE",
+            "FIDELITY_ATTESTED"
+          ]
+        },
+        "remote_desktop_capture_authority": {
+          "const": false
+        },
+        "replay_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "runtime_fingerprint_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "scenario_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_corpus_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "tick": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "game",
+        "scenario_id",
+        "canonical_scene_id",
+        "capture_point_id",
+        "replay_id",
+        "input_trace_sha256",
+        "source_corpus_sha256",
+        "runtime_fingerprint_sha256",
+        "tick",
+        "camera",
+        "capture_method",
+        "remote_desktop_capture_authority",
+        "frame",
+        "oracle_level"
+      ],
+      "type": "object"
+    },
+    "policy": {
+      "properties": {
+        "angle_deg_tolerance": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "camera_position_tolerance": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "evidence_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "evidence_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "fov_deg_tolerance": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "status": {
+          "const": "GAME_SPECIFIC_VALIDATED"
+        },
+        "tick_tolerance": {
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "status",
+        "evidence_path",
+        "evidence_sha256",
+        "camera_position_tolerance",
+        "angle_deg_tolerance",
+        "fov_deg_tolerance",
+        "tick_tolerance"
+      ],
+      "type": "object"
+    },
+    "reconstruction": {
+      "properties": {
+        "camera": {
+          "properties": {
+            "canonical_space_sha256": {
+              "pattern": "^[0-9a-fA-F]{64}$",
+              "type": "string"
+            },
+            "fov_deg": {
+              "type": "number"
+            },
+            "pitch_deg": {
+              "type": "number"
+            },
+            "position": {
+              "items": {
+                "type": "number"
+              },
+              "maxItems": 3,
+              "minItems": 3,
+              "type": "array"
+            },
+            "projection": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "viewport": {
+              "items": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "yaw_deg": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "position",
+            "yaw_deg",
+            "pitch_deg",
+            "fov_deg",
+            "projection",
+            "viewport",
+            "canonical_space_sha256"
+          ],
+          "type": "object"
+        },
+        "canonical_scene_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "capture_method": {
+          "enum": [
+            "LOCAL_FRAMEBUFFER",
+            "LOCAL_RUNTIME_FILE",
+            "NATIVE_WINDOW_CAPTURE"
+          ]
+        },
+        "capture_point_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "frame": {
+          "properties": {
+            "relative_path": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-fA-F]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "relative_path",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "game": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "input_trace_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "remote_desktop_capture_authority": {
+          "const": false
+        },
+        "replay_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "runtime_fingerprint_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "scenario_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_corpus_sha256": {
+          "pattern": "^[0-9a-fA-F]{64}$",
+          "type": "string"
+        },
+        "tick": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "game",
+        "scenario_id",
+        "canonical_scene_id",
+        "capture_point_id",
+        "replay_id",
+        "input_trace_sha256",
+        "source_corpus_sha256",
+        "runtime_fingerprint_sha256",
+        "tick",
+        "camera",
+        "capture_method",
+        "remote_desktop_capture_authority",
+        "frame"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "OracleAlignmentContract.v1"
+    }
+  },
+  "required": [
+    "schema",
+    "original",
+    "reconstruction",
+    "policy"
+  ],
+  "title": "OracleAlignmentContract.v1",
+  "type": "object"
+}

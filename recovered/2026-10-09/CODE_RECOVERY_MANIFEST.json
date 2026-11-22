@@ -1,0 +1,1896 @@
+{
+  "base_branch": "main",
+  "base_commit": "8195f3754219b487deb0947a29d8af6cfe1babc9",
+  "binary_or_game_assets_included": false,
+  "code_source_snapshot_tree_sha256": "a84211c77326635a36fce529b342e92aad398f55737e47d5cace81aaa2a8bee7",
+  "entries": [
+    {
+      "path": "recovered/2026-10-09/artifact-bridge/publish-artifact.ps1",
+      "sha256": "f23a2c67244d92c705fa324787971bdb8d681518a12f5738525c15f792db6d0c",
+      "size": 564
+    },
+    {
+      "path": "recovered/2026-10-09/artifact-bridge/publish_artifact.py",
+      "sha256": "15435b0868782e91e1dc8d2b9f9c35778eee438856d5894f0459197713572521",
+      "size": 1074
+    },
+    {
+      "path": "recovered/2026-10-09/artifact-bridge/serve.py",
+      "sha256": "8d23ef0b098cc9a03f5287b278418a83c038a3361fe63864cda580c31967ed2d",
+      "size": 383
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/build-audio.cmd",
+      "sha256": "fc439d9c784b94f1f2e0b88d39b9d3e0d7e1d44424eda91ff50ac2276c8f9321",
+      "size": 349
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/build-capture.cmd",
+      "sha256": "10c9067f0329d56ec6360c360e0bb6519b54029b938be42743ea9938e3925215",
+      "size": 343
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/build_audio_worker.py",
+      "sha256": "67a644dd183f81c9d0c63d5b062167784101bf6585165f3d023ea72d6e4d8120",
+      "size": 1139
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/build_capture_worker.py",
+      "sha256": "e632a757bf9dac33139897a7b443c07433c3ce518f4a2a00288b5d6d8bfe0f99",
+      "size": 1078
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/capture_process_audio.cpp",
+      "sha256": "791d07ee61b398e646eafd9f665592cd647edbf666be6954cadaeb399f0cd358",
+      "size": 9542
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/capture_window_wgc.cpp",
+      "sha256": "b6edb039b0aee6754cd906693c417c894019d45feefdb73bb77ca4dcbfe27115",
+      "size": 9601
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/diagnose_existing_audio_v1.py",
+      "sha256": "7feca46ff209fdb84c255085415fc7db23b45680f4cb69e1a9f957d4a6e6719c",
+      "size": 3135
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/diagnose_existing_gui_wgc_v1.py",
+      "sha256": "46939ce76079531803c99c0a7759bfb41589bfef8f3a7e82764fbe3dde9325e3",
+      "size": 3836
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/fidelity_path.py",
+      "sha256": "b7dfa762f7cab31fec64f71b46e5b37f0d75634056ed5d7b815d7da54cd8452a",
+      "size": 476
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/inspect_audio_canary_v1.py",
+      "sha256": "6b4ab9487b04413eded04b15ea21db11a6efaeee3f4b05cdd14a224a752c15e0",
+      "size": 866
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/inspect_sdk_header.py",
+      "sha256": "989581eb975eb8e2c153181bafda4d0d07a0c344989e8da181a27ac1d09ddb5a",
+      "size": 316
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/test_process_loopback_v1.py",
+      "sha256": "4e4c26decf0f5347263e2d134e30557fcc613757bc53c134dc883de64d3fd2fe",
+      "size": 4932
+    },
+    {
+      "path": "recovered/2026-10-09/capture-worker/test_wgc_synthetic_window_v1.py",
+      "sha256": "aa8e90886e6f0dbab6a084f3401fc0a14dc18eaf347c7358be613cfc6ccb92fe",
+      "size": 10315
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-070342__PORTFOLIO-TEMPORARY-REBALANCE__v3/rebalance.py",
+      "sha256": "dee7cbf032dc7a7c8935d1556fb91cd0a69cdb0d72a2aa6273fb6e52bc0ee319",
+      "size": 13749
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/checkpoint.py",
+      "sha256": "34d1874f66b52b4223be4a31b934ce0d3333923bd846c4712ebb30610be21600",
+      "size": 1868
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/checkpoint_resume_progress.py",
+      "sha256": "0a2e2e0693f48ee5d1601bed35cd9f9458fa6d518c9213cc9bf32e1e9f5815c0",
+      "size": 2366
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/prepare_cycle04_validation.py",
+      "sha256": "528252b6db558cb7db0f2632b2503b8d3a1405e3c18e6b90d8c7b3ec1629f149",
+      "size": 1885
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/prepare_cycle05_validation.py",
+      "sha256": "78395ffb6d5813f7bd0c792d33c4c705d9a297ee9c5fe3a13a6591f884ccbda6",
+      "size": 1930
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/prepare_cycle07_validation.py",
+      "sha256": "2296e74455c99bd01884489bab89ab6a570f818163a8ed189fe85406f2d403bf",
+      "size": 1910
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/prepare_cycle08_validation.py",
+      "sha256": "9b7a8444203f5bbdef866046e2a2ee110ed30601775c761030e9e4f41eaa914c",
+      "size": 2426
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/publish_cycle04_checkpoints.py",
+      "sha256": "5671ea735a8921face2805cbfe8e60bad9caa3b6e79ffcad0d750bd0a8e8119d",
+      "size": 2799
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/record_preflight.py",
+      "sha256": "94c8a9d8d54823101b921f133d6576f7e73ed0c5d3ff5b33505105d464e5b249",
+      "size": 3465
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/refresh_checkpoint_v2.py",
+      "sha256": "d0c4a6d112c760d02ea59452dde0fe950e75b2201a35bba3460512f35099ca8b",
+      "size": 2822
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/resume_0920.py",
+      "sha256": "04d37ed472cceba464689f2d486ab868f2119cd78bf4b042627fd3456d0497f7",
+      "size": 5108
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle01.py",
+      "sha256": "db838ba4ab3203e688a4e28b99198d188f0c07401117c86462697cd5c1db8952",
+      "size": 7613
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle03.py",
+      "sha256": "5c2b547e1a7f291f4686d86bfbfc4fb21cd5b32b447bc5e13f63e88bc1d472c1",
+      "size": 5503
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle04.py",
+      "sha256": "4efa0e264586f5898b66d8e7d5c8095fe64dc7666d629d9c629ab190057b1e05",
+      "size": 5634
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle05.py",
+      "sha256": "5a95d7d3619475280e998fec0d81a5d56bc11ab5ff5409bc1b9de65b372bd3bb",
+      "size": 5614
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle06.py",
+      "sha256": "0e3b5817775964d33f8ab4ee8469a984ebe2f1d9a55b4cbe9c3216cabed6d35d",
+      "size": 5929
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle07.py",
+      "sha256": "d18557e8c369722a9ce6b5302a003cf67ef79fcb46968cc9a19fdc4d8e63bc0e",
+      "size": 5632
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle08.py",
+      "sha256": "1b6e6ca59cadac41019c4a24388880ed2347f73a2ddbf784b070ae97125a2067",
+      "size": 5971
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_cycle09.py",
+      "sha256": "377ef0f98c352ed2c61a9288e6feb0e18d357c20097bbe5ef0d3708542bda8ad",
+      "size": 5992
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_new_lane_cycle.py",
+      "sha256": "2af1e89eaa1540b31bb9efa9ff4dc15b19f79acf8f3d374e7f3091d561c92b81",
+      "size": 5818
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-094028__AUTONOMOUS-4H-PREFLIGHT__lanes-ABC/validate_pending_cycle02.py",
+      "sha256": "383bc9270de87b5ff1e09cf1865c1dcb3923f2c9f141455ba2e1c0cd5dcbaa18",
+      "size": 5402
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/checkpoint.py",
+      "sha256": "6145a4a8896f02ccdf9e161e0e081745ecf4a0f63f911ef478a9f855d729adf8",
+      "size": 2612
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/initialize_run.py",
+      "sha256": "718eab77d2d788d26141ebfb57328bbe559135038cb320ed9f9f76152252e518",
+      "size": 7007
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/prepare_focus.py",
+      "sha256": "44852975f67b26146808f19fef42cd89f2bb2b384e92deeacba43804be5504b0",
+      "size": 3936
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/prepare_phase02_validation.py",
+      "sha256": "c840f6979d4a646c39d7d7bf5a4c3d23652a4cbbc3bd5c19e5ac761be7197a0a",
+      "size": 2296
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/prepare_phase03.py",
+      "sha256": "331a14e3662d3f4e5167dd452c259aa0b39802a8cc7264e768bb7e0b5f7d5fb1",
+      "size": 1342
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/recover_c09.py",
+      "sha256": "a67e41fa5cc30af99de1cf73d25c6bc4020ff87454735909c0ca1876847c3fb1",
+      "size": 9228
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/seal_run.py",
+      "sha256": "2435d73f1382c976aacab53a3b1b2aa75ff79f651a501c2d18f2a9aff6312522",
+      "size": 8955
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/validate_phase01.py",
+      "sha256": "dfb2961fe637717ee15005abf562e4c9c343c00c147a919cd691c37c66c5a4b4",
+      "size": 6953
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/validate_phase02.py",
+      "sha256": "497eb41f60512333eecb3d693acd23afaf9157e82d4b75f7d6624e04f7cd7d74",
+      "size": 7287
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261008-135610__AUTONOMOUS-4H-R2__lanes-ABC/validate_phase03.py",
+      "sha256": "3fb216a67057e5d0be0103139e4757dba8572f7d7d9fa092649e86ee2cf36815",
+      "size": 7233
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-0855__DAILY-EXEC__read-only-v1/analyze_diagnostic_replays.py",
+      "sha256": "d9495c5f4f2f2074453a320f17310951433c3b172a5a5fa8e27bfd46dd87ec84",
+      "size": 2886
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-0855__DAILY-EXEC__read-only-v1/daily_readonly_execution.py",
+      "sha256": "b7a759fb7fd728264ce6e56835c6f5a7c6b943ec71b0f3c2d9d7bd2ed2bd8409",
+      "size": 8554
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-120436__PORTFOLIO-READONLY-CONTINUATION__cont10/verify_static_contract.py",
+      "sha256": "4118b4c96068cfdc8d66f7bdb82a94f9ec9072625257db48d630f3634e93316c",
+      "size": 8747
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-122230__PORTFOLIO-READONLY-CONTINUATION__cont11/complete_cont11_handoff.py",
+      "sha256": "db766476009e8b54eb6781f7ade644188105a4b73310dc38ab5a10d4032c1d2a",
+      "size": 9481
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-122230__PORTFOLIO-READONLY-CONTINUATION__cont11/verify_cont11_static.py",
+      "sha256": "10912371bba750ed71d680c18324f30552116ab2d79440f58df2709a9856b4e3",
+      "size": 14029
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-124538__PORTFOLIO-READONLY-CONTINUATION__cont12/complete_cont12_handoff.py",
+      "sha256": "3d378cb08d3342bde85bcbe9370e0b4d38bf3aa4552ff79eda2ec3714dcd2b00",
+      "size": 9788
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-124538__PORTFOLIO-READONLY-CONTINUATION__cont12/verify_cont12_static.py",
+      "sha256": "4ca385fdccea1e37534c00464116de3f15e2728fc9499df1dadae84e7538cf8d",
+      "size": 14925
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-132559__PORTFOLIO-READONLY-CONTINUATION__cont13/complete_cont13_handoff.py",
+      "sha256": "1aeea9f2786c0df2fe8121e74433272e46c860fa26341c31457109788e5a75e9",
+      "size": 12186
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-132559__PORTFOLIO-READONLY-CONTINUATION__cont13/derive_paired_fixture.py",
+      "sha256": "9345616d24d1dbfc5c455e2be46196bc8b7fa0152631701634f28dbbdaf97943",
+      "size": 2990
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-132559__PORTFOLIO-READONLY-CONTINUATION__cont13/verify_cont13_static.py",
+      "sha256": "39e84056ad7d6357c125716f9845eb3bf3a44690889dfc1c389dd0de752adb34",
+      "size": 19975
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-140226__PORTFOLIO-READONLY-CONTINUATION__cont14/complete_cont14_handoff.py",
+      "sha256": "3b5fddf55a9327713b4a202ab1d656af5a8a930ca432ce6ccb5e55c21b0b3d4f",
+      "size": 14495
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-140226__PORTFOLIO-READONLY-CONTINUATION__cont14/verify_cont14_static.py",
+      "sha256": "fd94c43ab06127c247bc56193ea4fd7f26abf38f8927bbd7c1776fcedcf19b33",
+      "size": 17734
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-142406__PORTFOLIO-READONLY-CONTINUATION__cont15/complete_cont15_handoff.py",
+      "sha256": "c31cfb3756bb99678945f72b72287a8b5bb1f6c995ef2e88f4ee47ea3e042dd7",
+      "size": 13948
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-142406__PORTFOLIO-READONLY-CONTINUATION__cont15/verify_cont15_static.py",
+      "sha256": "cf0c55ff02d802a888c7c2bfd0666c81fdbe08aea56a2ed16a724f9a3b68a05c",
+      "size": 19413
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-144000__PORTFOLIO-READONLY-CONTINUATION__cont16/add_cont16_solid_branch.py",
+      "sha256": "041fd025e214e4be28e6f9936c60eab7c5dfa2278a48cc0c1afc5d0e698f261b",
+      "size": 4034
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-144000__PORTFOLIO-READONLY-CONTINUATION__cont16/complete_cont16_handoff.py",
+      "sha256": "06ac164e94dd91652a6cef2e798e687bb2aab3aa6abcf77b36685da8c68ca61f",
+      "size": 8654
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-144000__PORTFOLIO-READONLY-CONTINUATION__cont16/mdk_level3_fixture.py",
+      "sha256": "a8b8780cb1c7d34af75660f251aab6994e12f66bf20089e0e93792bc65567757",
+      "size": 3013
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-144000__PORTFOLIO-READONLY-CONTINUATION__cont16/mdk_solid_branch.py",
+      "sha256": "ee501aa7fda5be8588bb5368bcd186a0ace7b7e24efef9c1c3d8e4361869adbd",
+      "size": 3236
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-144000__PORTFOLIO-READONLY-CONTINUATION__cont16/stonekeep_correct_callbacks.py",
+      "sha256": "cdb6b1fd9f1823be2d8a58024fd0f8aff857c0a94b90a897db243f5fe14015e6",
+      "size": 4428
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-144000__PORTFOLIO-READONLY-CONTINUATION__cont16/u8_usecode_xrefs.py",
+      "sha256": "aaa50b491e7acd233a3288d84243d200020c1f6d41563b287416bf25680bc249",
+      "size": 4873
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-151734__PORTFOLIO-READONLY-CONTINUATION__cont17/audit_mdk_plane_dual_ranges.py",
+      "sha256": "3161ab5d7b85b310610d3b6059acd8bfc383467388b2d525b4a21a5298ab2175",
+      "size": 7972
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-151734__PORTFOLIO-READONLY-CONTINUATION__cont17/audit_u8_usecode_shape347.py",
+      "sha256": "a1672721a20470f1620f82ba1b05189455c010aa9ecb32251151b333fa0abe7e",
+      "size": 7580
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-151734__PORTFOLIO-READONLY-CONTINUATION__cont17/classify_mdk_secondary_spans.py",
+      "sha256": "85aa86887f25e30a6913e03d5f8b3df645403f47df356d2218e98a40932fc983",
+      "size": 3490
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-151734__PORTFOLIO-READONLY-CONTINUATION__cont17/finalize_cont17_handoff.py",
+      "sha256": "7f3e71378ab24ecb64c998d5ae24c99064b3274614d9684c1992191f81b19189",
+      "size": 16304
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-151734__PORTFOLIO-READONLY-CONTINUATION__cont17/trace_stonekeep_h415_action0.py",
+      "sha256": "1bb6533a5cf7747b365a901c893e55397593065eb2293446c6d9f986f226fbeb",
+      "size": 6375
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-151734__PORTFOLIO-READONLY-CONTINUATION__cont17/verify_mdk_plane0_palette.py",
+      "sha256": "bb7e8e4e9dc2255599a470ea056c71bc805dad5b975949d0b149ce270b0678a8",
+      "size": 4243
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-155120__PORTFOLIO-READONLY-CONTINUATION__cont18/finalize_cont18_handoff.py",
+      "sha256": "be325acfc372f6e7d777a450b95ad6b1d798ebe312f45e14afec79179923099a",
+      "size": 12694
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-155120__PORTFOLIO-READONLY-CONTINUATION__cont18/verify_mdk_original_plane_side.py",
+      "sha256": "3a8d2eb04c07a009cf993ad58452c5203eec370183486ccb3f8a063fd8f57bb4",
+      "size": 10163
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-155120__PORTFOLIO-READONLY-CONTINUATION__cont18/verify_stonekeep_prehelpers.py",
+      "sha256": "ee1318f24f542c44004c7d48f58df7472d4e7d48b1b321d7244021cfee8bb6cf",
+      "size": 6028
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-155120__PORTFOLIO-READONLY-CONTINUATION__cont18/verify_u8_usecode_alias.py",
+      "sha256": "d61089e553769beb918ea946c73104f5a349b6191d801e06f1138c7c77859510",
+      "size": 6511
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-173113__PORTFOLIO-READONLY-CONTINUATION__cont19/complete_cont19_handoff.py",
+      "sha256": "1eff3e509855dc929834d7206e6409448985da19b6e69ad7f07145bb738bb416",
+      "size": 13638
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-173113__PORTFOLIO-READONLY-CONTINUATION__cont19/verify_cont19_static.py",
+      "sha256": "41e36ddce92b83adbd1e61e773fac6f652e2b206172288503bf82eb68a28de0e",
+      "size": 18950
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-175126__PORTFOLIO-READONLY-CONTINUATION__cont20/complete_cont20_handoff.py",
+      "sha256": "7d04fb01714746a15ac578fd8e1d99dcd2ee9ed2c39e51de6616115aff6a5ab5",
+      "size": 11643
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-175126__PORTFOLIO-READONLY-CONTINUATION__cont20/verify_cont20_static.py",
+      "sha256": "0ccea314ea06070fb945f20ad1385e2c05ca722470ea0b98cec2161bb9a652f9",
+      "size": 17874
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-180724__PORTFOLIO-READONLY-CONTINUATION__cont21/complete_cont21_handoff.py",
+      "sha256": "1c1754cc6764ef1f024e972017354a0ce6523b7a942cf7972f7e7a5fb77ba032",
+      "size": 5214
+    },
+    {
+      "path": "recovered/2026-10-09/control-evidence/20261009-180724__PORTFOLIO-READONLY-CONTINUATION__cont21/verify_cont21_static.py",
+      "sha256": "c8599d3c549d0a64caedcd80045a55451b944318a2373eda330510638f4adbe1",
+      "size": 16994
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/acceptance.py",
+      "sha256": "f48192713a58ab46898f26068394992dda1efabbd84a1f6b3275c4fe2159a534",
+      "size": 649
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/activate_passive_capture_capability_v3.py",
+      "sha256": "6b0604bd71e4f62b475504f23b31321fedc330659ef6a914021c8a5b8006cbc2",
+      "size": 1179
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_extended_native_newgame_r6_v8.py",
+      "sha256": "5d0a48afcb42b8a82edc17ccccda58325a2328a3c65062bf9bca126431dfd08e",
+      "size": 4038
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_native_zork_skip_intro_r7_v8.py",
+      "sha256": "6b129057a89af79901257f2f334e7d49ffef2507249e84140f09cc26e5368e3c",
+      "size": 4968
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_normalrun_native_guest_mousemove_v8.py",
+      "sha256": "29f5c0ff7fac6ac3350aeb25385ba52a99c7432923ca40848225a422a70b559b",
+      "size": 3642
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_openzork_seeded_golden_scene_v6.py",
+      "sha256": "03aafc10974f806abb4a558f51723e74b21d95b44f392dec9e3bd05a8f9d65bd",
+      "size": 4233
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_openzork_timeline_v5.py",
+      "sha256": "91463753f05b879a5f514c06edc176f5abb6062b9bc2468501f65a25c14aed5a",
+      "size": 2565
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_original_dosboxx_mcp_mousemove_v8.py",
+      "sha256": "ee4f61b97cc73315010468443d826f924134b7e489a752edad95cbcb0b9b7638",
+      "size": 4875
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_original_zork_feedback_r10_v8.py",
+      "sha256": "1759614f6d6573d93ab5bc690c956abb0297e0669cab7761e93b765430e46276",
+      "size": 4070
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_original_zork_feedback_r9_v8.py",
+      "sha256": "dbd025052977ab73d1b4d3051fdd5d31071a41676c8b71d8b82960c1197b371b",
+      "size": 3991
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_zork_guest_enter_timeline_v8.py",
+      "sha256": "48bf92d5326ee7ea7a1192e34ee0287df04223ce355074d584e13fb2350a36a1",
+      "size": 3246
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_zork_menu_cursor_r6_r7_v8.py",
+      "sha256": "c04c25d60c396cdf39f2db9d3be896b2b6b88160696ac7fba7c4076179a69968",
+      "size": 3545
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/analyze_zork_new_game_original_click_v8.py",
+      "sha256": "69dc0b366853ff6e6aac811fc8a0be6e9de4bbabcea90b1128c1ad215f8247b4",
+      "size": 4461
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/apply_audio_capture_routing_v1.py",
+      "sha256": "24b37e2de09cbfbab78526a4c40bf2bcbfa9f612ebcd2c2499c8903e6c591876",
+      "size": 1289
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/attest_checkpoint.py",
+      "sha256": "efadb7e9de25bd823f8b1d481fe756f33d1d4d6b7df23c9dea80dd1e49fd67ff",
+      "size": 1594
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/attribute_pinned_crossrun_cursor_delta_v7.py",
+      "sha256": "31c06cf6bfe5b00bcd1633bec9ec39fc683448f7347a352602ebe6af8d736d79",
+      "size": 3233
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/audit_fidelity_gui_now_v3.py",
+      "sha256": "f844a36e8a43672f04ee59e3ef018b6416d0c831a759d5cb7555a52d57bbf475",
+      "size": 2269
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/audit_legacy_gui_launchers_v3.py",
+      "sha256": "356c1233a565808d4e4e11d7bdf9fa3d5e6317a14dccbee88393aea17adb7864",
+      "size": 1954
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/audit_nonvisible_runtime_processes_v7.py",
+      "sha256": "ebd71382c80b51e762363d95a9a4b3de6b7524eb505aa491d4cd2b86cac3ba93",
+      "size": 3234
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/audit_process_owner_session_v7_r2.py",
+      "sha256": "1d7d1a3aaead9f9c2710ee82e04487eb137c188cbf439d5773bcce21bc168e1c",
+      "size": 3042
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/audit_unsafe_gui_legacy_entrypoints_v6.py",
+      "sha256": "b5c797c5f6c89ce8713e666cf7932a9a0758a8d773908aec11bcedc4a25dbb5d",
+      "size": 2943
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/audit_vb30_save_provenance_drift_v6.py",
+      "sha256": "00727d4189aaded87092af767e1487342b19afbc47113e339aa57d6106c9f7be",
+      "size": 2014
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/backup_before_mouse_probes_v5.py",
+      "sha256": "781fcad30aa93b3b6b50c947d51e346ac0eeaf41bdd7031cb9e76745e1008125",
+      "size": 985
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/backup_fidelity_before_v3.py",
+      "sha256": "89688d297ea9f0822f03973d7a34bdd8edb66fdcb9ebc02bcda311d22571894a",
+      "size": 1420
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/backup_legacy_guard_v6.py",
+      "sha256": "5690d0899f8ab914cd1ce66f9f869392334cb53aee24af6fa499c59157608571",
+      "size": 716
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/backup_seed_adapter_pre_v6.py",
+      "sha256": "adde386a68f6ba6c886217bb8e999d2d1a4674ae19a6009a5b741c71c0504cd3",
+      "size": 718
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/backup_target_binding_before_v7.py",
+      "sha256": "92d8d26b54669fbf90fed4495024fd1572758f45e8355c17425c073855521fc4",
+      "size": 1117
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/build_dos_mouse_int33_absolute_canary_v9.py",
+      "sha256": "0a49280ebf67ff36f91fd57d23764e3df8dfa63d4a038ed10f5be44c5a7813f5",
+      "size": 3618
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/build_dosboxx_guest_integration_probe_r2_v8.py",
+      "sha256": "823b760d13adafa0be742e64018f19dfae208ceb661bcdae193b59282d468371",
+      "size": 4281
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/build_dosboxx_guest_integration_probe_v8.py",
+      "sha256": "b28c72e6d8f175c83b6da288a4650bf71a9982356e3f4950506c8e6373aa9061",
+      "size": 4180
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v1.py",
+      "sha256": "c8f235e63be80f24aca837c6894e1567d5c0d079e1fa01bb93f3d3809992871d",
+      "size": 5108
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v2.py",
+      "sha256": "07e0d96c0b7b949d22f35c1ab8856d99a85ce7785064a8054244d743cbb1494f",
+      "size": 7906
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v4.py",
+      "sha256": "bd44047fe9651f5f4979e27eb0b216d5c8c8335953e5eff982fa5fe6eea68479",
+      "size": 9175
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v5.py",
+      "sha256": "8f353be48f5b4a7dec046e9fc685eab0e7d5d75a76575e87760760af02398ed6",
+      "size": 9305
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v6.py",
+      "sha256": "e709a58e7d77281c1b34a5dcd74d4b11eb02544e61df94e5dc21706714f738f4",
+      "size": 13246
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v7.py",
+      "sha256": "30f5f37f8db6ed15c4160e188dbb29f21a62734a35cafb2e4cdedd6011c547d5",
+      "size": 13402
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/checkpoint_fidelity_runtime_isolation_v8.py",
+      "sha256": "f67dbe64561edb597dd93b510583575a6b187eea8f15fdfb07499f50dfc27d5b",
+      "size": 12601
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/compare_native_zork_courtyard_to_r29_v8.py",
+      "sha256": "b8ccaf3f79d31a8cf021209412ac5f339f11743b89689d4ce25a85a777c472a2",
+      "size": 4871
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/compare_vb30_saved_pose_projection_v6.py",
+      "sha256": "923d7bfd633b0b4abfafd86ec43ec7a1d6f7607307f2da6e5b6d3430cbead158",
+      "size": 4801
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_capture_delay_v3.py",
+      "sha256": "fa2fc77459553d3cc9446eeca12816ea4a0192eff835af4f7f18d9d2acf52d80",
+      "size": 493
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_fidelity_capture_sequence_v5.py",
+      "sha256": "576d9c4fb278cba34dd8e68c7c42c47f522b4f5fb77f77d1b0d122cfcc1923aa",
+      "size": 782
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_fidelity_owned_mouse_v5.py",
+      "sha256": "7a380d57d08de32bafd1c14b513c048add3245dbe6201262c73c7b814d4e3487",
+      "size": 2020
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_owned_input_v1.py",
+      "sha256": "5f00c3a379cc27dda984d3d1bf68c41a35c72309534ba27e4974da241298ea29",
+      "size": 1487
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_passive_capture_window_v4.py",
+      "sha256": "05d9287f8b41350b0ac2febfa5ba178ac4f3211f610bf9c077763814cca073f1",
+      "size": 608
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_save_seed_capability_v5.py",
+      "sha256": "73cda8dad022e379bf05af289fcba0d881e8f424fdb0305d50871a11f9470994",
+      "size": 1534
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/configure_schedule_v2_schema_v8.py",
+      "sha256": "e8f8ac4e2b557bbccd91c834700f18108e64c78014e6d3979719e1a248e76e32",
+      "size": 999
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_dosboxx_mcp_mousemove_v8.py",
+      "sha256": "7a75c4a88f4e8c42d82735c8d6d875ac6fa378d9b1a8bf575cec8d3374674f9a",
+      "size": 3996
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_native_zork_extended_r6_v8.py",
+      "sha256": "42caab806aff7c4d26a9b4f8e223c0c71df1362e48f4b78b5235c9946d37a771",
+      "size": 4609
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_native_zork_live_mousemove_v8.py",
+      "sha256": "2057b9b40939c8189550f0c1bc5092f5f9477432b68c407df3c73834dc796bea",
+      "size": 3173
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_cursor_feedback_r10_v8.py",
+      "sha256": "ff13c52df3924b3d05b522e059bef1f3f3a438e326a183f1e72524887afb5609",
+      "size": 6395
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_cursor_feedback_r9_v8.py",
+      "sha256": "36464cf0d61705cd650c64d7d762dd18c56f321245981e383c33f26cd03e4382",
+      "size": 6245
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_guest_enter_v8.py",
+      "sha256": "a3e40914f77379000ef996f79fa181ad8755afd40fb147c86fc20e797e89d8f1",
+      "size": 3388
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_image_guarded_newgame_r8_v8.py",
+      "sha256": "f688bd3f9392825235b89b549a085cbe6b897d8d928d66697b851e09ebab365c",
+      "size": 5632
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_native_newgame_click_v8.py",
+      "sha256": "b3cdf320003a5ecdd1b4813e52102e8a6fc7b005ccd26886642733425b5c071a",
+      "size": 3827
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_newgame_skip_intro_r7_v8.py",
+      "sha256": "659862407e6dd2d9e52fa0af0b827e08a49ac5d3a73a215ef0a742b831e483a0",
+      "size": 5255
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/controller_zork_normalrun_mcp_probe_v8.py",
+      "sha256": "e37539a312e1e270e6dd1fa9c823718151d0db068ca33a6726df734076654b73",
+      "size": 2074
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/crash_child.py",
+      "sha256": "59431440929cec73684712323ea1cffa5a4ab8b31e01ce4d3922479d0adff23c",
+      "size": 601
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/create_capture_schedule_v2_v8.py",
+      "sha256": "8b0dd0677d690aac8dcdafd69fb170bb2f0af823564b3ed8b4863f200b1fbf0d",
+      "size": 1888
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/create_verified_target_registry_v7.py",
+      "sha256": "0a3959c77b0e2300cf816f794c0a530fea7463693298249322118083546e9a5b",
+      "size": 3024
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/diagnose_scummvm_launcher_gui_v3.py",
+      "sha256": "2fccd2ae283f1e044e754b93872c16c2c04be88429faa7a9c3ee10e4a8e2925c",
+      "size": 1955
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/diagnose_scummvm_startup_cli_v3.py",
+      "sha256": "09693f2e3149576695191d8f3f07b9c4496ff9da3bd8a30333860f6010f96cb5",
+      "size": 818
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/discover_dosboxx_input_backend_v4.py",
+      "sha256": "c063bf7bd4c513fca44578a469329a6d727b2f64b4c51d41baad9c1581169a3a",
+      "size": 1048
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_core_v1.py",
+      "sha256": "3c38db7ce81b829233f756fd6d701abc4a5f72a75f4d1a5b1d169344e353a1c9",
+      "size": 2998
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_dispatch_guard_v1.py",
+      "sha256": "fe6d8bffc8d0bf6f5b04064937f45b5facad66bba28ecec6fee6b340f8bd2482",
+      "size": 2492
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_durable_v1.py",
+      "sha256": "89a6120b94e2d7c5f4982a5cd241f2bc2af86763c7fb41a3573164e6164ea588",
+      "size": 2397
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_lifecycle_v1.py",
+      "sha256": "37c907004a0d21c81c3c48ffb23bc52fe12ebd2e7cc0bcafe350f13009c20c91",
+      "size": 2044
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_queue_v1.py",
+      "sha256": "03b45678bfc6e1970d5899ffe67671bd85bd4198230f26c31f4fac90cca8a501",
+      "size": 1890
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_simulator_v1.py",
+      "sha256": "af56f5f8f329fb92a8c4d5df0025c6141f5fe058c0acc085c470c5ee4b5399e3",
+      "size": 2388
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/dynamic_scheduler_supervisor_probe_v1.py",
+      "sha256": "24dee3f2df81e070ab002fe3ea0c7f0afc301ffb0e1c79afed842b842b73f8ae",
+      "size": 2076
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/execution_journal.py",
+      "sha256": "70688f625b1514c14325c8d7c2ed8d8cd34e982090bb0635b9dc07a4b29b47ef",
+      "size": 739
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_capture_sequence_v1.py",
+      "sha256": "721a5254c761b430d5e754ce81b9d55f31bb4c6967e9664a443350b6866a2dd7",
+      "size": 8114
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_capture_sequence_v2.py",
+      "sha256": "3b2154ac0c50e012dbbc07b716205ce4c2b8974d2286c59fffe945af2b3dc3da",
+      "size": 8513
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_legacy_executable_guard_v1.py",
+      "sha256": "fbfa25a36431d4f6da1238e6dd7f72829bcfebfd882dde185ceb3e6ef89bac41",
+      "size": 6407
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_legacy_launcher_bridge_v3.py",
+      "sha256": "ef58773868c05deec4e096541a4520f14149e925475232d7cae5e9d6bf47683a",
+      "size": 5178
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_local_audio_loopback_v1.py",
+      "sha256": "11b8fc87b104e68401788e496c876e0fe924e5f79af7b2ebaf5880d8a9d265b8",
+      "size": 4240
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_local_capture_wgc_v1.py",
+      "sha256": "ec2592b7bd7a748561e64901dfdb9bed45b79f1b1faf0db278fb6097f174f5aa",
+      "size": 4449
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_mcp_peer_attestation_v8.py",
+      "sha256": "dbfe9fdddd63f750d01dee27d3666f482f2c87919db4f5a76ef16aea2798f5d4",
+      "size": 4582
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_native_cursor_feedback_v1.py",
+      "sha256": "d2a60a7ab3f156a7ac474bb068f8923944787dd7588489bfdc6381d3bdf547e8",
+      "size": 4079
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_original_cursor_gate_v1.py",
+      "sha256": "b02b0369f6b2d8584bb3303a5b614aa883b1dc3d8d18a771f398cbbe41ad6dc8",
+      "size": 3076
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_owned_mouse_v1.py",
+      "sha256": "e2ac271444763f719a0439f999333cad86eb7683d0292b61a47604725ad900a3",
+      "size": 3021
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_owned_window_menu_v1.py",
+      "sha256": "ee608fce127863e9dd8082c59d0ee76c39735ab4595521488ed74707de63ed0e",
+      "size": 3344
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_process_wide_preflight_v7.py",
+      "sha256": "aa8032bef354545b3ebe753650dd3ccd406a74b7017695f0ff720f9b3833f745",
+      "size": 3002
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_runtime_isolation_v1.py",
+      "sha256": "59db86287a94fa3e575b2aca9424233ed8ce47cba9c2092f4ef08e987b8390ea",
+      "size": 11723
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_runtime_worker_v1.py",
+      "sha256": "b9fa79416377d8ec590d9c16891e972877a2f69f311966f3aafb98e23a60408f",
+      "size": 31208
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_scene_pair_guard_v1.py",
+      "sha256": "dad3896d2ecadc6db0a3c8e67b6c8a5310fcd0c71ae1acea12d42bc59bc44d68",
+      "size": 3753
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_seed_saves_v1.py",
+      "sha256": "48d88fbf56928947effe56260b29d883c6c8849db7f32b00dd5b2d62e22aabef",
+      "size": 4544
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_target_binding_v1.py",
+      "sha256": "e93f58d9d1e1d9b6538c54fe8971914403a83e9d2e0aaf25d4851aa3b9d59567",
+      "size": 5620
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/fidelity_targeted_input_v1.py",
+      "sha256": "23121fdccc31fd717aa027dd34e53b06d2a25350662a54cc7f83077a329616ee",
+      "size": 4786
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/framework-vnext-policies.json",
+      "sha256": "d28c5085fde4a8356da36a15cac399d4840c243c56f2ba66daf865e9e26a5684",
+      "size": 4906
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/idempotency.py",
+      "sha256": "07e00e1b8cdfa90784a29304a2ee9b583dfee5574b3a13d40402bcb15faf3ea5",
+      "size": 1136
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_capture_for_run_v3.py",
+      "sha256": "c5d90a8bd783ed58d737265ad2d145d269f9f5404fa61dbc3751df1d2b9c4455",
+      "size": 887
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_delayed_openzork_frame_v3.py",
+      "sha256": "37125f58ca5403a0d337be048abe1c250071eddeacd7aa8e7b9a9866ae7b2f64",
+      "size": 740
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_dosboxx_menu_evidence_v4.py",
+      "sha256": "09634f2a6dd9a28220bc994febae9f9814eea8fcecdcaff17296b11f12d99144",
+      "size": 376
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_golden_source_panorama_candidates_v6.py",
+      "sha256": "3ee60bebe6fe1f03d73d3277e0c893ce133fd117f5c4631e86044e316163f889",
+      "size": 1246
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_mouse_game_run_v5.py",
+      "sha256": "305d2eb16d9b1cacbb5abe36324d75172630cb464c902c646961bc48b86d2d7f",
+      "size": 866
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_native_dosbox_frame_v3.py",
+      "sha256": "47f7321525d6901c638070caca0d2015ef92ccd82b0c7f778471f16d7d7c75a9",
+      "size": 488
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_openzork_supervised_capture_v3.py",
+      "sha256": "8cc1b85d5e09f47daee919560e73dbdc2c4542fd454c1228ecff972f402873e2",
+      "size": 945
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_r10_missing_original_cursor_v8.py",
+      "sha256": "0cafba1b2984154526d36aa4c1430d56132c0bc49b9046372ca58b00f5fb04bf",
+      "size": 1455
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_recent_passive_fixture_failure_v3.py",
+      "sha256": "13897956a0bfa5b928de5d9d9eb5f48695079588a1079468126a90ad577b6725",
+      "size": 735
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_zork_scummvm_seed_strings_v6.py",
+      "sha256": "12f2eb1360d706f5403a3dbc2654a5441ec45dfaa2b862a5ba6da767693776d8",
+      "size": 1104
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inspect_zork_source_scene_inventory_v6.py",
+      "sha256": "302cd4fb5d640b867986301413d260d265d4d6c2aa071d2f91202d521eb8dd21",
+      "size": 1472
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/invalidate_initial_process_inventory_v7.py",
+      "sha256": "bf21d2c25d41069502925787a0094f6e998b419b1b9e56a4f6e964bb9b9bfcc5",
+      "size": 1684
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/invalidate_old_record_smoke_pass_v3.py",
+      "sha256": "13fced251c8853a69444639df7ae9e9e07e72c4ab166ba92ca0dde819f034bd1",
+      "size": 1611
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inventory_conserv_panorama_tgz_v6.py",
+      "sha256": "16a027775598515b5d76a8d93fb7ab3e29537fe50ff50bc9f07e9560d4a7785a",
+      "size": 1066
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inventory_native_zork_panorama_headers_v6.py",
+      "sha256": "9a3e706f7f89d1bf88aa3727b75cef1d3e2ebfa364d51950909ce0e21714c8f7",
+      "size": 1707
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/inventory_openzork_save_scene_snapshots_v7.py",
+      "sha256": "e60815dec1ab37293ee8d170ba6811697d45c58e58543b5cb693b022491c3fac",
+      "size": 2752
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/leases.py",
+      "sha256": "0738d55a6e89ba40cd7ade064d233a2db719a5cf195353ecc388b3bf03f60c8f",
+      "size": 1865
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/materialize_timeline_pngs_v5.py",
+      "sha256": "6f844f93973c9b5126d5b8e23ded1cc60986f49772f6bf93e546371884ceb58f",
+      "size": 471
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/migrate_openzork_legacy_gui_launchers_v3.py",
+      "sha256": "8d5bc21d54dcd4afbcdf75cf4d737684d78fee66f0d08003c9c37dff752020c8",
+      "size": 3074
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/orch_k003.py",
+      "sha256": "644f9ef4d001a56ee9738d91ac558c5fed32967a17819245a3174b0815fe1d7a",
+      "size": 14602
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/prepare_dosboxx_guest_ig_canaries_v8.py",
+      "sha256": "59c182612fceb129c971b863b9a385dbb717d3ce1bac7f8ed0e90e3afb85e5a3",
+      "size": 3947
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/prepare_vb30_godot_render_r2_v6.py",
+      "sha256": "d4d281fb7947225d9edf314584c60255dd8e8de45cb33a0a25d29480c275c485",
+      "size": 2083
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/prepare_vb30_godot_reproducibility_r3_v6.py",
+      "sha256": "be372abea27c6b1b0fbb643215b6a7a7ec31427bbd44c599b25e106e75623122",
+      "size": 1475
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/prepare_vb30_private_godot_import_v6.py",
+      "sha256": "b0493b7a593c44b5a9b6e35a8e6d49980ece0e37e293415574ff677618317f5c",
+      "size": 1072
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_capture_compiler_v1.py",
+      "sha256": "4483c6cfb284d12debbd39980bf628e5cd3eece228e2f6702286147ba6cbcc73",
+      "size": 1469
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_capture_environment_v1.py",
+      "sha256": "d6550f1660b2f4a9181ef9be793eab16506abdeed5f11e6ab6f2a499823818b1",
+      "size": 1846
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_capture_msvc_v1.py",
+      "sha256": "6d46e234baf593be42093408173b08b762f8ea5104e1f552e0491628e2b6436d",
+      "size": 483
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_clipped_native_cursor_v8.py",
+      "sha256": "235c0ea563c284cc9a67e7f83f448c964b6c2e999d59f698ad6b10bfe432dea9",
+      "size": 3167
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_cursor_template_dependencies_v7.py",
+      "sha256": "37658d3c1939311cd98ee5eed5224a52943d7c0076d130903cdc01e8a0d1b473",
+      "size": 415
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_dos_guest_tools_v8.py",
+      "sha256": "f30ae17625942ac323e2ffca8a34561f63fc51a1dd1ec88bf496d40c51435921",
+      "size": 1790
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_dosboxx_mcp_loopback_io_v8.py",
+      "sha256": "708c2781d8dd840747bf923c37b73f2f5b63a71a9d745187abc43740ab6eb2e7",
+      "size": 2271
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_golden_vs_existing_temple_refs_v6.py",
+      "sha256": "4ccd86fc1177678c25f5840b4c785032e5f7887871bacdd005d1c237fb93cb34",
+      "size": 3724
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_native_cursor_packages_v8.py",
+      "sha256": "01814f37d2cf66a9e10392b0123606b02760303743a0512b3516bc31004f9fe8",
+      "size": 466
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_openzork_runtime_clone_size_v6.py",
+      "sha256": "315092ef3802200d2af0f630c58abd43b3cf1fb9dca9485935d680a98fa6111b",
+      "size": 507
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_openzork_saved_game_slots_v3.py",
+      "sha256": "20f1a2a106b684d77728d23529d5df122cf2473324f210cc0dd6f3ea99bef9e1",
+      "size": 795
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_original_cursor_template_positions_v7.py",
+      "sha256": "9845807b85f3205d7746570af1dda941c222c80b2bb42241317575cf93ab6482",
+      "size": 2940
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_scummvm_load_saved_game_cli_v5.py",
+      "sha256": "081aef7643cd4e76fa689a5dd2c8aa3ec71eac3b56c27afb4317d240d85810b0",
+      "size": 696
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_scummvm_target_config_v3.py",
+      "sha256": "d3027fea74a6c43615f3892c51a229030b5667cb8f65ae3a5d885086c1de1b3a",
+      "size": 1103
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/probe_zork_tga_dimensions_v6.py",
+      "sha256": "c61000131986e930bba6e9bf5e956b5ad8f0118074ba6f6b4820cbcab9b1271f",
+      "size": 928
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/reconcile_preexisting_fidelity_gui_v1.py",
+      "sha256": "14d20d608caeae9b4bc1491fbff59050976c079e3cbe61e319a102a5007ceace",
+      "size": 2561
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/recovery.py",
+      "sha256": "1eb5ac6a3ba2558c9ab0f8aee5cda6c083d48cceecd4fd217d22f81ab6be8529",
+      "size": 1256
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/run_commissioning_suite.py",
+      "sha256": "1ed63a882b042d431b48c9d0cbf65e84832d0d8f6b2785e07d7bdff5b3d1e734",
+      "size": 1145
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/schemas/interaction-audio-fidelity-entry-v1.schema.json",
+      "sha256": "a822cefffb754bede79df7201d61ffd13faf76f6924354fd1f43c7bbcecab46c",
+      "size": 1500
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/schemas/modern-input-contract-v1.schema.json",
+      "sha256": "0c3e32c1e6eeaf203c5c085312f97493965bd6170d7a3403670f50bc9d8e63cc",
+      "size": 737
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/schemas/orch-k003-job.schema.json",
+      "sha256": "aa126363777186df589b0a27a35006f6f570b834108cd8501291f30432fac006",
+      "size": 5785
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/schemas/semantic-input-ir-v1.schema.json",
+      "sha256": "08636b0240f78cd83c7b249d5b35dc7ed87a8d0eff992e613604ae81d1e16ddc",
+      "size": 717
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/seal_vb30_golden_save_reference_v6.py",
+      "sha256": "e04fa9fefd0d4c99a784118f1477d914f7af0baec66d6302da02ec90ddd484c9",
+      "size": 2526
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/set_fidelity_worker_routing_v1.py",
+      "sha256": "aa21e4e48bddcf5a9c9835d7dc2479693109f7f3bb91bdbf88cb81036e730611",
+      "size": 878
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/set_menu_quit_schema_v4.py",
+      "sha256": "6270dbd78367c086e1f66a1e7ef59648dc84efd30cb4b38e1c9ce77cd2275dcc",
+      "size": 475
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/snapshot_openazrael_v251.py",
+      "sha256": "ea21c1e69f10d536bdb74a32025140393b704b4199c23ff13e0d7eec4bf58e6b",
+      "size": 1472
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_dos_mouse_int33_absolute_canary_job_v9.py",
+      "sha256": "031199242ea61f6c63a4a1bc1ce5ab616347dd373f835501023d024b8de5f689",
+      "size": 2437
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_dosboxx_mcp_debugger_canary_v8.py",
+      "sha256": "85d5d871c3844ea6164bf744be90c27df021c86c27953c0048a91b079d43860f",
+      "size": 2898
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_dosboxx_zork_mcp_mouse_move_v8.py",
+      "sha256": "271db178250daaacea483e96238ab50acca998408176979f28342ff40d2645e6",
+      "size": 3213
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_guest_integration_probe_r2_v8.py",
+      "sha256": "296df2c98c3314c983ac883646c2e27a2cf5b5afb171fcc40e5347ac007f6622",
+      "size": 1359
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_native_zork_feedback_repeat_r10_v8.py",
+      "sha256": "e0b95b009bcbcbcec92b89a695f588fe8083b99e53206f7403b7424983fa7f02",
+      "size": 2922
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_native_zork_long_new_game_v8.py",
+      "sha256": "eef122452b50146cb3da2505d7487b8f097ea98de569a13bc0bfa96ca4d8d390",
+      "size": 2617
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_openzork_godot_vb30_render_v6.py",
+      "sha256": "f1a6dc00f97db371a0abac99799ef3b2b6782bb39598ec9aaeaaaec09b7b4166",
+      "size": 4522
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_openzork_pinned_runtime_validation_v7.py",
+      "sha256": "4fb8d43e81e78f862df6bd29d2e04ea6a9fcaca3d447004f7aac2a03de7ab2f3",
+      "size": 2673
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_openzork_vb30_logic_replay_v6.py",
+      "sha256": "ea8bea94a214253e36fb6d4b9821f1cb4d024342fef75172410e71d7276d15fb",
+      "size": 3007
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_cursor_guarded_skip_r8_v8.py",
+      "sha256": "5812d01f99873d92992c46b3044d57bc7aed4982685f25ad1eb8273e14f5f698",
+      "size": 2272
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_feedback_calibrated_r9_v8.py",
+      "sha256": "19a737821b1ead5bf85a89a99e70b8603ad78dfaeb45817e1569e080aecf6848",
+      "size": 2254
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_mcp_guest_enter_v8.py",
+      "sha256": "4845b76eacb941d5e33ab66dd7d0be91cd07a68330e8ee0ebd5f3f804b906a54",
+      "size": 2739
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_native_mcp_new_game_click_v8.py",
+      "sha256": "ff6bf52fe003077757c1f6a2b759b949248fa20192c8407a60babdf4690e9286",
+      "size": 2619
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_newgame_movie_skip_r7_v8.py",
+      "sha256": "269c2286b0183475900f36fd94b797f13bfb53acf048bec52f490baa9aba88f6",
+      "size": 3015
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_normalrun_mcp_mousemove_v8.py",
+      "sha256": "23e232086db9f6319a70b2cfe9a132ed2be320ab53a8369899c9409e964d370c",
+      "size": 2036
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/stage_zork_normalrun_mcp_probe_v8.py",
+      "sha256": "2e2100343bf6ff5ea62627054c6139847685514de34d5a0154a228f68e3c0758",
+      "size": 2749
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_capture_schedule_v2_v8.py",
+      "sha256": "018453676ec0ab11fb07c3932f11ea8d157907f3c43fcc927089d27391d48ddb",
+      "size": 1773
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_capture_sequence_contract_v5.py",
+      "sha256": "b7fe8a44b761f941c6348eb668943c1b6c8c70d72e5ec576eabf5ec0382c0111",
+      "size": 4690
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_corrupt_artifact.py",
+      "sha256": "6a7f0e12bdc8a52147c2c3ea9a345da4ace1f723e69d3e2b044e151f91ba1930",
+      "size": 578
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_corrupt_checkpoint.py",
+      "sha256": "e1e9daf7d3037c4ed3472afed8cb185521f96faf37e866e0594c4e619be311f2",
+      "size": 1056
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_diagnostic_crash_gating_v3.py",
+      "sha256": "adb2580fa483ae60d5c4cbd331749392a59deeb8607ab922f5e29750bd6e4207",
+      "size": 1101
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_double_rehydration.py",
+      "sha256": "38f9d505edbe7f22ee01e808ead86cdb1f19916af975158b7dea04c01937159e",
+      "size": 1069
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_core_v1.py",
+      "sha256": "59e8c54bf783bd4fbd282174c3a2ceb849abaf64ad53906f030fc657369f1e7b",
+      "size": 2021
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_dispatch_guard_v1.py",
+      "sha256": "ff84c5cde4c99b4f0cb1734af71898eb4f13479a1542bdc240f459d7d2e79ba4",
+      "size": 2450
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_durable_v1.py",
+      "sha256": "f84c268979623800e6a28de3ad884707dfd3e9857245dcb06ce31e7e0e46f26c",
+      "size": 1557
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_lifecycle_v1.py",
+      "sha256": "f8d66dd4446977ec3cafcbe670e131995dff8bbd4d5d13c2c502b745f69c696b",
+      "size": 2310
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_queue_v1.py",
+      "sha256": "272ff8cce4a2fc6898feea01a9bd93e9a56c457b8ba1ada3b562491d21324874",
+      "size": 2406
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_simulator_v1.py",
+      "sha256": "d9e578301120313926de90a67fcb9466653957fff558ae40d8905778eede6584",
+      "size": 1457
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_dynamic_scheduler_supervisor_probe_v1.py",
+      "sha256": "69e4cce4f319b833175b440eeda1bd54371b0b8ff8ce007a8fb55229dc211467",
+      "size": 1575
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_execution_journal.py",
+      "sha256": "865f0db663791fb438197bb1a923b252a9194430924d1d0b522454d1df0c1fda",
+      "size": 734
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_audio_capability_guard_v1.py",
+      "sha256": "f367699ae469030379122630f6f705fea61aeae32a32ec2711709bf77542be3e",
+      "size": 1833
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_comparator_v1.py",
+      "sha256": "515c70d003295ad98c65778ff2f1e8051650fac7f7e189004feee7eebd6baebd",
+      "size": 2610
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_job_object_cleanup_v1.py",
+      "sha256": "d5a42abe40b9565fd736e20db5bb95412bd89b543b93a5b722e71dbe89e359d3",
+      "size": 1676
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_process_wide_preflight_v7.py",
+      "sha256": "9982b65021c08fe50c1eb4358edfcf1236af59ffb81e458e1271f5e43e6c09e2",
+      "size": 2902
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_isolation_v1.py",
+      "sha256": "b2955729501ccd4e9d3f808934d869cd37059baafa4f6d1ea0b2549d3b3d4dd3",
+      "size": 5352
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_orchestrator_v1.py",
+      "sha256": "6328a1ce63485d69502791b8d56d621ee1c73cb5a2244df17ef29b0c7467a65d",
+      "size": 4232
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_regressions_v1.py",
+      "sha256": "3a0fe788ad6f88572901353b4dbe3366825cf80ee656000e92afe79c4eb7896f",
+      "size": 2603
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_regressions_v7.py",
+      "sha256": "1fb2fa37110dc6938cedf671f5680f03df5e9ed9a56f259eb61cdd36759b1116",
+      "size": 2025
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_regressions_v7_r2.py",
+      "sha256": "cfe11fdb01580c1d8806327f67d76c2159b98cee2559c44d5240b0cd35ecda5f",
+      "size": 1998
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_regressions_v7_r3.py",
+      "sha256": "75d7e0d3e4312f0ca49884a58fa3e8f856937098800b893594ba660f56eddd8b",
+      "size": 2181
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_regressions_v8.py",
+      "sha256": "c8f25943b8d07efe0ec4a75c252db9c3e706f7631e14e830bbe6ba607867dcb8",
+      "size": 2605
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_runtime_target_binding_v7.py",
+      "sha256": "69a115e7ac3d5b0005a2b7b287ea934645935af102f88f2f7d0782ba836de4e1",
+      "size": 4928
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_fidelity_template_v2.py",
+      "sha256": "5e5bc3695351aebb6818218a8460ba2d5d33536f75bd86c3dc05212e31a9ff34",
+      "size": 1754
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_framework_vnext_policies.py",
+      "sha256": "ca40d6e3561269989e3400c3b8343b73e17425969ac2ac528850a81c075ca678",
+      "size": 947
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_heartbeat.py",
+      "sha256": "b29dc32847aaa7173428cd3527597cadc62c46f0a0e8165623a46ce1db66cc5b",
+      "size": 490
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_idempotency.py",
+      "sha256": "29646ebc760e2410f12466c46edb86b135500f606adb9d5a0c0dd7b07b548683",
+      "size": 642
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_interaction_audio.py",
+      "sha256": "1bbfcaf7a5f36ca18b34f1d35f67419c8121285c37ca31342d8117e0d68fba62",
+      "size": 1515
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_leases.py",
+      "sha256": "3581a055a06a70ea27e9f07467edf787a746350e9f2a92cbce917c8c1ad75da8",
+      "size": 517
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_legacy_entrypoint_migration_v3.py",
+      "sha256": "a8979054021f37e8b1993bbdfce60028452ad66f4e113c85f29577b459fbfd9d",
+      "size": 2264
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_legacy_executable_gui_guard_v6.py",
+      "sha256": "ce5cd92d641edbb7d00af03c75d5793a39c4a92d715dcc32c341bfbb19da3912",
+      "size": 4099
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_mcp_tcp_peer_attestation_v8.py",
+      "sha256": "300fefea297c176ff69124c36ec6e3be57641018e9c0725ab54a4b86e36882c3",
+      "size": 1495
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_modern_input.py",
+      "sha256": "8e45a808bbfadc54e0a008430feaa28cc84438d44a7722d3d5ded262906d77f4",
+      "size": 838
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_native_cursor_feedback_v8.py",
+      "sha256": "2f4d3e810396dc911f457ea8e6349f53e55b1cfb0d7e532bc6975e3c7c064a96",
+      "size": 2532
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_native_zork_r9_replay_gate_v8.py",
+      "sha256": "6da56628703a2f31e2881a863dd858d21101d47ee587411ccbc7b4bbd6bffaee",
+      "size": 4853
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_negative_validation.py",
+      "sha256": "50cd7f5f81e2a565b6ab2ed4d6f7d960bd6a988e7a6da9fd37857fef591d2844",
+      "size": 746
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosbox_hwnd_input_v4.py",
+      "sha256": "67140bafa7b6d46b6a5f71729dcc0d6a904466a83f026b9a3f5fda6a6c6c7f8f",
+      "size": 4257
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosboxx_autotype_control_v4.py",
+      "sha256": "d5db35825aeb9d7e2accd1fa8ead340350e841dafbe744e234ccf6f151868ee1",
+      "size": 4226
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosboxx_autotype_v4.py",
+      "sha256": "3697e05a882ca5ad462bb0caf2a0860d2698f049eaa13a537d66b210ae4b8972",
+      "size": 4666
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosboxx_frame_sequence_v5.py",
+      "sha256": "95b426945f9f8385ff80fe66eb2a2f9dca63d761cdcfb9e6807672c2173db2de",
+      "size": 4661
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosboxx_late_capture_v4.py",
+      "sha256": "27ce5ff08da9043a1263f64cd5c32c0fc4d841291bb2783dfd9ae02ca72be55e",
+      "size": 3270
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosboxx_newgame_mouse_v5.py",
+      "sha256": "f940508b98f7b45747e6571b93337ffa67998e700d3b35dba929716499831d5a",
+      "size": 5233
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_dosboxx_two_enters_v5.py",
+      "sha256": "1e68e0ef7c86c8aaf127ad7586a50085e7c5372200e32a6f0cfe4515e874c05c",
+      "size": 3598
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_native_dosbox_passive_v3.py",
+      "sha256": "26ac91dad89083a84f75e4c89cc1524e5bda53737ddc7258d8e06f9a9a59cecc",
+      "size": 3984
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_saved_scene_sequence_v6.py",
+      "sha256": "372cf7e62a4422df0137974270cd14eb0f9f958c419899c325cdda89de990e39",
+      "size": 3803
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_scummvm_seeded_scene_v5.py",
+      "sha256": "80fb597b2a5500f5e81a517ce8f3f4848112748c4faedcb4d060feb4efa244bf",
+      "size": 5221
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_openzork_supervised_passive_v3.py",
+      "sha256": "3f2647db48cda00532072e5c8525c4b221338bed3df11b0fd5150adb975ff97f",
+      "size": 4025
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_original_newgame_cursor_gate_v8.py",
+      "sha256": "54b8c6d6e6b8474c67956b5fe22d72cfe9f82891cb4771a018cf02503df71e60",
+      "size": 2356
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_owned_menu_quit_guard_v4.py",
+      "sha256": "cacecf958e323cecb6ddfd3406ea792a3ac9ece31ebc840e7aec95b4396d206f",
+      "size": 1375
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_owned_mouse_admission_v5.py",
+      "sha256": "01a1732ae8d169643a68eaf1c5d20fceb40da789082a4ae6b094ce31bc139ad3",
+      "size": 2749
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_owned_mouse_state_canary_v5.py",
+      "sha256": "caa3ce29ff484d70b7b52131b1dcdb35c15a519ceabc6f597cac91f7611e1295",
+      "size": 4520
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_passive_diagnostic_orch_v3.py",
+      "sha256": "f035a445799cc2e91fc8a43645e68ea44af22b483b83e3fc52568260f7c8c843",
+      "size": 4042
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_process_crash.py",
+      "sha256": "fde028cc8b629b05c45e39e4011498ad3342ec42b0842504b4394876fb9497a3",
+      "size": 894
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_readonly_save_seed_v5.py",
+      "sha256": "10f3614e6b768fb8fec41c4dbf23ceb36c800fe71988639409839a8dba1cf4c9",
+      "size": 3474
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_recovery.py",
+      "sha256": "c0dc030a567b29ffaf86cc496aeb354f8ed3c4a082654981a73dce4c448d303e",
+      "size": 610
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_targeted_input_admission_v4.py",
+      "sha256": "b0af99849826a20466a0fdf3ba98ebfd04771bddfa9d75b8e573578696c26953",
+      "size": 1928
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_targeted_input_canary_v4.py",
+      "sha256": "c37975e32b6104402a66050d4af6267d9b1e8260a94a7c4fa29059d1ef59e52c",
+      "size": 4433
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/test_vb30_scene_pair_guard_v6.py",
+      "sha256": "68cc08ce2943af23854b3bbabb4158d8a5eda821e1195c9d26a7a5065db099b6",
+      "size": 3580
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/validate_interaction_audio.py",
+      "sha256": "c834bf64d506039245367475b6d311c784cea796fcabc2a5b1571f33c73771bc",
+      "size": 1877
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/validate_modern_input.py",
+      "sha256": "a7468eec8a91c2819363026705e0ac6521e77ce04996211b555687b9fd033b66",
+      "size": 969
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/validate_modern_input_portfolio.py",
+      "sha256": "4f9bc56171ff00bd4d2e1635d54980347f009003ac030f1012c3e3b4ace35ffd",
+      "size": 671
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/validate_vb30_godot_vs_scummvm_v6.py",
+      "sha256": "06dcbb92d637c11a0aaa052c7cfb04ab93ee426e3a3b1b24bc938af7f618efb9",
+      "size": 5356
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/validator.py",
+      "sha256": "2b4d27018996bec48b1167dde37197aa00811f081ce4c973014a92da18fccd86",
+      "size": 4740
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_checkpoint_v7_integrity.py",
+      "sha256": "d34eb9f96383c478d6467447c201eb6f3776edb2dcf557450bb9678e845c6de2",
+      "size": 2590
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_checkpoint_v8_integrity.py",
+      "sha256": "cba203e6cf24ef807c7eca953c1eca72d9e4a4894285a46728b577cdf6d75d95",
+      "size": 3249
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_contract_v1.py",
+      "sha256": "e5dd4bd6c7aaee18d9168fba77a397e916868f9a503594e021833c51abe2b3b0",
+      "size": 834
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_dosboxx_guest_ig_canaries_v8.py",
+      "sha256": "fa1a1e8301b64c91b99f63bd0d7b2a11132bebb65b2909a32e0eb84304d21b53",
+      "size": 3310
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_fidelity_checkpoint_v6_integrity.py",
+      "sha256": "26a92f61db4c1c086e7e8e3eaef0800f80c4c0f21290764919b629869e59d4b6",
+      "size": 2613
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_openzork_vb30_pose_and_decoder_v6.py",
+      "sha256": "9372a13f7ce3d8382ea0415c7492422f8ebbb4dd5c815d486933cc2da7e08b5e",
+      "size": 3645
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_original_cursor_guard_r8_v8.py",
+      "sha256": "938f719b000aebd9567c29335e5a27ed66fc0958eabbb663fc21083ef6bf4e1a",
+      "size": 3935
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_pinned_vb30_scene_pose_v6.py",
+      "sha256": "944a5bacb2d6ffe738409e78323398a1e51a5d767fc06215678223d4f236b481",
+      "size": 2867
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_pinned_vb30_supervised_capture_v7.py",
+      "sha256": "2a587564071f6a716ea017a8df274920c2dec56e7ecd35bc265d91a3e0879b9e",
+      "size": 5594
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_rehydration.py",
+      "sha256": "f31b6005e354d2e89c117778f47f4b493662ce4f4c7c59ceefa3509c4cd83ead",
+      "size": 1480
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_vb30_godot_reproducibility_v6.py",
+      "sha256": "4a096ad36cf1b6781a8821157aafd24ab008e7486426de0284808e7689b86a1f",
+      "size": 4285
+    },
+    {
+      "path": "recovered/2026-10-09/control-plane/verify_vb30_headless_hotspot_replay_v6.py",
+      "sha256": "8b2e3d7c3e9e55d52f2870914657325eb688d30d4eeb286f01ed3affaee38936",
+      "size": 3093
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/alignment.py",
+      "sha256": "92990f16941ff9db3aa53afb31887dfe381f2e7b118ff991746bc7f4d44bb9d9",
+      "size": 9367
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/causal.py",
+      "sha256": "3f31f284d83ef37b7d4f089b09f2356ea4ecaf6d6db73b18a89698ea45a06b9f",
+      "size": 4315
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/contract_registry_extension.json",
+      "sha256": "2cde00df416b36723046a7c5d4fdd754d278394402ea61f97bd2d1272eb5618f",
+      "size": 2059
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/crossgame_probe.py",
+      "sha256": "fa529b19a24012e80524c4634b5bdd1a60c02c0b24a8d23bbccfb39c2a569553",
+      "size": 5261
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/gate_cli.py",
+      "sha256": "28198d11a626869fd5a87f5f8a118b6a34758f93e38496ece64c2776fa509bf3",
+      "size": 2998
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/make_schemas.py",
+      "sha256": "f99659aefd4278443a3499c07e4013eac6e5b370bbf7c6841296ec1db4d35b19",
+      "size": 7313
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/orch_adapter.py",
+      "sha256": "b135e69b04dbbe7035c755626d532ab5f97b703895d67c125123e60b601f5fe8",
+      "size": 3335
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/README.md",
+      "sha256": "1d040922944aeb98b368fc3070e6d3b96d3c64d3448c4946a4b3aa0a9fbd06d4",
+      "size": 4748
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/schemas/CausalFidelityDiff.v1.schema.json",
+      "sha256": "eb4bc8374e1db928d913c46d50bfcbe423e5a82d4dbd8d04233336a18ff6439e",
+      "size": 1094
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/schemas/ComparisonAdmissibilityGuard.v1.schema.json",
+      "sha256": "0928f9e04b8cf8ffb6b5095978fc05157782f21d2f28e89b6aa2f70f335551c3",
+      "size": 638
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/schemas/OracleAlignmentContract.v1.schema.json",
+      "sha256": "56e9f6a62764e151ff438e6d8ec8c052c81b61531d21e26f13f8b11858f1d06f",
+      "size": 8153
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/schemas/ResourceResolutionContract.v1.schema.json",
+      "sha256": "35d969293ab607711ccc52123250da29f4d8c991237349f9e3b449db7d9ef8f5",
+      "size": 2117
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/schemas/SemanticPopulationGuard.v1.schema.json",
+      "sha256": "c4d414e78f6d0924f7df00decba188e29950678079dd5b9a458eedf70cad0a30",
+      "size": 2472
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/semantics.py",
+      "sha256": "a3a09ff7d1068d6b7485d62a334b5276016788a422a5134485321cc773050b18",
+      "size": 10525
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/test_adapter.py",
+      "sha256": "9995608d37e2988d20cf10b9a600744c52deb44e3e30b7cab3ac6cc786318c24",
+      "size": 4532
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/test_cli.py",
+      "sha256": "029a4f39b649567ff1eb200175a6248c2949e1b05b98e02f4f0cde40fb81d262",
+      "size": 2293
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/test_contracts.py",
+      "sha256": "8ea6ac77d53e08c4c39dbef2ffd5353c2ceeb4016733f7add3a25943a1bb065e",
+      "size": 12570
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/test_crossgame_evidence.py",
+      "sha256": "cdd1349475dbcd3777442fa677a7f59fa54162659440cca0760c32b206cf3f4d",
+      "size": 2879
+    },
+    {
+      "path": "recovered/2026-10-09/fidelity-gates/verify_and_install.py",
+      "sha256": "f963dffb504272de83c62ee4b9761dfe987f1b275705aecf36b595c4fa4e37a1",
+      "size": 7852
+    },
+    {
+      "path": "recovered/2026-10-09/godot-runtime-worker/README.md",
+      "sha256": "bc6c2065dbde40e2dfad64760ab36d57bc4e82c0f84cf75c5d4afb37b7fefecf",
+      "size": 726
+    },
+    {
+      "path": "recovered/2026-10-09/godot-runtime-worker/run-job.ps1",
+      "sha256": "edb58c0258eb80cdb7da678e9b21b933992beb0dd781c0fc3737d31174386b75",
+      "size": 2217
+    },
+    {
+      "path": "recovered/2026-10-09/godot-runtime-worker/run_job.py",
+      "sha256": "8d27c32895086927010e757d41ca3d1ba061556fcee58c9a050da54a26dff7ee",
+      "size": 3054
+    },
+    {
+      "path": "recovered/2026-10-09/godot-runtime-worker/schemas/job.schema.json",
+      "sha256": "a02500978f27a720fb6cd495720b7687a683a29438588f9db2a0fb010abfdf89",
+      "size": 631
+    },
+    {
+      "path": "recovered/2026-10-09/godot-runtime-worker/smoke-project/smoke.gd",
+      "sha256": "bbb261bf5c54399fb9fc4d8a915aed6d14a05ab2104c21cdeee5d3745f5dfacc",
+      "size": 529
+    },
+    {
+      "path": "recovered/2026-10-09/labs/fidelity_fixture/build.cmd",
+      "sha256": "2a96d2874519f0800554cf54384a33d16b14d15fed72c32589f21c2e308c4686",
+      "size": 388
+    },
+    {
+      "path": "recovered/2026-10-09/labs/fidelity_fixture/build.py",
+      "sha256": "7f3711d854ba243b9d3944e3f6535d280e961e77a708dda88a5e66c7a79cd10b",
+      "size": 1103
+    },
+    {
+      "path": "recovered/2026-10-09/labs/fidelity_fixture/synthetic_scummvm_oracle.cpp",
+      "sha256": "163926ca46e7afd8d601d3731c4727584e84698373c6e9777b56e0c57aec3dff",
+      "size": 2076
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/acl_audit.ps1",
+      "sha256": "f8d61a19693dd63b6188151bd9aca7ef724ce5c38d031aeb9909753ea9ee3da7",
+      "size": 805
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/acl_remediation_plan.ps1",
+      "sha256": "61785b7506bf317cc313c8f1cd0beb5d0e1cf7d418db0634aa8d83031b74e291",
+      "size": 683
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/agent.py",
+      "sha256": "d86e774d77c05a6521528e6dd0116289cefed81d4d622a08d752ee65031134d8",
+      "size": 2314
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/autostart_preflight.ps1",
+      "sha256": "0c7ef436a3f30a9babcd56caf0a9ff9eddf24e97fc8dfa1ef0a17d859a953bed",
+      "size": 844
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/dedicated_godot_canary.py",
+      "sha256": "6a21293d314b55430f2a85f598a8549aa1d7d7cca6f274bd9ce309c8d33e049f",
+      "size": 1271
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/dedicated_identity_canary.py",
+      "sha256": "4775784b2f9622121a5785e77e2cc56b15cb448c21bdca6916cf0ad908a85174",
+      "size": 1256
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/dedicated_longrun_canary.py",
+      "sha256": "ef43c5c1aec7adfb2d3ff11916e9bb284ae6ae2708e0862af6e2cf7deb97ef1c",
+      "size": 856
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/gateway.py",
+      "sha256": "e7e2684034a98ef19a6d9980d5607c3666266bb24c781e2172571cfbc0920a25",
+      "size": 2315
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/identity_probe.py",
+      "sha256": "817034737cb8274184f0f2e21b4047b2bdf747ba5ae8c9c95b8943174c9f0c9c",
+      "size": 590
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/prefer_native_route.py",
+      "sha256": "773fefb429c9cae122b351644ebfea4a2dd58a7909e8555a2ecc62c77ba9d5bb",
+      "size": 398
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/prepare_startup.ps1",
+      "sha256": "5ea79972d14e508c9a2f7b7df587fd336af373ce2ad43ce9cb71c8139fdcc14a",
+      "size": 540
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/promote_local_routing.py",
+      "sha256": "3c7f8943c2904a55eb3527f3c5b53c72a0a23bd4f0e527929f2137910d2d9b9d",
+      "size": 874
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/recover.py",
+      "sha256": "36690253f6812b5411ad97139fddaf06d1bf55382ffb0ba3749362c176d622f6",
+      "size": 1303
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/register_identity_probe_admin.ps1",
+      "sha256": "07200c2b51dd17ffde4aa5f0f0c1edd8e5278be49b7c8f1814adb7296af813f2",
+      "size": 769
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/register_native.py",
+      "sha256": "2b8216b73249692b520bf66f172912b235a7f664e070e83c0946087d5173b0af",
+      "size": 1228
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/service_entry.py",
+      "sha256": "407aff8fc0272b5c877f3463fc88e4bbea5f9d7cedabc78c31a80b5c13b13d8a",
+      "size": 913
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/service_readiness.ps1",
+      "sha256": "16d88e4dbbca95567b0189244e6d39da52e1706e3a419f76c0e29eb473927fb6",
+      "size": 541
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/submit_post_reboot_canary.py",
+      "sha256": "0d8a868ca9e143f2cb6ac18fafed0b4c7a1a6d307a5272a29ab999aa25b5da86",
+      "size": 1160
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/submit_remote_signed_canary.py",
+      "sha256": "7378e244e3e776ab2acf99b5f45bf6ae84cb90700424311e97f5b2a882bd9c4a",
+      "size": 1157
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_concurrent_replay.py",
+      "sha256": "c59767d067fdc9725797e7c51dca7386986cd15f413276f310ed76659b11732d",
+      "size": 1859
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_e2e.py",
+      "sha256": "c794b024ae257d8c49c4e5eb9b55f6f4bf7490d4b22dabb0a36d7caab8120e07",
+      "size": 1016
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_gateway_failclosed.py",
+      "sha256": "a635982daa93be0b04ba11580285729434383169a82729054836bc940e453c4c",
+      "size": 981
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_lifecycle.py",
+      "sha256": "0dd5d1c467d4ea6a93774a59d722ff56e237c3d23753ebf71a7da4244a710a92",
+      "size": 685
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_longrun.py",
+      "sha256": "d158da4f851b87f8bde0cf49390546074f744bad1d52205ccf68ee201aeaed74",
+      "size": 771
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_native_route.py",
+      "sha256": "a9097c6f46d246e374a677d34074f04bace97c2caa6fcea33de9973927514985",
+      "size": 1137
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_negative.py",
+      "sha256": "76e9b5156d3eaaa889b53bf69491a5103ac0a57960bfd13a3457c02592fc89b3",
+      "size": 1377
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_recovery_negative.py",
+      "sha256": "0b0ddc05df2fe1b00d7d59f22290c4f509cb43d1429f7d061b515b07b15b9323",
+      "size": 757
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_signed_http.py",
+      "sha256": "268cf7cff93623e97893bc13afd33731b98f1a0020ada6ceb2aaf71102071203",
+      "size": 2006
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_signed_http_godot_e2e.py",
+      "sha256": "e505c78ce35a7a43c63de9bb16856615d423b281e3de449ad6a2dec4bb104af4",
+      "size": 2166
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_transport_contract.py",
+      "sha256": "1b64cfc57e3bc1416028e176a28c078a5b74c9c2e9a9bed5857692d23ec87b0b",
+      "size": 895
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/test_transport_hardening.py",
+      "sha256": "0a23debd7467e2132f0eae5ddd481c22dadd25e5015e5c4a49b95f29cda274aa",
+      "size": 1690
+    },
+    {
+      "path": "recovered/2026-10-09/native-worker/transport_contract.py",
+      "sha256": "6f58ecf38ac4849720752c7b08fa87ea688598ea27cdce574e74252c72df05f8",
+      "size": 2239
+    }
+  ],
+  "excluded": {
+    "not_code_or_selected_docs": 227,
+    "sensitive_content": 1
+  },
+  "file_count": 376,
+  "release_promotion": false,
+  "repo": "semishsvk/OpenRemaster-Framework",
+  "schema": "OpenRemaster.PublicProjectCodeRecovery.v1"
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/semishsvk/OpenRemaster-Framework/contracts/remote-control/v1/receipt.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_id",
+    "worker_id",
+    "request_sha256",
+    "revision",
+    "status",
+    "evidence_sha256",
+    "error_code"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "worker_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "request_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "REJECTED",
+        "UNKNOWN"
+      ]
+    },
+    "evidence_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error_code": {
+      "enum": [
+        null,
+        "INVALID_REQUEST",
+        "EXPIRED",
+        "UNSUPPORTED",
+        "BINDING_MISMATCH",
+        "VALIDATION_FAILED"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "PASS"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "evidence_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "error_code": {
+            "const": null
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "FAIL",
+              "REJECTED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "error_code": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

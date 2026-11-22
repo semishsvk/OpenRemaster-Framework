@@ -1,0 +1,33 @@
+name: ORCH M010 Durable Recovery Synthetic Lab
+on:
+  pull_request:
+    branches: [m009/external-current-head-contract-v1-20261014]
+    paths:
+      - 'src/openremaster/m010_durable_recovery.py'
+      - 'tests/test_m010_durable_recovery.py'
+      - 'docs/contracts/m010-durable-current-head-recovery.md'
+      - '.github/workflows/m010-durable-recovery-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orf-m010-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  local-only-crash-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pytest==8.3.5 jsonschema==4.23.0 rfc3339-validator==0.1.4 cryptography==46.0.4
+      - name: Offline SQLite negative/crash fixtures only
+        run: PYTHONPATH=src python -m pytest -q tests/test_m010_durable_recovery.py

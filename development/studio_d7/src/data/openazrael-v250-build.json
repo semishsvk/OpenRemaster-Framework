@@ -1,0 +1,28 @@
+{
+  "projectId": "OpenAzrael",
+  "buildId": "OpenAzrael-v250",
+  "sourceRelativePath": "OpenAzrael-v250/README.txt",
+  "sourceSha256": "6129e1bfcfb29206f1be3620658480cdaf6011ca48d1c8f91f2df30eb2a12066",
+  "packageManifestSha256": "083887fdcdc18790cc567c3b934d5500d639adaf708779ef2efd38de7810069f",
+  "checks": [
+    "Full demo 34/34 PASS",
+    "Inventory/HUD 40/40 PASS",
+    "Object lifecycle 85/85 PASS",
+    "Cursor/interactions 169/169 PASS",
+    "Save/load 37/37 PASS",
+    "Niamh 29/29 PASS",
+    "Eugene 9/9 PASS",
+    "R1 parchment 7/7 PASS",
+    "Localization 89/89 EN/SK; 12/12 PASS",
+    "Graphics mode 12/12 PASS",
+    "EN/SK x Original/Upscaled matrix 8/8 PASS",
+    "Physical PPPV transitions 109/109 PASS",
+    "Clean install / startup PASS",
+    "Bug-report diagnostic context 4/4 PASS"
+  ],
+  "fidelityGaps": [
+    "Original MOV cinematics / exact decode and timing.",
+    "Exact original-runtime SERVICE/HUD activation timing.",
+    "Final paired original-runtime visual FidelityBundle."
+  ]
+}

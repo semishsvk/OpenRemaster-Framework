@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"SemanticInputIR v1",
+  "type":"object",
+  "required":["schema","project","tick_rate","events"],
+  "properties":{
+    "schema":{"const":"SemanticInputIR.v1"},
+    "project":{"type":"string","minLength":1},
+    "tick_rate":{"type":"number","exclusiveMinimum":0},
+    "events":{"type":"array","items":{"type":"object","required":["tick","action","phase"],"properties":{
+      "tick":{"type":"integer","minimum":0},
+      "action":{"type":"string","minLength":1},
+      "phase":{"enum":["press","release","pulse","axis","target"]},
+      "value":{"type":["number","string","boolean","null"]},
+      "target":{"type":["string","null"]}
+    }}}
+  }
+}

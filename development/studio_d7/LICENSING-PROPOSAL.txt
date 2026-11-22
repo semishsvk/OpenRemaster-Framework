@@ -1,0 +1,18 @@
+Proposed Studio license
+
+MIT is proposed for the original OpenRemaster Studio source and build scripts.
+The OSI-approved text is available at https://opensource.org/license/mit.
+It permits use, modification and redistribution, including commercial use,
+subject to preserving the copyright and permission notice.
+
+Approval is pending from the copyright holders. The copyright attribution,
+the covered source paths and the rights in contributed files need confirmation.
+After approval, publish the agreed LICENSE text and update package metadata.
+
+Third-party components retain their respective licenses. Game screenshots,
+game data, logos and other media require their own distribution permissions.
+The dependency inventory and copied notices in a DEV archive support review.
+The recorded gaps in that inventory require resolution before SignPath intake.
+
+This document records a proposal. The repository's existing rights and any
+permissions already granted by the copyright holders govern this DEV preview.

@@ -1,0 +1,143 @@
+{
+  "schema": "OpenRemaster.StudioReleaseTrustReview.v1",
+  "release": "ORF-STUDIO-UI-20261018-r9",
+  "generatedUtc": "2026-10-18T12:40:49+00:00",
+  "status": "A_B_C_REVIEW_READY_EXTERNAL_APPROVALS_MISSING_PRODUCTION_HOLD",
+  "authority": "HISTORICAL_SOURCE_SHA_ONLY_UNSIGNED_SAME_ASSISTANT_REVIEW",
+  "parentR8ZipSha256": "965bbe1aa6ff4a2eec4f0a2100e7802e4177d8511b217de6c37c93b7d0836fd2",
+  "pins": {
+    "checkpoint": "0665200956d594f056e25599b8c2852672643c164024d02ac5e0bccc98e67ed5",
+    "reviewGates": "0814f0e74ca9da37e67ab5e2a20b9cefa3ea5ba60a589bf51b1cad3ec9509bf1",
+    "handoff": "a7a0e3bc342b3d5f74f7304236378684b4ade219ced277d5e7b30593b74c484a",
+    "studioR8Snapshot": "e885cd4c3d181d520c0afb68c07ed00bc53f49019e4e2110a6aa35c34c3f65d5",
+    "portableR8Snapshot": "197ac02fe62565efad4d8bbd7d303f1eb510f7ceef8bdfbf7a3a855a2f1954ed",
+    "parentR8Zip": "965bbe1aa6ff4a2eec4f0a2100e7802e4177d8511b217de6c37c93b7d0836fd2"
+  },
+  "checkpointStatus": "SOURCE_BOUND_OWNER_A_B_C_REVIEW_TESTS_PASS_PRODUCTION_HOLD",
+  "sourceDateUtc": "2026-10-18T12:11:41.032548+00:00",
+  "sourceReview": "SELF_REVIEW_UNSIGNED_APPROVAL_PACKET_NOT_EXTERNAL_OWNER",
+  "negativeFirstSourceTests": 82,
+  "sourceRolesVerified": 11,
+  "inheritedNW013P0Blockers": 10,
+  "inheritedR12NoGoDomains": 7,
+  "sequentialStages": [
+    {
+      "id": "A",
+      "title": "Independent publisher, Owner & Witness trust",
+      "sourceDescription": "Publisher, Owner and independent witness trust custody",
+      "decision": "EXTERNAL_DECISION_NOT_RECORDED",
+      "blocked": true,
+      "mayExecute": false,
+      "prerequisiteTokens": [],
+      "reviewerRoles": [
+        "authoritative_owner",
+        "publisher_code_signing_reviewer",
+        "independent_cloud_security_owner"
+      ],
+      "requiredEvidence": [
+        "approved code-signing publisher public key fingerprint and certificate chain",
+        "approved release digest and owner signature key custody",
+        "witness tenant, subscription billing owner and admin separation",
+        "independently signed fresh witness highwater and bounded nonce CAS receipt",
+        "revocation, trusted timestamp, outage and region failover test evidence"
+      ],
+      "sourceArtifacts": [
+        "NW020_OWNER_DECISION_PACKET.md",
+        "NW021_WITNESS_CONTRACT_DRAFT.json",
+        "r12 source archive"
+      ]
+    },
+    {
+      "id": "B",
+      "title": "Protected Windows roles and signed installer",
+      "sourceDescription": "Windows roles, protected installer/ACL and restricted identity",
+      "decision": "EXTERNAL_DECISION_NOT_RECORDED",
+      "blocked": true,
+      "mayExecute": false,
+      "prerequisiteTokens": [
+        "A_EXTERNAL_TRUST_ACCEPTANCE"
+      ],
+      "reviewerRoles": [
+        "current_authoritative_owner",
+        "windows_security_operator",
+        "installer_security_reviewer"
+      ],
+      "requiredEvidence": [
+        "effective role-separated Windows user process token and cross-role deny checks",
+        "explicit owner-approved NTFS ancestor DACL and no junction/path race",
+        "publisher-signed x64 one-installer verified package and rollback plan",
+        "role-scoped nonexportable CNG key custody and signer denial tests",
+        "S4U/Task Scheduler explicit create-only DACL, separate safe operator approval",
+        "accepted credential UI threat model with no secrets in remote tools"
+      ],
+      "sourceArtifacts": [
+        "NW009_OWNER_APPROVAL_BOUNDARY.json",
+        "NW013_PRODUCTION_ADMISSION_REMEDIATION.v1.json",
+        "NW020_BOOTSTRAP_CONTRACT.v1.json"
+      ]
+    },
+    {
+      "id": "C",
+      "title": "V2 lifecycle, one writer & native canary",
+      "sourceDescription": "Native V2 cutover, source-bound durable lifecycle and bounded canary",
+      "decision": "EXTERNAL_DECISION_NOT_RECORDED",
+      "blocked": true,
+      "mayExecute": false,
+      "prerequisiteTokens": [
+        "A_EXTERNAL_TRUST_ACCEPTANCE",
+        "B_PROTECTED_INSTALL_ACCEPTANCE"
+      ],
+      "reviewerRoles": [
+        "current_authoritative_owner",
+        "protocol_security_reviewer",
+        "canary_release_operator"
+      ],
+      "requiredEvidence": [
+        "authoritative nonstrippable owner-signed V1/V2 mode policy and no fallback",
+        "real durable signed R6 ACK and authenticated loss/relookup reconciliation",
+        "owner-signed R10 PRESTART/R11 COMMIT bound to exact job/source",
+        "actual PID birth and loaded-code-bound supervisor K003 START and TERMINAL",
+        "one writer/project, <=3 global heavy, Governor GAME/LIGHT, GUI lease",
+        "independent acceptance and distinct approvals for no-dispatch and real canary"
+      ],
+      "sourceArtifacts": [
+        "ORF-ORCH-PRODUCTION-READINESS-20261018-r12.zip",
+        "ORF-ORCH-RECOVERY-REPLAY-20261018-r11.zip",
+        "legacy gateway V1 policy review"
+      ]
+    }
+  ],
+  "executionPolicy": {
+    "scheduler": "EXISTING_K003_ONLY",
+    "oneWriter": true,
+    "maxGlobalHeavy": 3,
+    "unknownOutcome": "HOLD_NO_AUTO_RETRY",
+    "forbidV1Fallback": true,
+    "immutableGames": true,
+    "nativeWorkerStateReportedAtSource": "Disabled",
+    "gatewayStateReportedAtSource": "Running",
+    "liveWindowsTaskQueriedByStudio": false,
+    "ownerIdentityAdmitted": false,
+    "witnessOffhostCurrent": false,
+    "ownerPublisherSignatureVerified": false,
+    "independentExternalReviewer": false,
+    "mayInstall": false,
+    "mayCreateCloudResources": false,
+    "mayStartWorker": false,
+    "mayDispatch": false,
+    "mayAutoRetry": false,
+    "approvedGUILease": false,
+    "currentProductionAuthority": "HOLD"
+  },
+  "studioProduction": {
+    "moduleSourceRecords": 20,
+    "requiredInstallerComponents": 9,
+    "acceptedInstalledComponents": 0,
+    "componentManagerCommissioned": false,
+    "portableHostHasRealInspectorLease": false,
+    "nativeTauriSignedExeBuilt": false,
+    "externalOperatorHandoffOnly": true,
+    "approvalsSubmittedThroughUi": false
+  },
+  "notice": "A/B/C are external independent operator decisions. UI selection is only documentation navigation, never consent, signer authority, or a production operation."
+}

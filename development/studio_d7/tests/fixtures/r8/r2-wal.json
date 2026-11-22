@@ -1,0 +1,62 @@
+{
+  "fixture_only": true,
+  "source_manifest_sha256": "0053942219c56f9434344bfe6e919b791a0d3815ee91081ae8ef56b981539a19",
+  "journal_mode": "wal",
+  "request": {
+    "project_id": "Fixture",
+    "edition_id": "fixture_edition",
+    "committed_operation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "accepted_manifest_digest": "9824779996031bc0d070c01629628846820d9c780df030a878e51d614af30bb3"
+  },
+  "live": {
+    "schema": "OpenRemaster.NativeFileObservation.v1",
+    "state": "LIVE",
+    "read_only": true,
+    "execution_authority": false,
+    "gameplay": "UNKNOWN",
+    "fidelity": "UNKNOWN",
+    "observed_epoch_ms": 1795256297481,
+    "selection": {
+      "project_id": "Fixture",
+      "edition_id": "fixture_edition",
+      "committed_operation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "accepted_manifest_digest": "9824779996031bc0d070c01629628846820d9c780df030a878e51d614af30bb3"
+    },
+    "files": [
+      {
+        "role": "EXE",
+        "name": "Fixture.exe",
+        "volume": "5430419030417a4e",
+        "file_id": "b0284100000002000000000000000000",
+        "bytes": 12,
+        "sha256": "f0fce4c4b7a93190210cf71dfe9225a62d468b76a268df42f0447b12390802ae"
+      }
+    ],
+    "engine": "fixture_engine",
+    "source_commit": "1111111111111111111111111111111111111111",
+    "source_tree": "2222222222222222222222222222222222222222",
+    "source_manifest_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+    "build_plan_sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+  },
+  "catalog": [
+    {
+      "selection": {
+        "project_id": "Fixture",
+        "edition_id": "fixture_edition",
+        "committed_operation_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "accepted_manifest_digest": "9824779996031bc0d070c01629628846820d9c780df030a878e51d614af30bb3"
+      },
+      "scenario": "fixture_build",
+      "engine": "fixture_engine",
+      "source_commit": "1111111111111111111111111111111111111111",
+      "source_tree": "2222222222222222222222222222222222222222",
+      "source_manifest_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "build_plan_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "input_binding_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+      "roles": {
+        "EXE": "Fixture.exe"
+      },
+      "expires_epoch_ms": 1795256357446
+    }
+  ]
+}
