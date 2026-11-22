@@ -1,7 +1,27 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod dev_preflight;
+mod file_observation;
 #[cfg(feature = "dev-worker")]
 mod dev_worker;
+
+#[tauri::command]
+async fn local_dev_file_observation(selection: file_observation::Selection) -> serde_json::Value {
+    #[cfg(feature = "dev-worker")]
+    return tauri::async_runtime::spawn_blocking(move || file_observation::observe(selection))
+        .await.unwrap_or_else(|_| file_observation::hold("UNVERIFIED"));
+    #[cfg(not(feature = "dev-worker"))]
+    { let _ = selection; file_observation::hold("UNVERIFIED") }
+}
+
+#[tauri::command]
+async fn local_dev_status() -> Result<serde_json::Value, String> {
+    #[cfg(feature = "dev-worker")]
+    return tauri::async_runtime::spawn_blocking(dev_worker::local_status)
+        .await
+        .map_err(|_| "LOCAL_STATUS_PANIC".to_string())?;
+    #[cfg(not(feature = "dev-worker"))]
+    Err("Local worker status requires the configured HomePC build.".into())
+}
 
 #[tauri::command]
 async fn studio_capabilities() -> Result<serde_json::Value, String> {
@@ -58,11 +78,15 @@ fn main() {
     #[cfg(not(feature = "dev-worker"))]
     let builder = builder.invoke_handler(tauri::generate_handler![
         studio_capabilities,
+        local_dev_status,
+        local_dev_file_observation,
         studio_open_release
     ]);
     #[cfg(feature = "dev-worker")]
     let builder = builder.invoke_handler(tauri::generate_handler![
         studio_capabilities,
+        local_dev_status,
+        local_dev_file_observation,
         studio_open_release,
         dev_worker::dev_worker_call
     ]);

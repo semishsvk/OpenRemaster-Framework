@@ -155,12 +155,46 @@ test('the existing Projects route shows the review and the existing project card
 });
 
 test('Studio shell declares English and keeps Slovak UI strings out of the source', () => {
-  assert.match(readFileSync(new URL('DevWorkerPanel.tsx', src), 'utf8'), /<h2>Studio DEV build<\/h2>/);
+  assert.match(readFileSync(new URL('DevWorkerPanel.tsx', src), 'utf8'), /<h2>Studio DEV operation<\/h2>/);
   assert.match(readFileSync(new URL('../index.html', import.meta.url), 'utf8'), /<html lang="en-US">/);
-  for (const file of ['App.tsx', 'GateAReviewPanel.tsx', 'DevWorkerPanel.tsx']) {
+  for (const file of ['App.tsx', 'GateAReviewPanel.tsx', 'DevWorkerPanel.tsx', 'LocalDevStatusPanel.tsx', 'main.tsx']) {
     const source = readFileSync(new URL(file, src), 'utf8');
     assert.doesNotMatch(source, /[áäčďéíĺľňóôŕšťúýž]|sk-SK/i, file);
   }
+});
+
+test('read-only job rows distinguish settled failure, original HOLD, success and UNKNOWN',()=>{
+  const {LocalDevJobRow}=loadSource(new URL('LocalDevStatusPanel.tsx',src));
+  const job={operation_id:'b4c4824bb744468db1b96d8ea317da80',project:'openremasterframework',launch_count:1,
+    knowledge:{state:'NOT_REQUESTED',project:null,attempts:0},state:'FAILED_SETTLED',original_state:'HOLD',
+    disposition:{kind:'KNOWN_FAILED_SETTLED',state:'FAILED_SETTLED',receipt_sha256:'e8fc66f08a157f5e434aa98921103a4d31cc6321790d4798026222ac30c47949'}};
+  const renderJob=value=>renderToStaticMarkup(createElement(LocalDevJobRow,{job:value}));
+  const failed=renderJob(job);
+  assert.match(failed,/Failed - settled/);assert.match(failed,/Original state: <code>HOLD/);
+  assert.match(failed,/effective state: <code>FAILED_SETTLED/);
+  assert.ok(failed.includes(job.disposition.receipt_sha256));assert.match(failed,/Not requested/);
+  assert.doesNotMatch(failed,/<button|<a |Verified|>PASS</);
+  for(const [state,label] of [['COMMITTED','Committed'],['HOLD','Hold - unresolved'],['UNKNOWN','Unknown - reconciliation required']]){
+    const markup=renderJob({...job,state,original_state:state,disposition:null});
+    assert.ok(markup.includes(label));assert.doesNotMatch(markup,/KNOWN_FAILED_SETTLED|Receipt SHA-256/);
+  }
+});
+
+test('pinned provider example renders v2 counters while v1 never invents settlements',()=>{
+  const {LocalDevCounts}=loadSource(new URL('LocalDevStatusPanel.tsx',src));
+  const {parseLocalDevStatus}=loadSource(new URL('local-dev-status.ts',src));
+  const bytes=readFileSync(new URL('fixtures/local-status-v2-gen5.json',import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'),'11107761ac2c8505f8417d8c7a2c9d311ab0f53c1ea82564dddbde5dc121759d');
+  const archived=JSON.parse(bytes);
+  // Parse at its captured time only; this fixture is never a live status feed.
+  const snapshot=parseLocalDevStatus(archived,archived.captured_epoch*1000);
+  const markup=renderToStaticMarkup(createElement(LocalDevCounts,{snapshot}));
+  assert.match(markup,/Unresolved holds: 0/);assert.match(markup,/Settled failures: 1/);
+  assert.match(markup,/Committed: 11/);assert.equal(snapshot.jobs[0].original_state,'HOLD');
+  assert.equal(snapshot.jobs[0].state,'FAILED_SETTLED');
+  const v1=renderToStaticMarkup(createElement(LocalDevCounts,{snapshot:{...snapshot,schema:'OpenRemaster.LocalStudioStatus.v1',counts:{...snapshot.counts,hold:1}}}));
+  assert.match(v1,/Raw holds \(v1\): 1/);assert.match(v1,/Settled failures: Unavailable in v1/);
+  assert.doesNotMatch(v1,/Unresolved holds|>PASS</);
 });
 
 test('Settings build identity renders the exact version, commit and UTC timestamp', () => {

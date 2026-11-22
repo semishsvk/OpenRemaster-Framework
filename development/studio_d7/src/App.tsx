@@ -1,4 +1,7 @@
+import {readNativeFileObservation} from './native-file-transport';
+import {ProjectWorkspace} from "./ProjectWorkspace";
 import DevWorkerPanel from "./DevWorkerPanel";
+import LocalDevStatusPanel from "./LocalDevStatusPanel";
 import {OpenAzraelBuildReview} from "./OpenAzraelBuildReview";
 import {StudioBuildIdentity} from "./StudioBuildIdentity";
 import StudioReleases from "./StudioReleases";
@@ -375,6 +378,7 @@ export default function App() {
             <div className="detail-section"><label>SOFTWARE TEST EVIDENCE</label><strong>{chosen.testsPerPlatform === null ? "Not available in selected checkpoint" : chosen.testsPerPlatform + " reported software tests (platform/scope varies)"}</strong><small>Reported values are not rerun by Studio; SHA-256 is not an independent signature.</small></div></Panel>}
           </div>
         </>}
+        {page === "buildlab" && <LocalDevStatusPanel/>}
         {page === "buildlab" && <DevWorkerPanel/>}
         {page === "buildlab" && <NativeBuildLab onHostReplay={()=>setPage("replay")}
           onCompatibility={()=>setPage("compat")} onTrust={()=>setPage("trust")}/>}
@@ -939,6 +943,7 @@ export default function App() {
         {page === "projects" && <>
           <div className="page-intro"><div className="eyebrow">WORKSPACE / PROJECTS</div><h1>Project Workbench<span className="title-dot">.</span></h1><p>Register known game projects without opening their original media. Project status is deliberately not inferred from folder presence.</p></div>
           <div className="section-banner"><Tag kind="pending">NOT LIVE-BOUND</Tag><span>Per-project checkpoint API and authenticated owner leases are not connected.</span><button className="top-button" onClick={()=>setPage("completion")}>Source-bound game blockers ↗</button></div>
+          <ProjectWorkspace read={readNativeFileObservation}/>
           <OpenAzraelBuildReview projects={snapshot.projects}/>
           <div className="project-grid">{snapshot.projects.map((p,i) => <div key={p.id} className="project-card"><div className="project-letter">{String(i+1).padStart(2,"0")}</div><h3>{p.id}</h3><small>Source corpus remains immutable</small><div className="project-foot"><Tag>RUNTIME NOT QUERIED</Tag><span>→</span></div></div>)}</div>
         </>}

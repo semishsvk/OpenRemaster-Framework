@@ -1,0 +1,14 @@
+{
+  "root": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-06",
+  "python": "C:\\Users\\msemj\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "python_sha256": "3c48fbdcc2ed5c55290e39bef50bd6b1da76f43f3069a4a2624d0b8876a605f5",
+  "broker_sha256": "cbcd1297ac5216e8df1e52c52ca68df764697b8db0d9c89550bcf37406dad806",
+  "host_sha256": "62fa414d288e748bd78bf78990741f0f7c899638b624e3a61d34db58dd79cc5f",
+  "manifest_sha256": "8131c533974004d6b04915795643764ff019aba3ce18456acbb9ff354f91f317",
+  "worker_config_sha256": "d3e4679275489f190c87a2a799fcf3e60806fd6fa5e35371a9625e9b4fbc9135",
+  "local_status": {
+    "contract_id": "UNIFIED-DEV-20261119-01",
+    "commissioned": true,
+    "reader_sha256": "3a83676adc6b2ad6595b3d47d8de3fd246f794b1b6d819f17263f14f5e50fd4d"
+  }
+}

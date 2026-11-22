@@ -19,7 +19,94 @@ function load(url) {
 const worker = load(new URL('../src/dev-worker.ts', import.meta.url));
 const diagnostics = load(new URL('../src/dev-diagnostics.ts', import.meta.url));
 const releases = load(new URL('../src/studio-releases.ts', import.meta.url));
+const localStatus = load(new URL('../src/local-dev-status.ts', import.meta.url));
 const id = 'a'.repeat(32), scope = 'b'.repeat(64), commit = 'c'.repeat(40);
+
+function localFixture(){return {schema:'OpenRemaster.LocalStudioStatus.v1',captured_epoch:1000,mode:'LOCAL_DEV',
+  source:'LOCAL_NATIVE_READONLY',read_only:true,azure_required:false,witness_required:false,production_go:false,
+  host:{state:'IDLE',healthy:true,process_alive:true,heartbeat_age_seconds:1,generation:id},
+  counts:{queued:0,running:0,committed:1,hold:0,checkpoint_pending:1},
+  jobs:[{operation_id:id,scenario:'build_studio_dev',state:'COMMITTED',launch_count:1,project:'studio',
+    knowledge:{state:'CHECKPOINT_PENDING',project:'OpenRemasterStudio',attempts:1,reason:'Metadata hook unavailable'}}]};}
+test('local status keeps committed builds separate from pending knowledge and expires live data',()=>{
+  const parsed=localStatus.parseLocalDevStatus(localFixture(),1000000);
+  assert.equal(parsed.jobs[0].state,'COMMITTED');assert.equal(parsed.jobs[0].knowledge.state,'CHECKPOINT_PENDING');
+  assert.equal(localStatus.localSnapshotFresh(parsed,1010000),true);
+  assert.equal(localStatus.localSnapshotFresh(parsed,1010001),false);
+  assert.throws(()=>localStatus.parseLocalDevStatus(localFixture(),1011000));
+  assert.throws(()=>localStatus.parseLocalDevStatus(localFixture(),997000));
+});
+test('local status rejects production authority, archived data and inconsistent process health',()=>{
+  for(const change of [{production_go:true},{read_only:false},{source:'ARCHIVED'},{witness_required:true},{azure_required:true},
+    {host:{...localFixture().host,process_alive:false}},{host:{...localFixture().host,heartbeat_age_seconds:7}}]){
+    assert.throws(()=>localStatus.parseLocalDevStatus({...localFixture(),...change},1000000));
+  }
+});
+test('local status bounds jobs and rejects duplicate, corrupt or oversized history',()=>{
+  const fixture=localFixture(),job=fixture.jobs[0];
+  for(const jobs of [[job,job],[{...job,launch_count:2}],[{...job,operation_id:'../escape'}],
+    [{...job,knowledge:{...job.knowledge,state:'SUCCESS'}}],Array(13).fill(job)]){
+    assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,jobs},1000000));
+  }
+  assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,extra:'x'.repeat(65536)},1000000));
+  assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,counts:{...fixture.counts,running:-1}},1000000));
+});
+
+function settlementFixture(){
+  const base=localFixture();
+  return {...base,schema:'OpenRemaster.LocalStudioStatus.v2',counts:{...base.counts,hold:0,failed_settled:1},
+    jobs:[{...base.jobs[0],state:'FAILED_SETTLED',original_state:'HOLD',
+      disposition:{kind:'KNOWN_FAILED_SETTLED',state:'FAILED_SETTLED',receipt_sha256:'e'.repeat(64)},
+      knowledge:{state:'NOT_REQUESTED',project:null,attempts:0}}]};
+}
+test('v2 settlement retains original HOLD, effective failure, receipt and independent counts',()=>{
+  const value=localStatus.parseLocalDevStatus(settlementFixture(),1000000);
+  assert.equal(value.jobs[0].original_state,'HOLD');
+  assert.equal(value.jobs[0].state,'FAILED_SETTLED');
+  assert.equal(value.jobs[0].disposition.receipt_sha256,'e'.repeat(64));
+  assert.equal(value.jobs[0].launch_count,1);
+  assert.equal(value.jobs[0].knowledge.state,'NOT_REQUESTED');
+  assert.equal(value.counts.hold,0);assert.equal(value.counts.failed_settled,1);
+  const committed={...localFixture().jobs[0],original_state:'COMMITTED',disposition:null};
+  for(const state of ['COMMITTED','HOLD','UNKNOWN']){
+    const fixture={...settlementFixture(),jobs:[{...committed,state,original_state:state}]};
+    assert.equal(localStatus.parseLocalDevStatus(fixture,1000000).jobs[0].state,state);
+  }
+});
+test('settled failures require exactly one launch while v1 retains raw launch counts',()=>{
+  const fixture=settlementFixture(),job=fixture.jobs[0];
+  assert.equal(localStatus.parseLocalDevStatus(fixture,1000000).jobs[0].launch_count,1);
+  assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,jobs:[{...job,launch_count:0}]},1000000),/Invalid settled failure evidence/);
+  for(const launch_count of [0,1]){
+    const v1=localFixture();
+    v1.jobs[0]={...v1.jobs[0],state:'HOLD',launch_count};
+    assert.equal(localStatus.parseLocalDevStatus(v1,1000000).jobs[0].launch_count,launch_count);
+  }
+  const queued={...job,state:'QUEUED',original_state:'QUEUED',disposition:null,launch_count:0};
+  assert.equal(localStatus.parseLocalDevStatus({...fixture,jobs:[queued]},1000000).jobs[0].launch_count,0);
+});
+test('v2 refuses absent or contradictory settlement evidence and success promotion',()=>{
+  const fixture=settlementFixture(),job=fixture.jobs[0];
+  for(const change of [{original_state:'COMMITTED'},{disposition:null},{disposition:{...job.disposition,receipt_sha256:'bad'}},
+    {disposition:{...job.disposition,kind:'APPROVED'}},{disposition:{...job.disposition,state:'COMMITTED'}},
+    {knowledge:{...job.knowledge,state:'VERIFIED'}},{knowledge:{...job.knowledge,attempts:1}},
+    {state:'COMMITTED'},{state:'UNKNOWN'},{state:'SUCCESS'}]){
+    assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,jobs:[{...job,...change}]},1000000));
+  }
+  for(const count of [undefined,-1,1.5,'1'])assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,counts:{...fixture.counts,failed_settled:count}},1000000));
+  assert.throws(()=>localStatus.parseLocalDevStatus(fixture,1011000),/expired/);
+  assert.throws(()=>localStatus.parseLocalDevStatus({...fixture,production_go:true},1000000));
+});
+test('v1 remains raw history and unsupported versions explicitly fail unavailable',()=>{
+  const base=localFixture(),job={...base.jobs[0],state:'HOLD'};
+  const value=localStatus.parseLocalDevStatus({...base,jobs:[job]},1000000);
+  assert.equal(value.jobs[0].state,'HOLD');assert.equal(value.jobs[0].disposition,undefined);
+  assert.throws(()=>localStatus.parseLocalDevStatus({...base,counts:{...base.counts,failed_settled:0},jobs:[]},1000000),/require.*v2/);
+  assert.throws(()=>localStatus.parseLocalDevStatus({...base,jobs:[{...job,original_state:'HOLD',disposition:null}]},1000000));
+  for(const schema of ['OpenRemaster.LocalStudioStatus.v3','PASS',undefined]){
+    assert.throws(()=>localStatus.parseLocalDevStatus({...base,schema},1000000),/unavailable: unsupported response schema/);
+  }
+});
 test('diagnostics expire and unknown authority never enables a build',()=>{
   const report={schema:'OpenRemaster.DevPreflight.v1',scope,production_go:false,checked_at_ms:1000,valid_for_ms:30000,can_submit:true,
     checks:diagnostics.diagnosticIds.map(id=>({id,status:'PASS',detail:'Verified fixture',next_step:'Review fixture'}))};

@@ -1,0 +1,13 @@
+{
+  "schema": "OpenRemaster.LocalStatusNativePins.v2",
+  "contract_id": "UNIFIED-DEV-20261119-01",
+  "root": "C:\\Users\\msemj\\Documents\\Codex\\2026-10-25\\podme-rozbehat-native-worker\\unified-dev-worker-06",
+  "python": "C:\\Users\\msemj\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "python_sha256": "3c48fbdcc2ed5c55290e39bef50bd6b1da76f43f3069a4a2624d0b8876a605f5",
+  "reader": "local_status_v2.py",
+  "reader_sha256": "6f04d0aed5e827ca631f49450fd422c40697dd4d612ea980e8411a013cad797a",
+  "validator": "transactional_queue.py",
+  "validator_sha256": "ea34ffde4305cc52b978d48473ad58d29aeb0c4ca224c82137d680fb51fdc843",
+  "response_schema": "OpenRemaster.LocalStudioStatus.v2",
+  "native_arguments": []
+}

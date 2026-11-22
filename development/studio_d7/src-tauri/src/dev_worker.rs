@@ -11,6 +11,7 @@ use std::{
 };
 
 const CONFIG: &str = include_str!("../dev-worker-pins.json");
+const LOCAL_STATUS_CONFIG: &str = include_str!("../local-status-v2-pins.json");
 
 const CONTROL: &str = include_str!("../../tools/studio_dev_control.py");
 fn control_scope() -> String {
@@ -87,18 +88,14 @@ fn call_control(
     pins: &serde_json::Value,
     request: &serde_json::Value,
 ) -> Result<serde_json::Value, String> {
-    use std::io::Write;
-    use std::sync::{
-        atomic::{AtomicBool, Ordering},
-        Arc,
-    };
-    let limit: u64 = if request["action"] == "logs" {
+    let limit = if request["action"] == "logs" {
         2 * 1024 * 1024
     } else {
         131072
     };
-    let mut child = Command::new(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?)
-        .args([
+    call_python(
+        pins,
+        &[
             "-B",
             "-I",
             "-",
@@ -106,7 +103,47 @@ fn call_control(
             CONFIG,
             "--request",
             &request.to_string(),
-        ])
+        ],
+        CONTROL.as_bytes(),
+        limit,
+        45,
+    )
+}
+
+// Only the two fixed, pinned read/control adapters below call this bounded I/O
+// helper. Renderer input can never select an executable, script or arguments.
+fn call_python(
+    pins: &serde_json::Value,
+    arguments: &[&str],
+    script: &[u8],
+    limit: u64,
+    timeout_seconds: u64,
+) -> Result<serde_json::Value, String> {
+    let (bytes, success) = call_python_output(pins, arguments, script, limit, timeout_seconds)?;
+    let value: serde_json::Value =
+        serde_json::from_slice(&bytes).map_err(|_| "DEV_CONTROL_JSON")?;
+    if !success {
+        return Err(value["error"].as_str().unwrap_or("DEV_CONTROL_HOLD")
+            .chars().take(2048).collect());
+    }
+    Ok(value)
+}
+
+// Exact bounded byte transport shared by fixed source-pinned adapters only.
+pub(super) fn call_python_output(
+    pins: &serde_json::Value,
+    arguments: &[&str],
+    input: &[u8],
+    limit: u64,
+    timeout_seconds: u64,
+) -> Result<(Vec<u8>, bool), String> {
+    use std::io::Write;
+    use std::sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    };
+    let mut child = Command::new(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?)
+        .args(arguments)
         .current_dir(pins["root"].as_str().ok_or("DEV_ROOT_REQUIRED")?)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -143,7 +180,7 @@ fn call_control(
         .stdin
         .take()
         .ok_or("DEV_CONTROL_STDIN")?
-        .write_all(CONTROL.as_bytes())
+        .write_all(input)
         .is_err()
     {
         let _ = child.kill();
@@ -161,7 +198,9 @@ fn call_control(
                 return Err("DEV_CONTROL_WAIT_FAILED".into());
             }
         }
-        if started.elapsed() > Duration::from_secs(45) || overflow.load(Ordering::SeqCst) {
+        if started.elapsed() > Duration::from_secs(timeout_seconds)
+            || overflow.load(Ordering::SeqCst)
+        {
             let _ = child.kill();
             let _ = child.wait();
             return Err("DEV_CONTROL_BOUND_HOLD".into());
@@ -179,17 +218,119 @@ fn call_control(
     if overflow.load(Ordering::SeqCst) {
         return Err("DEV_CONTROL_RESPONSE_SIZE".into());
     }
-    let value: serde_json::Value =
-        serde_json::from_slice(&bytes).map_err(|_| "DEV_CONTROL_JSON")?;
-    if !status.success() {
-        return Err(value["error"]
-            .as_str()
-            .unwrap_or("DEV_CONTROL_HOLD")
-            .chars()
-            .take(2048)
-            .collect());
+    Ok((bytes, status.success()))
+}
+
+fn validate_local_status(value: serde_json::Value, now: f64) -> Result<serde_json::Value, String> {
+    let captured = value["captured_epoch"]
+        .as_f64()
+        .ok_or("LOCAL_STATUS_CAPTURE_REQUIRED")?;
+    if !matches!(
+        value["schema"].as_str(),
+        Some("OpenRemaster.LocalStudioStatus.v1" | "OpenRemaster.LocalStudioStatus.v2")
+    ) || value["mode"] != "LOCAL_DEV"
+        || value["source"] != "LOCAL_NATIVE_READONLY"
+        || value["read_only"] != true
+        || value["production_go"] != false
+        || value["azure_required"] != false
+        || value["witness_required"] != false
+        || !captured.is_finite()
+        || captured > now + 2.0
+        || now - captured > 10.0
+        || value["jobs"]
+            .as_array()
+            .map_or(true, |jobs| jobs.len() > 12)
+        || !value["host"].is_object()
+        || !value["counts"].is_object()
+    {
+        return Err("LOCAL_STATUS_RESPONSE_SCOPE".into());
     }
     Ok(value)
+}
+
+pub fn local_status() -> Result<serde_json::Value, String> {
+    use std::os::windows::fs::MetadataExt;
+    let pins: serde_json::Value =
+        serde_json::from_str(LOCAL_STATUS_CONFIG).map_err(|_| "DEV_CONFIG_INVALID")?;
+    if pins["schema"] != "OpenRemaster.LocalStatusNativePins.v2"
+        || pins["contract_id"] != "UNIFIED-DEV-20261119-01"
+        || pins["reader"] != "local_status_v2.py"
+        || pins["validator"] != "transactional_queue.py"
+        || pins["response_schema"] != "OpenRemaster.LocalStudioStatus.v2"
+        || pins["native_arguments"] != serde_json::json!([])
+    {
+        return Err("LOCAL_STATUS_NOT_COMMISSIONED".into());
+    }
+    let root = PathBuf::from(pins["root"].as_str().ok_or("DEV_ROOT_REQUIRED")?);
+    let python = PathBuf::from(pins["python"].as_str().ok_or("DEV_PYTHON_REQUIRED")?);
+    if !root.is_absolute() || !python.is_absolute() {
+        return Err("LOCAL_STATUS_PATH_NOT_ABSOLUTE".into());
+    }
+    let reader = root.join("local_status_v2.py");
+    let validator = root.join("transactional_queue.py");
+    for ancestor in reader
+        .ancestors()
+        .chain(validator.ancestors())
+        .chain(python.ancestors())
+    {
+        if fs::symlink_metadata(ancestor)
+            .map_err(|_| "LOCAL_STATUS_PATH_UNAVAILABLE")?
+            .file_attributes()
+            & 0x400
+            != 0
+        {
+            return Err("LOCAL_STATUS_REPARSE_DENIED".into());
+        }
+    }
+    if hash(&python)?
+        != pins["python_sha256"]
+            .as_str()
+            .ok_or("LOCAL_STATUS_PIN_REQUIRED")?
+        || hash(&validator)?
+            != pins["validator_sha256"]
+                .as_str()
+                .ok_or("LOCAL_STATUS_PIN_REQUIRED")?
+    {
+        return Err("LOCAL_STATUS_DEPENDENCY_CHANGED".into());
+    }
+    let mut source = Vec::new();
+    fs::File::open(&reader)
+        .map_err(|_| "LOCAL_STATUS_READER_UNAVAILABLE")?
+        .take(65537)
+        .read_to_end(&mut source)
+        .map_err(|_| "LOCAL_STATUS_READER_READ")?;
+    if source.len() > 65536
+        || format!("{:x}", Sha256::digest(&source))
+            != pins["reader_sha256"]
+                .as_str()
+                .ok_or("LOCAL_STATUS_PIN_REQUIRED")?
+    {
+        return Err("LOCAL_STATUS_READER_CHANGED".into());
+    }
+    // Execute exactly the bytes just hashed. __file__ keeps the approved reader's
+    // fixed root; reopening a mutable script after verification is avoided.
+    let encoded = source
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
+    let input = format!(
+        "__file__ = {}\nexec(compile(bytes.fromhex('{}'), __file__, 'exec'))\n",
+        serde_json::to_string(&reader.to_string_lossy()).map_err(|_| "LOCAL_STATUS_PATH")?,
+        encoded
+    )
+    .into_bytes();
+    let value = call_python(&pins, &["-B", "-I", "-"], &input, 65536, 8)?;
+    // No fallback to the historical v1 reader when a v2 read is unavailable.
+    if value["schema"] != pins["response_schema"] {
+        return Err("LOCAL_STATUS_UNSUPPORTED_SCHEMA".into());
+    }
+    validate_local_status(
+        value,
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map_err(|_| "LOCAL_STATUS_CLOCK")?
+            .as_secs_f64(),
+    )
 }
 
 #[derive(Deserialize, Clone)]
@@ -579,6 +720,18 @@ pub async fn dev_worker_call(request: DevRequest) -> Result<String, String> {
 mod tests {
     use super::*;
     #[test]
+    fn portable_local_status_rejects_stale_or_production_claims() {
+        let valid = serde_json::json!({"schema":"OpenRemaster.LocalStudioStatus.v1","captured_epoch":1000.0,
+            "mode":"LOCAL_DEV","source":"LOCAL_NATIVE_READONLY","read_only":true,"production_go":false,
+            "azure_required":false,"witness_required":false,"host":{},"counts":{},"jobs":[]});
+        assert!(validate_local_status(valid.clone(), 1000.0).is_ok());
+        assert!(validate_local_status(valid.clone(), 1011.0).is_err());
+        assert!(validate_local_status(valid.clone(), 997.0).is_err());
+        let mut promoted = valid;
+        promoted["production_go"] = serde_json::json!(true);
+        assert!(validate_local_status(promoted, 1000.0).is_err());
+    }
+    #[test]
     fn portable_log_paths_are_rejected_before_worker_access() {
         let request: DevRequest = serde_json::from_value(serde_json::json!({
             "action":"logs","operation_id":"a".repeat(32),"scenario":"build_studio_dev",
@@ -765,24 +918,12 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "bounded native IPC status smoke; unified DEV broker; never submits a build"]
+    #[ignore = "bounded commissioned LOCAL_DEV read-only native smoke; never submits a build"]
     fn runtime_smoke_returns_dev_scope() {
-        let result = execute(DevRequest {
-            action: "status".into(),
-            operation_id: "a7d7c0de202510250000000000000001".into(),
-            scenario: "build_studio_dev".into(),
-            attempt_id: None,
-            log: None,
-            recovery: None,
-            dev_packet_path: None,
-            dev_receipt_path: None,
-            dev_receipt_sha256: None,
-        })
-        .expect("D7 dev broker response");
-        let value: serde_json::Value = serde_json::from_str(&result).expect("response JSON");
-        assert_eq!(value["dev_receipt_verified"], false);
-        assert_eq!(value["control_verified"], true);
-        assert_eq!(value["schema"], "OpenRemaster.DevWorkflowResult.v2");
+        let value = local_status().expect("commissioned read-only HomePC status");
+        assert_eq!(value["schema"], "OpenRemaster.LocalStudioStatus.v2");
+        assert_eq!(value["read_only"], true);
+        assert!(value["host"]["healthy"].is_boolean());
         assert_eq!(value["production_go"], false);
     }
 }
