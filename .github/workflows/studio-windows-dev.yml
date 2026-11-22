@@ -8,6 +8,14 @@ on:
     branches: [consolidation/master-development-20261025, main]
     paths: ['development/studio_d7/**', '.github/workflows/studio-windows-dev.yml']
 
+  workflow_dispatch:
+    inputs:
+      publish_dev_preview:
+        description: 'Publish the unsigned DEV preview'
+        type: boolean
+        required: false
+        default: false
+
 permissions:
   contents: read
 
@@ -70,7 +78,7 @@ jobs:
           retention-days: 30
 
   publish-dev-preview:
-    if: github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_dev_preview == true
     needs: build
     runs-on: ubuntu-latest
     permissions:
